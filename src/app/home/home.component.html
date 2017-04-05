@@ -1,0 +1,141 @@
+<div fxLayout="row" fxLayoutGap="30px">
+  <md-card fxLayout="column" fxLayoutGap="10px" class="home-booking">
+    <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutGap="25px">
+      <span class="label-inline">Loại vé:</span>
+      <md-radio-group class="round-trip-group" [(ngModel)]="isRoundTrip">
+        <md-radio-button class="round-trip-radio" [value]="true">Khứ hồi</md-radio-button>
+        <md-radio-button class="round-trip-radio" [value]="false">Một chiều</md-radio-button>
+      </md-radio-group>
+    </div>
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div fxFlex style="position: relative">
+        <span class="label-inline-2">Điểm đi:</span>
+        <div class="takeoff_place" fxLayout fxLayoutAlign="start center">
+          <i class="material-icons">flight_takeoff</i> 
+          <input readonly fxFlex fxFlexLayoutAlign="stretch" type="text" (focus)="showTakeOffPlace()" (blur)="hideTakeOffPlace()" [value]="tenDiemDi">
+        </div>
+        <div [@takeOffPlace]="showTakeOff" class="takeoff">
+          <md-card>
+            <md-card-content>
+              <div fxLayout="row" fxLayoutGap="50px">
+                <div *ngIf="dsVung1.length">
+                  <div class="vung-ctn" *ngFor="let vung of dsVung1">
+                    <div class="vung-header">{{vung.RegionName}}</div>
+                    <div class="vung-content">
+                      <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDi(diem)">
+                        <span>{{diem.Name}} </span><span>({{diem.Code}})</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="dsVung2.length">
+                  <div class="vung-ctn" *ngFor="let vung of dsVung2">
+                    <div class="vung-header">{{vung.RegionName}}</div>
+                    <div class="vung-content">
+                      <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDi(diem)">
+                        <span>{{diem.Name}} </span><span>({{diem.Code}})</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="dsVung3.length">
+                  <div class="vung-ctn" *ngFor="let vung of dsVung3">
+                    <div class="vung-header">{{vung.RegionName}}</div>
+                    <div class="vung-content">
+                      <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDi(diem)">
+                        <span>{{diem.Name}} </span> <span>({{diem.Code}})</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <span fxFlex></span>
+              <button md-icon-button (click)="showTakeOff='inactive'"><md-icon>close</md-icon></button>
+            </md-card-actions>
+          </md-card>
+        </div>
+      </div>
+      <div style="width:108px">
+        <span class="label-inline-2">Ngày đi:</span>
+        <div class="date-picker-ctn">
+          <material-datepicker [rangeStart]="currentDate" (onSelect)="chonNgayDi()" [(date)]="ngayDi" dateFormat="DD-MM-YYYY"></material-datepicker>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div fxFlex style="position: relative">
+        <span class="label-inline-2">Điểm đến:</span>
+        <div class="takeoff_place" fxLayout fxLayoutAlign="start center">
+          <i class="material-icons">flight_land</i> 
+          <input readonly fxFlex fxFlexLayoutAlign="stretch" type="text" (focus)="showLandPlace()" (blur)="hideLandPlace()" [value]="tenDiemDen">
+        </div>
+        <div [@landPlace]="showLand" class="takeoff">
+          <md-card>
+            <md-card-content>
+              <div fxLayout="row" fxLayoutGap="50px">
+                <div *ngIf="dsVungDest1.length">
+                  <div class="vung-ctn" *ngFor="let vung of dsVungDest1">
+                    <div class="vung-header">{{vung.RegionName}}</div>
+                    <div class="vung-content">
+                      <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDen(diem)">
+                        <span>{{diem.Name}} </span><span>({{diem.Code}})</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="dsVungDest2.length">
+                  <div class="vung-ctn" *ngFor="let vung of dsVungDest2">
+                    <div class="vung-header">{{vung.RegionName}}</div>
+                    <div class="vung-content">
+                      <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDen(diem)">
+                        <span>{{diem.Name}} </span><span>({{diem.Code}})</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="dsVungDest3.length">
+                  <div class="vung-ctn" *ngFor="let vung of dsVungDest3">
+                    <div class="vung-header">{{vung.RegionName}}</div>
+                    <div class="vung-content">
+                      <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDen(diem)">
+                        <span>{{diem.Name}} </span> <span>({{diem.Code}})</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <span fxFlex></span>
+              <button md-icon-button (click)="showLand='inactive'"><md-icon>close</md-icon></button>
+            </md-card-actions>
+          </md-card>
+        </div>
+      </div>
+      <div style="width:108px">
+        <span class="label-inline-2">Ngày về:</span>
+        <div class="date-picker-ctn">
+          <material-datepicker [(date)]="ngayVe" [rangeStart]="ngayDi" dateFormat="DD-MM-YYYY"></material-datepicker>
+        </div>
+      </div>
+    </div>
+    <div fxLayout fxLayoutGap="20px" class="custtype">
+      <md-input-container>
+        <input mdInput type="number" [(ngModel)]="adult" placeholder="Người lớn (>=12 tuổi)">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput type="number" [(ngModel)]="child" placeholder="Trẻ em (2-11 tuổi)">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput type="number" [(ngModel)]="infant" placeholder="Em bé (< 24 tháng)">
+      </md-input-container>
+    </div>
+    <div fxLayout="column">
+      <button md-raised-button color="accent" (click)="timChuyenBay()"><md-icon>search</md-icon> <span>Tìm chuyến bay</span></button>
+    </div>
+  </md-card>
+  <md-card fxFlex>
+  </md-card>
+</div>

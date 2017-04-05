@@ -1,0 +1,592 @@
+<section *ngIf="step==1" class="search-form">
+  <div fxLayout class="search-booking" fxLayoutGap="50px" fxLayoutAlign="start center">
+    <div fxFlex fxLayout="column" fxLayoutGap="10px">
+      <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutGap="25px">
+        <md-radio-group class="round-trip-group" [(ngModel)]="searchData.roundTrip">
+          <md-radio-button class="round-trip-radio" [value]="true">Khứ hồi</md-radio-button>
+          <md-radio-button class="round-trip-radio" [value]="false">Một chiều</md-radio-button>
+        </md-radio-group>
+      </div>
+      <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
+        <div fxFlex fxFlex style="position: relative">
+          <div class="takeoff_place" fxLayout fxLayoutAlign="start center">
+            <i class="material-icons">flight_takeoff</i>
+            <input readonly fxFlex fxFlexLayoutAlign="stretch" type="text" (focus)="showTakeOffPlace()" [value]="tenDiemDi">
+          </div>
+          <div [@takeOffPlace]="showTakeOff" class="takeoff">
+            <md-card>
+              <md-card-content>
+                <span style="float:right; cursor: pointer" (click)="showTakeOff='inactive'"><i class="material-icons md-18">close</i></span>
+                <div fxLayout="row" fxLayoutGap="50px">
+                  <div *ngIf="dsVung1.length">
+                    <div class="vung-ctn" *ngFor="let vung of dsVung1">
+                      <div class="vung-header">{{vung.RegionName}}</div>
+                      <div class="vung-content">
+                        <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDi(diem)">
+                          <span>{{diem.Name}} </span><span>({{diem.Code}})</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="dsVung2.length">
+                    <div class="vung-ctn" *ngFor="let vung of dsVung2">
+                      <div class="vung-header">{{vung.RegionName}}</div>
+                      <div class="vung-content">
+                        <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDi(diem)">
+                          <span>{{diem.Name}} </span><span>({{diem.Code}})</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="dsVung3.length">
+                    <div class="vung-ctn" *ngFor="let vung of dsVung3">
+                      <div class="vung-header">{{vung.RegionName}}</div>
+                      <div class="vung-content">
+                        <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDi(diem)">
+                          <span>{{diem.Name}} </span> <span>({{diem.Code}})</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </md-card-content>
+              <md-card-actions>
+                <span fxFlex></span>
+                <button md-icon-button (click)="showTakeOff='inactive'"><md-icon>close</md-icon></button>
+              </md-card-actions>
+            </md-card>
+          </div>
+        </div>
+        <div fxFlex style="position: relative">
+          <div class="takeoff_place" fxLayout fxLayoutAlign="start center">
+            <i class="material-icons">flight_land</i>
+            <input readonly fxFlex fxFlexLayoutAlign="stretch" type="text" (focus)="showLandPlace()" (blur)="hideLandPlace()" [value]="tenDiemDen">
+          </div>
+          <div [@landPlace]="showLand" class="takeoff">
+            <md-card>
+              <md-card-content>
+                <span style="float:right; cursor: pointer" (click)="showLand='inactive'"><i class="material-icons md-18">close</i></span>
+                <div fxLayout="row" fxLayoutGap="50px">
+                  <div *ngIf="dsVungDest1.length">
+                    <div class="vung-ctn" *ngFor="let vung of dsVungDest1">
+                      <div class="vung-header">{{vung.RegionName}}</div>
+                      <div class="vung-content">
+                        <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDen(diem)">
+                          <span>{{diem.Name}} </span><span>({{diem.Code}})</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="dsVungDest2.length">
+                    <div class="vung-ctn" *ngFor="let vung of dsVungDest2">
+                      <div class="vung-header">{{vung.RegionName}}</div>
+                      <div class="vung-content">
+                        <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDen(diem)">
+                          <span>{{diem.Name}} </span><span>({{diem.Code}})</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="dsVungDest3.length">
+                    <div class="vung-ctn" *ngFor="let vung of dsVungDest3">
+                      <div class="vung-header">{{vung.RegionName}}</div>
+                      <div class="vung-content">
+                        <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" (click)="chonDiemDen(diem)">
+                          <span>{{diem.Name}} </span> <span>({{diem.Code}})</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </md-card-content>
+              <md-card-actions>
+                <span fxFlex></span>
+                <button md-icon-button (click)="showLand='inactive'"><md-icon>close</md-icon></button>
+              </md-card-actions>
+            </md-card>
+          </div>
+        </div>
+        <div style="width:108px">
+          <div class="date-picker-ctn">
+            <material-datepicker (onSelect)="chonNgayDi()" [(date)]="ngayDi" [(showCalendar)]="showCalendar" [rangeStart]="currentDate"
+              dateFormat="DD-MM-YYYY"></material-datepicker>
+          </div>
+        </div>
+        <div *ngIf="searchData.roundTrip" style="width:108px">
+          <div class="date-picker-ctn">
+            <material-datepicker [(date)]="ngayVe" [rangeStart]="ngayDi" dateFormat="DD-MM-YYYY"></material-datepicker>
+          </div>
+        </div>
+        <div fxLayout fxLayoutGap="20px" class="custtype">
+          <md-input-container>
+            <input mdInput type="number" [(ngModel)]="searchData.adult" placeholder="Người lớn (>=12 tuổi)">
+          </md-input-container>
+          <md-input-container>
+            <input mdInput type="number" [(ngModel)]="searchData.child" placeholder="Trẻ em (2-11 tuổi)">
+          </md-input-container>
+          <md-input-container>
+            <input mdInput type="number" [(ngModel)]="searchData.infant" placeholder="Em bé (< 24 tháng)">
+          </md-input-container>
+        </div>
+      </div>
+    </div>
+    <div fxFlexLayoutAlign="stretch">
+      <button fxFlexLayoutAlign="stretch" md-raised-button color="accent" (click)="timChuyenBay()"><md-icon>search</md-icon> <span>Tìm kiếm</span></button>
+    </div>
+  </div>
+</section>
+<section class="booking-step">
+  <md-card>
+    <md-card-content>
+      <div fxLayout fxLayoutAlign="space-between center">
+        <div [class.active]="step==1" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px">
+          <i class="material-icons md-36">search</i>
+          <span>1. Tìm chuyến bay</span>
+        </div>
+        <div [class.active]="step==2" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px">
+          <i class="material-icons md-36">people</i>
+          <span>2. Thông tin khách hàng</span>
+        </div>
+        <div [class.active]="step==3" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px">
+          <i class="material-icons md-36">payment</i>
+          <span>3. Thanh toán</span>
+        </div>
+        <div [class.active]="step==4" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px">
+          <i class="material-icons md-36">check</i>
+          <span>4. Đặt vé thành công</span>
+        </div>
+      </div>
+    </md-card-content>
+  </md-card>
+</section>
+<div *ngIf="step==1" fxLayout fxLayoutGap="20px">
+  <div fxFlex>
+    <section class="booking-result">
+      <div style="position: absolute; z-index: 1200; left: 50%" fxLayout fxLayoutAlign="center" *ngIf="searching">
+        <md-spinner></md-spinner>
+      </div>
+      <md-card>
+        <md-card-title>Chiều đi</md-card-title>
+        <md-card-content>
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <span class="label-inline">Sắp xếp theo: </span>
+            <md-radio-group class="round-trip-group" [(ngModel)]="orderType" (change)="orderSearchResult()">
+              <md-radio-button class="round-trip-radio" [value]="1">Giá thấp nhất</md-radio-button>
+              <md-radio-button class="round-trip-radio" [value]="2">Cất cánh sớm nhất</md-radio-button>
+              <md-radio-button class="round-trip-radio" [value]="3">Hạ cánh sớm nhất</md-radio-button>
+            </md-radio-group>
+          </div>
+          <div>
+            <div class="flight-item" *ngFor="let item of searchResultFilter">
+              <div fxFlex fxLayout>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <img class="airline" src="/assets/images/{{item.Airline}}.png">
+                  <span>{{item.FlightNumber}}</span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <span>{{item.FromPlace}}</span>
+                  <span>{{item.DepartTime | evtimeonly }}</span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <span>{{item.ToPlace}}</span>
+                  <span>{{item.LandingTime | evtimeonly}}</span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <span>Số chặng dừng:</span>
+                  <span>{{item.Stops}}</span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <span>Giá NET: <span class="price">{{item.TicketPrice | number}}</span></span>
+                  <span>Tổng giá: <span class="price">{{item.TotalPrice | number}}</span></span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <div *ngIf="!searchData.roundTrip">
+                    <button color="accent" md-raised-button (click)="selectDepartFlight(item)"><md-icon>book</md-icon> Đặt vé</button>
+                  </div>
+                  <div fxLayout fxLayoutAlign="start center" (click)="item.isOpen = (item.isOpen ? false: true)">
+                    <span class="cp">Xem chi tiết</span>
+                    <i class="material-icons cp">keyboard_arrow_down</i>
+                  </div>
+                </div>
+                <div *ngIf="searchData.roundTrip">
+                  <md-radio-button name="chieuDi" (change)="chonChieuDi(item)"></md-radio-button> Chọn
+                </div>
+              </div>
+              <div fxFlex *ngIf="item.isOpen" class="flight-item-details">
+                <div class="detail-header" fxLayout>
+                  <div fxFlex>Loại phí</div>
+                  <div fxFlex>Số lượng</div>
+                  <div fxFlex>Chi phí</div>
+                  <div fxFlex>Tổng</div>
+                </div>
+                <div class="detail-item" fxLayout *ngFor="let detail of item.TicketPriceDetails">
+                  <div fxFlex>{{detail.Description}}</div>
+                  <div fxFlex>{{detail.Quantity | number}}</div>
+                  <div fxFlex>{{detail.Price | number}}</div>
+                  <div fxFlex>{{detail.Total | number}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </md-card-content>
+      </md-card>
+    </section>
+    <section *ngIf="searchData.roundTrip" class="booking-result">
+      <md-card>
+        <md-card-title>Chiều về</md-card-title>
+        <md-card-content>
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <span class="label-inline">Sắp xếp theo: </span>
+            <md-radio-group class="round-trip-group" [(ngModel)]="orderTypeReturn" (change)="orderSearchResultReturn()">
+              <md-radio-button class="round-trip-radio" [value]="1">Giá thấp nhất</md-radio-button>
+              <md-radio-button class="round-trip-radio" [value]="2">Cất cánh sớm nhất</md-radio-button>
+              <md-radio-button class="round-trip-radio" [value]="3">Hạ cánh sớm nhất</md-radio-button>
+            </md-radio-group>
+          </div>
+          <div fxLayout fxLayoutAlign="center" *ngIf="searchingReturn">
+            <md-spinner></md-spinner>
+          </div>
+          <div>
+            <div class="flight-item" *ngFor="let item of searchResultReturnFilter">
+              <div fxFlex fxLayout>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <img class="airline" src="/assets/images/{{item.Airline}}.png">
+                  <span>{{item.FlightNumber}}</span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <span>{{item.FromPlace}}</span>
+                  <span>{{item.DepartTime | evtimeonly }}</span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <span>{{item.ToPlace}}</span>
+                  <span>{{item.LandingTime | evtimeonly }}</span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <span>Số chặng dừng:</span>
+                  <span>{{item.Stops}}</span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <span>Giá NET: <span class="price">{{item.TicketPrice | number}}</span></span>
+                  <span>Tổng giá: <span class="price">{{item.TotalPrice | number}}</span></span>
+                </div>
+                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                  <div *ngIf="!searchData.roundTrip">
+                    <button color="accent" md-raised-button (click)="selectDepartFlight(item)"><md-icon>book</md-icon> Đặt vé</button>
+                  </div>
+                  <div fxLayout fxLayoutAlign="start center" class="cp" (click)="item.isOpen = (item.isOpen ? false: true)">
+                    <span class="cp">Xem chi tiết</span>
+                    <i class="material-icons cp">keyboard_arrow_down</i>
+                  </div>
+                </div>
+                <div *ngIf="searchData.roundTrip">
+                  <md-radio-button name="chieuVe" (change)="chonChieuVe(item)"></md-radio-button> Chọn
+                </div>
+              </div>
+              <div fxFlex *ngIf="item.isOpen" class="flight-item-details">
+                <div class="detail-header" fxLayout>
+                  <div fxFlex>Loại phí</div>
+                  <div fxFlex>Số lượng</div>
+                  <div fxFlex>Chi phí</div>
+                  <div fxFlex>Tổng</div>
+                </div>
+                <div class="detail-item" fxLayout *ngFor="let detail of item.TicketPriceDetails">
+                  <div fxFlex>{{detail.Description}}</div>
+                  <div fxFlex>{{detail.Quantity | number}}</div>
+                  <div fxFlex>{{detail.Price | number}}</div>
+                  <div fxFlex>{{detail.Total | number}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </md-card-content>
+      </md-card>
+    </section>
+  </div>
+  <div fxFlex="30">
+    <section style="margin-top:10px !important">
+      <md-card>
+        <md-card-subtitle>Bộ lọc</md-card-subtitle>
+        <md-card-content>
+          <div *ngFor="let item of AirlineList">
+            <md-checkbox [(ngModel)]="item.selected" (change)="filterAirline()">{{item.Airline}}</md-checkbox>
+          </div>
+        </md-card-content>
+      </md-card>
+      <md-card *ngIf="searchData.roundTrip" style="margin-top:10px">
+        <md-card-subtitle>Chuyến bay được chọn</md-card-subtitle>
+        <md-card-content>
+          <div fxLayout="column" fxLayoutGap="20px">
+            <div fxFlex>
+              <div>Chiều đi</div>
+              <div fxLayout fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="chieuDi.Airline">
+                <div fxFlex><img class="airline" src="assets/images/{{chieuDi.Airline}}.png"></div>
+                <div fxFlex>{{chieuDi.DepartTime | evtimeonly}} - {{chieuDi.LandingTime | evtimeonly}}</div>
+                <div fxFlex>{{chieuDi.TotalPrice | number}}</div>
+              </div>
+            </div>
+            <div fxFlex>
+              <div>Chiều về</div>
+              <div fxLayout fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="chieuVe.Airline">
+                <div fxFlex><img class="airline" src="assets/images/{{chieuVe.Airline}}.png"></div>
+                <div fxFlex>{{chieuVe.DepartTime | evtimeonly}} - {{chieuVe.LandingTime | evtimeonly}}</div>
+                <div fxFlex>{{chieuVe.TotalPrice | number}}</div>
+              </div>
+            </div>
+            <div fxFlex fxLayout class="tong_khu_hoi">
+              <div fxFlex class="text">Tổng</div>
+              <div fxFlex class="price">{{ TongKhuHoi | number }}</div>
+            </div>
+            <div fxFlex>
+              <div fxLayout="column">
+                <button color="accent" md-raised-button (click)="tiepTucKhuHoi()"><md-icon>forward</md-icon> Tiếp tục</button>
+              </div>
+            </div>
+          </div>
+        </md-card-content>
+      </md-card>
+    </section>
+  </div>
+</div>
+<div *ngIf="step >= 2" style="margin-top:10px">
+  <div fxLayout fxLayoutGap="20px">
+    <div *ngIf="step==2" fxFlex>
+      <md-card>
+        <md-card-title>1. THÔNG TIN HÀNH KHÁCH</md-card-title>
+        <md-card-content>
+          <div class="customer-item" *ngFor="let item of flightDataChoosen.Adult; let i=index">
+            <div class="customer-type">Hành khách {{i + 1}} (Người lớn)</div>
+            <div fxLayout fxLayoutGap="20px" fxLayoutAlign="baseline">
+              <md-input-container fxFlex>
+                <input mdInput placeholder="Họ và tên" [(ngModel)]="item.FullName">
+              </md-input-container>
+              <md-select fxFlex="100px" [(ngModel)]="item.Title" placeholder="Bí danh">
+                <md-option value="Ông">Ông</md-option>
+                <md-option value="Bà">Bà</md-option>
+              </md-select>
+              <md-select fxFlex [(ngModel)]="item.Baggage" placeholder="Hành lý">
+                <md-option [value]="0">Không thêm hành lý</md-option>
+                <md-option *ngFor="let l of luggagePriceList" [value]="l.Weight">{{l.Name}}</md-option>
+              </md-select>
+              <md-select fxFlex *ngIf="searchData.roundTrip" [(ngModel)]="item.ReturnBaggage" placeholder="Hành lý chiều về">
+                <md-option [value]="0">Không thêm hành lý</md-option>
+                <md-option *ngFor="let l of returnLuggagePriceList" [value]="l.Weight">{{l.Name}}</md-option>
+              </md-select>
+            </div>
+          </div>
+          <div class="customer-item" *ngIf="flightDataChoosen.Child.length">
+            <div *ngFor="let item of flightDataChoosen.Child; let i=index">
+              <div>Hành khách {{flightDataChoosen.Adult.length + i + 1}} (Trẻ em)</div>
+              <div fxLayout fxLayoutGap="20px" fxLayoutAlign="baseline">
+                <md-input-container fxFlex>
+                  <input mdInput placeholder="Họ và tên" [(ngModel)]="item.FullName">
+                </md-input-container>
+                <md-select fxFlex="100px" [(ngModel)]="item.Title" placeholder="Bí danh">
+                  <md-option value="Em trai">Em trai</md-option>
+                  <md-option value="Em gái">Em gái</md-option>
+                </md-select>
+                <md-select fxFlex [(ngModel)]="item.Baggage" placeholder="Hành lý">
+                  <md-option [value]="0">Không thêm hành lý</md-option>
+                  <md-option *ngFor="let l of luggagePriceList" [value]="l.Weight">{{l.Name}}</md-option>
+                </md-select>
+                <md-select fxFlex *ngIf="searchData.roundTrip" [(ngModel)]="item.ReturnBaggage" placeholder="Hành lý chiều về">
+                  <md-option [value]="0">Không thêm hành lý</md-option>
+                  <md-option *ngFor="let l of returnLuggagePriceList" [value]="l.Weight">{{l.Name}}</md-option>
+                </md-select>
+              </div>
+            </div>
+          </div>
+          <div class="customer-item" *ngIf="flightDataChoosen.Infant.length">
+            <div *ngFor="let item of flightDataChoosen.Infant; let i=index">
+              <div>Hành khách {{flightDataChoosen.Adult.length + flightDataChoosen.Child.length + i + 1}} (Em bé)</div>
+              <div fxLayout fxLayoutGap="20px" fxLayoutAlign="baseline">
+                <md-input-container fxFlex>
+                  <input mdInput placeholder="Họ và tên" [(ngModel)]="item.FullName">
+                </md-input-container>
+                <md-select fxFlex="100px" [(ngModel)]="item.Title" placeholder="Bí danh">
+                  <md-option value="Bé trai">Bé trai</md-option>
+                  <md-option value="Bé gái">Bé gái</md-option>
+                </md-select>
+              </div>
+            </div>
+          </div>
+        </md-card-content>
+      </md-card>
+      <md-card>
+        <md-card-title>2. THÔNG TIN NGƯỜI ĐẶT VÉ</md-card-title>
+        <md-card-content>
+          Én Vàng sẽ dùng thông tin này để liên hệ giao vé
+          <div fxLayout="column">
+            <md-input-container>
+              <input mdInput placeholder="Họ tên" [(ngModel)]="contact.HoTen">
+            </md-input-container>
+            <md-input-container>
+              <input mdInput placeholder="Điện thoại" [(ngModel)]="contact.DienThoai">
+            </md-input-container>
+            <md-input-container>
+              <input mdInput placeholder="Email" [(ngModel)]="contact.Email">
+            </md-input-container>
+            <md-input-container>
+              <input mdInput placeholder="Địa chỉ" [(ngModel)]="contact.DiaChi">
+            </md-input-container>
+          </div>
+        </md-card-content>
+      </md-card>
+    </div>
+    <div fxFlex *ngIf="step==3">
+      <md-card>
+        <md-card-title>HÌNH THỨC THANH TOÁN</md-card-title>
+        <md-card-content>
+          <div class="payment-method" [class.active]="payment==1">
+            <div>CHUYỂN KHOẢN NGÂN HÀNG</div>
+          </div>
+          <div class="payment-method" [class.active]="payment==2">
+            <div>THANH TOÁN TRỰC TIẾP TẠI VĂN PHÒNG CÔNG TY</div>
+          </div>
+          <div class="payment-method" [class.active]="payment==3">
+            <div>THANH TOÁN TRỰC TIẾP TẠI NHÀ RIÊNG</div>
+          </div>
+        </md-card-content>
+      </md-card>
+    </div>
+    <div fxFlex *ngIf="step==4">
+      <md-card>
+        <md-card-title>KẾT QUẢ ĐẶT VÉ</md-card-title>
+        <md-card-content>
+          Nội dung kết quả đặt vé
+        </md-card-content>
+      </md-card>
+    </div>
+    <div fxFlex="30">
+      <md-card>
+        <md-card-title>Thông tin đặt vé</md-card-title>
+        <md-card-content>
+          <div fxLayout="column" fxLayoutGap="10px">
+            <div fxFlex>
+              <div *ngIf="searchData.adult" fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Người lớn</div>
+                <div fxFlex>
+                  <div *ngFor="let item of flightDataChoosen.Adult">
+                    {{item.FullName}}
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="searchData.child" fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Trẻ em</div>
+                <div fxFlex>{{searchData.child}}
+                  <div *ngFor="let item of flightDataChoosen.Child">
+                    {{item.FullName}}
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="searchData.infant" fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Em bé</div>
+                <div fxFlex>
+                  <div *ngFor="let item of flightDataChoosen.Infant">
+                    {{item.FullName}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="info-legend">Chiều đi</div>
+            <div fxFlex>
+              <div fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Từ</div>
+                <div fxFlex>{{chieuDi.FromPlace}}</div>
+              </div>
+              <div fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Thời gian</div>
+                <div fxFlex>{{chieuDi.DepartTime | evtime}}</div>
+              </div>
+            </div>
+            <div fxFlex>
+              <div fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Đến</div>
+                <div fxFlex>{{chieuDi.ToPlace}}</div>
+              </div>
+              <div fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Thời gian</div>
+                <div fxFlex>{{chieuDi.LandingTime | evtime}}</div>
+              </div>
+            </div>
+            <div fxFlex>
+              <div fxLayout fxLayoutGap="20px">
+                  <div fxFlex="100px">Hãng</div>
+                  <div fxFlex><img class="airline" src="assets/images/{{chieuDi.Airline}}.png"></div>
+                </div>
+              <div fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Chuyến bay</div>
+                <div fxFlex>{{chieuDi.FlightNumber}}</div>
+              </div>
+              <div fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Loại vé</div>
+                <div fxFlex>{{chieuDi.TicketType}}</div>
+              </div>
+              <div fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Giá</div>
+                <div class="price" fxFlex>{{chieuDi.TotalPrice | number}}</div>
+              </div>
+            </div>
+            <div *ngIf="searchData.roundTrip">
+              <div class="info-legend">Chiều về</div>
+              <div fxFlex>
+                <div fxLayout fxLayoutGap="20px">
+                  <div fxFlex="100px">Từ</div>
+                  <div fxFlex>{{chieuVe.FromPlace}}</div>
+                </div>
+                <div fxLayout fxLayoutGap="20px">
+                  <div fxFlex="100px">Thời gian</div>
+                  <div fxFlex>{{chieuVe.DepartTime | evtime}}</div>
+                </div>
+              </div>
+              <div fxFlex>
+                <div fxLayout fxLayoutGap="20px">
+                  <div fxFlex="100px">Đến</div>
+                  <div fxFlex>{{chieuVe.ToPlace}}</div>
+                </div>
+                <div fxLayout fxLayoutGap="20px">
+                  <div fxFlex="100px">Thời gian</div>
+                  <div fxFlex>{{chieuVe.LandingTime | evtime}}</div>
+                </div>
+              </div>
+              <div fxFlex>
+                <div fxLayout fxLayoutGap="20px">
+                  <div fxFlex="100px">Hãng</div>
+                  <div fxFlex><img class="airline" src="assets/images/{{chieuVe.Airline}}.png"></div>
+                </div>
+                <div fxLayout fxLayoutGap="20px">
+                  <div fxFlex="100px">Chuyến bay</div>
+                  <div fxFlex>{{chieuVe.FlightNumber}}</div>
+                </div>
+                <div fxLayout fxLayoutGap="20px">
+                  <div fxFlex="100px">Loại vé</div>
+                  <div fxFlex>{{chieuVe.TicketType}}</div>
+                </div>
+                <div fxLayout fxLayoutGap="20px">
+                  <div fxFlex="100px">Giá</div>
+                  <div class="price" fxFlex>{{chieuVe.TotalPrice | number}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="info-legend">Tổng</div>
+            <div fxFlex>
+              <div fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Hành lý</div>
+                <div class="price" fxFlex>{{ ChiPhiHanhLy | number}}</div>
+              </div>
+              <div fxLayout fxLayoutGap="20px">
+                <div fxFlex="100px">Tổng chi phí</div>
+                <div class="price" fxFlex>{{ ChiPhiHanhLy + TongKhuHoi | number}}</div>
+              </div>
+            </div>
+          </div>
+        </md-card-content>
+        <md-card-actions>
+          <button md-raised-button (click)="step = step - 1"><md-icon>redo</md-icon> Quay lại</button>
+          <button *ngIf="step==2" fxFlex md-raised-button color="accent" (click)="choosePaymentMethod()"><md-icon>payment</md-icon> Chọn hình thức thanh toán</button>
+          <button *ngIf="step==3" fxFlex md-raised-button color="accent" (click)="bookTicket()"><md-icon>checked</md-icon> Đặt vé</button>
+        </md-card-actions>
+      </md-card>
+    </div>
+  </div>
+</div>
+

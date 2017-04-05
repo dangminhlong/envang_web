@@ -1,0 +1,105 @@
+<div *ngIf="!showAddEdit" class="section">
+  <md-toolbar color="primary">
+    <span class="admin_header">Quản lý bài viết</span>
+    <span fxFlex></span>
+    <button md-raised-button color="accent" (click)="showAddNewForm()"><md-icon>create</md-icon> Thêm mới</button>
+  </md-toolbar>
+  <md-card>
+    <md-card-content>
+      <div fxLayout="column">
+        <md-select [(ngModel)]="loai" (change)="getDanhSach()">
+          <md-option [value]="0">Chọn loại</md-option>
+          <md-option *ngFor="let item of dsLoai" [value]="item.Id">{{item.Name}}</md-option>
+        </md-select>
+      </div>
+    </md-card-content>
+  </md-card>
+  <md-card>
+    <md-card-content>
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr class="header">
+            <th style="width:40px">Id</th>
+            <th>Tên</th>
+            <th style="width:150px"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dsItem | paginate: { totalItems: totalItems, itemsPerPage: pageSize, currentPage: page }">
+            <td>{{item.Id}}</td>
+            <td>{{item.Name}}</td>
+            <td>
+              <button title="Chỉnh sửa" color="accent" md-icon-button style="margin: 0 5px" (click)="showEditForm(item)"><md-icon>edit</md-icon></button>
+              <button title="Xóa" color="warn" md-icon-button style="margin: 0 5px" (click)="showDeleteForm(confirmTemplate, item)"><md-icon>clear</md-icon></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination-controls (pageChange)="loadPage($event)"
+                autoHide="true"
+                previousLabel="Trước"
+                nextLabel="Sau"></pagination-controls>
+    </md-card-content>
+  </md-card>
+</div>
+<div *ngIf="showAddEdit">
+  <md-toolbar color="primary">
+    <span>Thông tin bài viết</span>
+  </md-toolbar>
+  <md-card>
+    <md-card-content>
+      <div fxLayout="column" fxLayoutAlign="stretch">
+        <md-select [(ngModel)]="item.ArticleTypeId">
+          <md-option [value]="0">Chọn loại</md-option>
+          <md-option *ngFor="let item of dsLoai" [value]="item.Id">{{item.Name}}</md-option>
+        </md-select>
+        <md-input-container>
+          <input mdInput [(ngModel)]="item.Name" placeholder="Tên" />
+        </md-input-container>
+        <div class="input-group">
+          <div fxLayout fxLayoutGap="20px" fxLayoutAlign="start start">
+            <label>Ảnh</label>
+            <button md-raised-button (click)="openFileManager()" color="accent">Chọn ảnh từ server</button>
+            <button md-icon-button (click)="item.ImageUrl=''" color="primary"><md-icon>clear</md-icon></button>
+            <div fxFlex></div>
+            <div style="max-width: calc(100% - 300px)" *ngIf="item.ImageUrl && item.ImageUrl.length">
+              <img style="width:100%" src="{{apiUrl + '/' + item.ImageUrl}}" />
+            </div>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Tóm tắt</label>
+          <textarea htmlEditor [(ngModel)]="item.Description" height="150"></textarea>
+        </div>
+        <div class="input-group">
+          <label>Nội dung</label>
+          <textarea htmlEditor [(ngModel)]="item.Content"></textarea>
+        </div>
+      </div>
+    </md-card-content>
+  </md-card>
+  <md-toolbar>
+    <div fxLayout fxLayoutGap="30px">
+      <button md-raised-button color="accent" [disabled]="isSaveInvalid" (click)="save()"><md-icon>save</md-icon> Lưu</button>
+      <button md-raised-button color="primary" (click)="closeEditForm()"><md-icon>close</md-icon> Đóng</button>
+    </div>
+  </md-toolbar>
+</div>
+<template #confirmTemplate>
+  <div style="text-align:center">
+    <h4>{{confirmMessage}}</h4>
+    <div>
+      <button *ngIf="confirmType==1" md-raised-button color="warn" (click)="remove()">Xác nhận</button>
+      <button md-button (click)="close()">Đóng</button>
+    </div>
+  </div>
+</template>
+<template #loaderTemplate>
+  <div style="text-align:center">
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <md-progress-circle color="primary" mode="indeterminate">
+      </md-progress-circle>
+    </div>
+    <h4>{{loaderMessage}}</h4>
+  </div>
+</template>

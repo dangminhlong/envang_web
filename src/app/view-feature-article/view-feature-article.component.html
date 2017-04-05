@@ -1,0 +1,16 @@
+<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+    <md-card fxFlex="30">
+        <md-card-content>
+            <div fxLayout="column" fxLayoutGap="20px">
+                <div *ngFor="let item of dsFA">
+                    <a class="cp fa" [class.selected]="selectedItem == item" (click)="viewArticle(item)" fxLayout fxLayoutAlign="start center"><span style="margin-right: 10px" [innerHTML]="item.Style"></span> {{item.Name}}</a>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+    <md-card fxFlex="70">
+        <md-card-content>
+            <div [innerHTML]="item.Content"></div>
+        </md-card-content>
+    </md-card>
+</div>

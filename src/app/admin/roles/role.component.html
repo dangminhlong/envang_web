@@ -1,0 +1,64 @@
+﻿<div class="section">
+  <md-toolbar color="primary">
+    <span class="admin_header">Quản lý chức năng người dùng</span>
+    <span fxFlex></span>
+    <button md-raised-button color="accent" (click)="saveRolePages()"><md-icon>save</md-icon> Lưu</button>
+  </md-toolbar>
+  <div class="section-content">
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div fxFlex="33">
+        <md-card>
+          <md-card-title>
+            Nhóm chức năng người dùng
+          </md-card-title>
+          <md-card-content>
+            <table class="table table-hover table-bordered">
+              <tbody>
+                <tr *ngFor="let item of dsRole" [class.selected]="item == selectedRole" (click)="getDsRolePages(item)" class="cp">
+                  <td>{{item.Name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </md-card-content>
+        </md-card>
+      </div>
+      <div fxFlex="67">
+        <md-card>
+          <md-card-title>
+            Chức năng hệ thống
+          </md-card-title>
+          <md-card-content>
+            <table class="table table-hover table-bordered">
+              <thead>
+                <tr class="header">
+                  <th>Tên</th>
+                  <th>Router</th>
+                  <th>Quyền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of dsRolePages">
+                  <td>{{item.Name}}</td>
+                  <td>{{item.RouterPath}}</td>
+                  <td>
+                    <md-checkbox [(ngModel)]="item.HasRight"></md-checkbox>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </md-card-content>
+        </md-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<template #loaderTemplate>
+  <div style="text-align:center">
+    <div *ngIf="loaderType == 0">
+      <md-progress-circle color="primary" mode="indeterminate">
+      </md-progress-circle>
+    </div>
+    <h4>{{loaderMessage}}</h4>
+  </div>
+</template>

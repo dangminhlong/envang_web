@@ -1,0 +1,319 @@
+﻿// Import theming functions
+@import '~@angular/material/core/theming/theming';
+// Import your custom theme
+@import 'src/app-theme.scss';
+
+$divider-color: #BDBDBD;
+
+body{
+  
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', 'Calibri', 'Roboto';
+  background-image:url('assets/images/plane.jpg');
+  background-repeat:no-repeat;
+  background-size: 100%;
+  background-color: #c9cdd9;
+  padding:0;
+  margin: 0;
+}
+
+.tr{
+  text-align: right;
+}
+.cp{
+  cursor:pointer
+}
+.pd10{
+  padding: 10px;
+}
+.pd20 {
+  padding: 20px;
+}
+.fs12{
+  font-size:12px;
+}
+
+.table{
+  width: 100%;
+}
+.table tr td, .table tr th{
+  padding: 10px;
+  text-align: left;
+}
+.table tr.selected{
+  background-color: mat-color($app-accent);
+}
+.table-hover tbody tr:hover {
+  background: #ccc;
+}
+
+.table-bordered {
+  border: 1px solid #aaa;
+  border-collapse: collapse;
+}
+
+.table-bordered tr td {
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+  border-collapse: collapse;
+}
+
+.top-bar {
+  height: 30px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+
+.slogan {
+  padding-left: 10px;
+}
+
+.account {
+  padding-right: 10px;
+}
+
+.login {
+  padding-right: 10px;
+  border-right: 1px solid $divider-color;
+}
+
+.login:hover {
+  padding-left:10px;
+  border-left: 1px solid $divider-color;
+  font-weight: bold;
+  color: mat-color($app-accent);
+}
+
+.register {
+  margin-left: 10px;
+}
+.banner-bar{
+  height: 70px;
+  margin-bottom: 10px;
+}
+
+.nav-bar{
+  height: 40px;
+  line-height: 40px;
+  background: mat-color($app-accent, A700);
+  margin-bottom: 20px;
+}
+
+.nav-bar > a {
+  padding: 0 10px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.nav-bar a{
+  text-decoration: none;
+  color: #fff;
+  text-transform: none;
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+.nav-bar a:hover{
+  cursor: pointer;
+  background-color: mat-color($app-accent, A200);
+}
+
+.nav-bar a.active{
+  background-color: mat-color($app-accent, A400);
+}
+
+.ev-manage{
+  padding: 5px;
+  line-height: 14px;
+}
+
+.ev-manage a{
+  text-decoration: none;
+  cursor: pointer;
+  color: mat-color($app-accent, A700);
+  font-weight: bold;
+}
+
+
+.card-extra{
+  background-color: mat-color($app-primary, 100);
+}
+.label-inline{
+  font-weight: bold;
+}
+.label-inline-2{
+  padding-right: 25px;
+}
+.round-trip-radio{
+  margin: 5px;
+}
+
+.round-trip-radio .mat-radio-label-content{
+  color: mat-color($app-primary, 600);
+}
+
+.admin_header{
+  color: #fff;
+  text-transform: none;
+}
+.vung-ctn{
+  margin-bottom: 15px;
+}
+.vung-header{
+  font-weight: bold;
+  font-size: 16px; 
+  color: mat-color($app-primary, 600);
+  margin-bottom: 10px;
+  padding: 5px;
+}
+.diem-ctn{
+  font-weight: bold;
+  padding: 5px;
+}
+.vung-content .selected
+{
+  background-color: mat-color($app-accent, A100);
+}
+.md-card-vung{
+  height: calc(100vh - 329px);
+  overflow: auto;
+}
+.error{
+  color: mat-color($app-warn);
+}
+.success{
+  color: mat-color($app-primary);
+}
+.input-group{
+  margin-top:10px;
+}
+.input-group label{
+  opacity: 0.5;
+  display: block;
+}
+.fileselected div{
+  border: 2px solid red;
+}
+.fa{
+  color: mat-color($app-accent, A700);
+  padding:10px;
+}
+.fa:hover{
+  background-color: mat-color($app-primary, 100);
+}
+.fa.selected{
+  background-color: mat-color($app-primary, 200);
+}
+.responsive-img{
+  width: 100%;
+  height: auto;
+}
+.article-title{
+  color: mat-color($app-primary, 900);
+  padding: 5px 0;
+  font-weight: bold;
+}
+.article-title a{
+  text-decoration: none;
+}
+.article-date{
+  opacity: 0.5;
+  font-size: 12px;
+}
+
+.hotline{
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffcc00;
+}
+.main-wrap{
+  height: 100vh;
+  overflow: auto;
+}
+
+.home-booking{
+  width:500px;
+}
+.search-booking{
+  background-color: #fff;
+  padding: 0 20px;
+}
+.takeoff_place{
+  border-radius: 5px;
+  padding: 3px;
+  border: 1px solid mat-color($app-primary, 700);
+}
+.takeoff_place input{
+  border: 0 !important;
+  padding-left:20px;
+}
+.takeoff{
+  display: none;
+  position: absolute;
+  margin: 10px 0 0 -2px;
+  z-index: 1000;
+  width:600px;
+}
+.datepicker{
+  padding:3px;
+  border-radius:5px;
+  background-color: #fff;
+  width:100px;
+}
+.date-picker-ctn{
+  border-radius: 5px;
+  border: 1px solid mat-color($app-primary, 700);
+}
+.datepicker input{
+  border: 0 !important;
+  width:80px;
+}
+.datepicker__calendar{
+  margin-top: 10px;
+}
+.booking-step{
+  margin-top:10px;
+}
+.booking-step .active{
+  color: mat-color($app-accent, A700);
+}
+.booking-result{
+  margin-top:10px;
+}
+.flight-item{
+  border-radius: 5px;
+  border: 1px solid mat-color($app-accent, A700);
+  padding: 5px;
+  margin-bottom: 5px;
+}
+.airline{
+  max-width: 30px;
+}
+.flight-item-details{
+  border-top: 1px solid mat-color($app-accent, A400);
+  padding: 5px 20px;
+}
+.flight-item-details .detail-header{
+  font-weight: bold;
+  text-align: center;
+}
+.flight-item-details .detail-item{
+  padding: 5px;
+  text-align: center;
+}
+.price{
+  color: mat-color($app-primary, A700);
+}
+.customer-item{
+  padding: 10px;
+  border: 1px solid $divider-color;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.customer-type{
+  padding-bottom: 10px;
+}
+.info-legend{
+  border-top: 1px solid $divider-color;
+  border-bottom: 1px solid $divider-color;
+  padding: 5px 0;
+}

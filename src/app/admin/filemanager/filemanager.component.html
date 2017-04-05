@@ -1,0 +1,113 @@
+<div style="min-width: 900px; height: calc(100vh - 100px)">
+<md-toolbar color="primary">    
+    <span>Quản lý file</span>
+    <span fxFlex></span>
+    <button md-icon-button (click)="closeDialog()"><md-icon>clear</md-icon></button>
+</md-toolbar>
+<div fxLayout="row" fxLayoutGap="20px" style="height: calc(100% - 50px)">
+    <md-card fxFlex="20">
+        <md-card-subtitle>
+            <span>Thư mục</span>                
+        </md-card-subtitle>
+        <md-card-content>
+            <div fxLayout="row">
+                <div fxLayout="column">
+                <button md-button *ngIf="selectedFolder.RelativePath.length" (click)="goToUpperFolder()"><md-icon>reply</md-icon> {{selectedFolder.Name}}</button>
+                <div *ngFor="let item of dsFolder">
+                    <button md-button (click)="selectFolder(item)"><md-icon>folder</md-icon> {{item.Name}}</button>
+                </div>
+                </div>
+            </div>
+        </md-card-content>
+        <md-card-footer>
+            <button color="accent" md-icon-button (click)="showCreateFolderForm(createFolderFormTemplate)"><md-icon>add</md-icon></button>
+            <button color="warn" md-icon-button (click)="deleteFolder()"><md-icon>clear</md-icon></button>    
+        </md-card-footer>
+    </md-card>
+    <md-card fxFlex="80">
+        <md-card-subtitle>
+            <div fxLayout="row" fxLayoutGap="20px">
+            <span>File</span>
+            <span fxFlex></span>
+            <button color="primary" md-raised-button (click)="choseSelectedFileAndClose()"><md-icon>done</md-icon> Chọn file</button>
+            <button color="accent" md-raised-button (click)="showUploadForm(uploadFormTemplate)"><md-icon>file_upload</md-icon> Tải File</button>
+            <button color="warn" md-raised-button (click)="deleteFile()"><md-icon>clear</md-icon> Xóa File</button>
+            </div>
+        </md-card-subtitle>
+        <md-card-content>
+            
+            <div fxLayout="row" fxLayoutGap="20px">
+                <div [class.fileselected]="selectedFile.RelativePath == item.RelativePath" fxFlex fxLayout fxLayoutAlign="center" *ngFor="let item of dsFile" style="border:1px solid #eee; width:100px; height: 100px" >
+                    <div (click)="selectFile(item)" (dblclick)="selectFileAndClose(item)"
+                        *ngIf="item.Name.endsWith('.jpg')">
+                        <img title="{{item.Name}}" src="{{apiUrl + '/' + item.RelativePath}}" height="100px" />
+                    </div>
+                    <div (click)="selectFile(item)" (dblclick)="selectFileAndClose(item)"
+                        *ngIf="!item.Name.endsWith('.jpg')">
+                        <img title="{{item.Name}}" src="{{apiUrl + '/userfiles/images/noimage.jpg'}}" height="100px"/>
+                    </div>                
+                </div>
+            </div>
+        </md-card-content>
+        <md-card-footer>
+            <div fxLayout>
+                <md-input-container>
+                    <input mdInput [(ngModel)]="imgWidth" placeholder="Chiều rộng">
+                </md-input-container>
+                <md-input-container>
+                    <input mdInput [(ngModel)]="imgHeight" placeholder="Chiều cao">
+                </md-input-container>
+            </div>
+            
+        </md-card-footer>
+    </md-card>
+</div>
+
+<template #uploadFormTemplate>
+  <section style="width:800px">
+    <h2 md-dialog-title>
+      <span>Upload file mới</span>
+    </h2>
+    <md-dialog-content>
+        <input type="file" (change)="onChangeFile($event)">
+    </md-dialog-content>
+    <md-dialog-actions>
+      <button md-raised-button color="accent" (click)="uploadFile()"><md-icon>file_upload</md-icon> Upload</button>
+      <span fxFlex></span>
+      <button md-mini-fab (click)="close()"><md-icon>clear</md-icon></button>
+    </md-dialog-actions>
+    <md-card *ngIf="saveStatus>=0">
+      <div *ngIf="saveStatus==1" class="alert alert-success">{{saveStatusMessage}}</div>
+      <div *ngIf="saveStatus==2" class="alert alert-danger">{{saveStatusMessage}}</div>
+      <div *ngIf="saveStatus==0" style="position:relative">
+        <md-progress-circle color="primary" mode="indeterminate">
+        </md-progress-circle>
+      </div>
+    </md-card>
+  </section>
+</template>
+
+<template #createFolderFormTemplate>
+  <section style="width:800px">
+      <h2 md-dialog-title>Tạo thư mục mới</h2>
+    <md-dialog-content>
+        <md-input-container>
+            <input mdInput type="text" placeholder="Nhập tên thư mục" [(ngModel)]="folderName">
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <button md-raised-button color="accent" (click)="createFolder()"><md-icon>add</md-icon> Tạo </button>
+      <span fxFlex></span>
+      <button md-mini-fab (click)="close()"><md-icon>clear</md-icon></button>
+    </md-dialog-actions>
+    <md-card *ngIf="saveStatus>=0">
+      <div *ngIf="saveStatus==1" class="alert alert-success">{{saveStatusMessage}}</div>
+      <div *ngIf="saveStatus==2" class="alert alert-danger">{{saveStatusMessage}}</div>
+      <div *ngIf="saveStatus==0" style="position:relative">
+        <md-progress-circle color="primary" mode="indeterminate">
+        </md-progress-circle>
+      </div>
+    </md-card>
+  </section>
+</template>
+</div>

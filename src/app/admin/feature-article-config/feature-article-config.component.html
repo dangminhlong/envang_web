@@ -1,0 +1,108 @@
+<div class="section">
+  <md-toolbar color="primary">
+    <span class="admin_header">Quản lý cấu hình bài viết đặc trưng</span>
+    <span fxFlex></span>
+    <button md-raised-button color="accent" (click)="showAddNewForm(addEditTemplate)"><md-icon>create</md-icon> Thêm mới</button>
+  </md-toolbar>
+  <md-card>
+    <md-card-content>
+      <div fxLayout="column">
+      <md-select [(ngModel)]="group" (change)="getDanhSach()">
+        <md-option [value]="0">Chọn nhóm cấu hình</md-option>
+        <md-option *ngFor="let item of dsGroup" [value]="item.Id">{{item.Name}}</md-option>
+      </md-select>
+      </div>
+    </md-card-content>
+  </md-card>
+  <md-card>
+    <md-card-content>
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr class="header">
+            <th>Tên</th>
+            <th>Tên nhóm</th>
+            <th>Tên bài viết</th>
+            <th>Thứ tự hiển thị</th>
+            <th>Icon</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dsItem">
+            <td>{{item.Name}}</td>
+            <td>{{item.GroupName}}</td>
+            <td>{{item.ArticleName}}</td>
+            <td>{{item.Order}}</td>
+            <td>{{item.Style}}</td>
+            <td>
+              <button title="Chỉnh sửa" color="accent" md-icon-button style="margin: 0 5px" (click)="showEditForm(addEditTemplate, item)"><md-icon>edit</md-icon></button>
+              <button title="Xóa" color="warn" md-icon-button style="margin: 0 5px" (click)="showDeleteForm(confirmTemplate, item)"><md-icon>clear</md-icon></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-card-content>
+  </md-card>
+</div>
+
+<template #addEditTemplate>
+  <section style="width:800px">
+    <md-toolbar color="primary">
+      <span>Thông tin cấu hình</span>
+    </md-toolbar>
+    <md-card>
+      <md-card-content>
+        <div fxLayout="column" fxLayoutAlign="stretch">
+          <md-input-container>
+            <input mdInput [(ngModel)]="item.Name" placeholder="Tên (*)" />
+          </md-input-container>
+          <md-select [(ngModel)]="item.GroupId" placeholder="Chọn nhóm">
+            <md-option [value]="0">Chọn nhóm</md-option>
+            <md-option *ngFor="let item of dsGroup" [value]="item.Id">{{item.Name}}</md-option>
+          </md-select>
+          <md-input-container>
+            <input mdInput [(ngModel)]="item.Order" placeholder="Thứ tự hiển thị (*)" />
+          </md-input-container>
+          <md-input-container>
+            <input mdInput [(ngModel)]="item.Style" placeholder="Material Icon" />
+          </md-input-container>
+          <button md-raised-button color="accent" (click)="selectArticle()"><md-icon></md-icon> Chọn bài viết</button>
+          <div style="text-align: center">{{articleSelected.Name}}</div>
+        </div>
+      </md-card-content>
+    </md-card>
+    <md-toolbar>
+      <button md-raised-button color="accent" [disabled]="isSaveInvalid" (click)="save()"><md-icon>save</md-icon> Lưu</button>
+      <span fxFlex></span>
+      <button md-mini-fab (click)="close()"><md-icon>clear</md-icon></button>
+    </md-toolbar>
+    <md-toolbar *ngIf="saveStatus>=0">
+      <div *ngIf="saveStatus==1" class="alert alert-success">{{saveStatusMessage}}</div>
+      <div *ngIf="saveStatus==2" class="alert alert-danger">{{saveStatusMessage}}</div>
+      <div *ngIf="saveStatus==0" style="position:relative">
+        <md-progress-circle color="primary" mode="indeterminate">
+        </md-progress-circle>
+      </div>
+    </md-toolbar>
+  </section>
+</template>
+
+<template #confirmTemplate>
+  <div style="text-align:center">
+    <h4>{{confirmMessage}}</h4>
+    <div>
+      <button *ngIf="confirmType==1" md-raised-button color="warn" (click)="remove()">Xác nhận</button>
+      <button md-button (click)="close()">Đóng</button>
+    </div>
+  </div>
+</template>
+
+<template #loaderTemplate>
+  <div style="text-align:center">
+    <div *ngIf="loaderType == 0">
+      <md-progress-circle color="primary" mode="indeterminate">
+      </md-progress-circle>
+    </div>
+    <h4>{{loaderMessage}}</h4>
+  </div>
+</template>

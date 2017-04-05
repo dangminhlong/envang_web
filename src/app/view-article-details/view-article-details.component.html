@@ -1,0 +1,12 @@
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start">
+  <md-card fxFlex="70">
+    <md-card-content>
+      <div class="article-title">{{item.Name}}</div>
+      <div class="article-date">Ngày đăng: {{item.CreatedOn | date: "dd/MM/yyyy"}}</div>
+      <div class="article-content" [innerHTML]="item.Content"></div>
+    </md-card-content>
+  </md-card>
+  <md-card fxFlex="30">
+    <div [innerHTML]="auth.HotlineFull"></div>
+  </md-card>
+</div>

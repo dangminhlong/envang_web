@@ -1,0 +1,38 @@
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start">
+  <div fxFlex="70" fxLayout="column" fxLayoutGap="20px">
+    <md-card *ngIf="latestArticle.Id">
+      <md-card-subtitle>Tin mới nhất</md-card-subtitle>
+      <md-card-content>
+        <div class="newest-article">
+          <img class="responsive-img" src="{{ apiUrl + '/' + latestArticle.ImageUrl}}" />
+          <div class="article-title"><a [routerLink]="[latestArticle.FriendlyName, latestArticle.Id]">{{latestArticle.Name}}</a></div>
+          <div class="article-date">Ngày đăng: {{latestArticle.CreatedOn | date: "dd/MM/yyyy"}}</div>
+          <div class="article-desc" [innerHTML]="latestArticle.Description"></div>
+        </div>
+      </md-card-content>
+    </md-card>
+    <md-card>
+      <md-card-subtitle>Tin đã đưa</md-card-subtitle>
+      <md-card-content>
+        <div fxLayout="column" fxLayoutGap="20px" class="list-article">
+          <div *ngFor="let item of articleList | paginate: { totalItems: totalItems, itemsPerPage: pageSize, currentPage: page }" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start">
+            <img fxFlex="33" class="responsive-img" src="{{ apiUrl + '/' + item.ImageUrl}}" />
+            <div fxFlex="67">
+              <div class="article-title"><a [routerLink]="[item.FriendlyName, item.Id]">{{item.Name}}</a></div>
+              <div class="article-date">Ngày đăng: {{item.CreatedOn | date: "dd/MM/yyyy"}}</div>
+              <div class="article-desc" [innerHTML]="item.Description"></div>
+            </div>
+          </div>
+          
+          <pagination-controls (pageChange)="loadPage($event)"
+                autoHide="true"
+                previousLabel="Trước"
+                nextLabel="Sau"></pagination-controls>
+        </div>
+      </md-card-content>
+    </md-card>
+  </div>
+  <md-card fxFlex="30">
+    <div [innerHTML]="auth.HotlineFull"></div>
+  </md-card>
+</div>

@@ -1,0 +1,46 @@
+<div class="section">
+  <md-toolbar color="primary">
+    <span class="admin_header">Quản lý thông tin website</span>
+    <span fxFlex></span>
+    <button md-raised-button color="accent" (click)="save()"><md-icon>save</md-icon> Lưu</button>
+  </md-toolbar>
+  <md-card>
+    <div fxLayout="column" fxLayoutAlign="stretch">
+      <div class="input-group">
+        <label>Thông tin hotline hỗ trợ trên banner</label>
+        <textarea htmlEditor [(ngModel)]="item.HotlineTop" height="100"></textarea>
+      </div>
+      <div class="input-group">
+        <label>Thông tin hotline hỗ trợ đầy đủ</label>
+        <textarea htmlEditor [(ngModel)]="item.HotlineFull" height="100"></textarea>
+      </div>
+      <md-input-container>
+        <input mdInput [(ngModel)]="item.Email" placeholder="Email">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput [(ngModel)]="item.MobileNumber" placeholder="Điện thoại">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput [(ngModel)]="item.Country" placeholder="Mã quốc gia">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput [(ngModel)]="item.Province" placeholder="Mã tỉnh">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput [(ngModel)]="item.City" placeholder="Thành phố">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput [(ngModel)]="item.Address" placeholder="Địa chỉ">
+      </md-input-container>
+    </div>
+  </md-card>
+</div>
+<template #loaderTemplate>
+  <div style="text-align:center; width:300px">
+    <div *ngIf="loaderType == 0">
+      <md-progress-circle color="primary" mode="indeterminate">
+      </md-progress-circle>
+    </div>
+    <h4>{{loaderMessage}}</h4>
+  </div>
+</template>

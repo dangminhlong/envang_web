@@ -1,0 +1,75 @@
+<div class="section">
+  <md-toolbar color="primary">
+    <span class="admin_header">Quản lý tuyến bay</span>
+    <span fxFlex></span>
+    <button md-raised-button color="accent" (click)="save()"><md-icon>save</md-icon> Lưu</button>
+  </md-toolbar>
+  <div fxLayout="row" fxLayoutGap="20px" style="margin-top:10px">
+    <div fxFlex="30">
+      <md-card class="md-card-vung">
+        <md-card-title>Điểm đi</md-card-title>
+        <md-card-content>
+          <div class="vung-ctn" *ngFor="let vung of dsVung">
+            <div class="vung-header">{{vung.RegionName}}</div>
+            <div class="vung-content">
+              <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList" [class.selected]="diemChon == diem" (click)="selectLocation(diem)">
+                {{diem.Name}}
+              </div>
+            </div>
+          </div>
+        </md-card-content>
+      </md-card>
+    </div>
+    <div fxFlex="70">
+      <md-card class="md-card-vung">
+        <md-card-title>Điểm đến</md-card-title>
+        <md-card-content>
+          <div fxLayout="row" fxLayoutGap="50px">
+            <div *ngIf="dsVungDest1.length">
+              <div class="vung-ctn" *ngFor="let vung of dsVungDest1">
+                <div class="vung-header">{{vung.RegionName}}</div>
+                <div class="vung-content">
+                  <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList">
+                    <md-checkbox [(ngModel)]="diem.Routed"></md-checkbox>
+                    <span>{{diem.Name}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="dsVungDest2.length">
+              <div class="vung-ctn" *ngFor="let vung of dsVungDest2">
+                <div class="vung-header">{{vung.RegionName}}</div>
+                <div class="vung-content">
+                  <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList">
+                    <md-checkbox [(ngModel)]="diem.Routed"></md-checkbox>
+                    <span>{{diem.Name}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="dsVungDest3.length">
+              <div class="vung-ctn" *ngFor="let vung of dsVungDest3">
+                <div class="vung-header">{{vung.RegionName}}</div>
+                <div class="vung-content">
+                  <div class="diem-ctn cp" *ngFor="let diem of vung.LocationList">
+                    <md-checkbox [(ngModel)]="diem.Routed"></md-checkbox>
+                    <span>{{diem.Name}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </md-card-content>
+      </md-card>
+    </div>
+  </div>
+</div>
+<template #loaderTemplate>
+  <div style="text-align:center; width: 300px">
+    <div *ngIf="loaderType == 0">
+      <md-progress-circle color="primary" mode="indeterminate">
+      </md-progress-circle>
+    </div>
+    <h4 [class.error]="loaderType==2" [class.success]="loaderType==1">{{loaderMessage}}</h4>
+  </div>
+</template>

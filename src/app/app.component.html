@@ -1,3 +1,52 @@
-<h1>
-  {{title}}
-</h1>
+﻿<div class="ev-container">
+  <div class="top-bar" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+    <div fxFlex class="slogan"><span>Slogan của trang web</span></div>
+    <div fxFlex></div>
+    <div fxFlex fxLayout="row" fxLayoutAlign="end center" class="account">
+      <div *ngIf="!auth.IsLoggedIn">
+        <a class="login cp" (click)="showLoginForm()">Đăng nhập</a>
+        <a class="register cp" (click)="showRegisterForm()" >Đăng ký</a>
+      </div>
+      <div *ngIf="auth.IsLoggedIn">
+        <button md-button [mdMenuTriggerFor]="menuAccount">{{auth.UserInfo.FullName}} <md-icon>input</md-icon></button>
+        <md-menu #menuAccount="mdMenu" [overlapTrigger]="false" x-position="before" y-position="below">
+          <button md-menu-item (click)="logOut()">Đăng xuất</button>
+          <button md-menu-item (click)="accountInfo()">Thông tin tài khoản</button>
+        </md-menu>
+      </div>
+    </div>
+  </div>
+  <div class="header-wrap">
+    <div fxLayout fxLayoutAlign="start center" class="banner-bar">
+      <img src="../assets/images/eva-logo.png" />
+      <span fxFlex></span>
+      <div class="hotline" [innerHTML]="auth.HotlineTop"></div>
+    </div>
+    <div fxLayout class="nav-bar">
+      <a routerLink="home" routerLinkActive="active">Trang chủ</a>
+      <a routerLink="tim-chuyen-bay" routerLinkActive="active">Vé rẻ</a>
+      <a routerLink="tin-tuc" routerLinkActive="active">Tin khuyến mại</a>
+      <a *ngFor="let item of dsFAC" [routerLink]="['fa', item.FriendlyName, item.Id]" routerLinkActive="active">{{item.Name}}</a>
+      <span fxFlex></span>
+      <div style="position: relative">
+        <span *ngIf="auth.IsLoggedIn && auth.UserInfo && auth.UserInfo.Pages.length"><a fxLayout="row" (click)="showManageMenu=!showManageMenu"><span fxLayout><i fxFlexAlign="center" class="material-icons" >list</i> Quản lý</span></a></span>
+        <div *ngIf="showManageMenu" style="width:100vw; position: absolute; right: 0; z-index: 2001;" fxLayout fxLayoutGap="20px">
+          <div fxFlex *ngFor="let page of auth.UserInfo.Pages">
+            <md-card>
+              <md-card-title>
+                {{page.Group}}
+              </md-card-title>
+              <md-card-content>
+                <div class="ev-manage" *ngFor="let r of page.Routers">
+                  <a (click)="goToRoute(r.RouterPath)">{{r.Name}}</a>
+                </div>
+              </md-card-content>
+            </md-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>
+<router-outlet name="ev"></router-outlet>

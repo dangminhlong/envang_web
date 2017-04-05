@@ -1,0 +1,67 @@
+<div class="section">
+  <md-toolbar color="primary">
+    <span class="admin_header">Quản lý loại bài viết</span>
+    <span fxFlex></span>
+    <button md-raised-button color="accent" (click)="showAddNewForm(addEditTemplate)"><md-icon>create</md-icon> Thêm mới</button>
+  </md-toolbar>
+  <md-card>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr class="header">
+          <th style="width:40px">Id</th>
+          <th>Tên</th>
+          <th style="width:150px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of dsItem">
+          <td>{{item.Id}}</td>
+          <td>{{item.Name}}</td>
+          <td>
+            <button title="Chỉnh sửa" color="accent" md-icon-button style="margin: 0 5px" (click)="showEditForm(addEditTemplate, item)"><md-icon>edit</md-icon></button>
+            <button title="Xóa" color="warn" md-icon-button style="margin: 0 5px" (click)="showDeleteForm(confirmTemplate, item)"><md-icon>clear</md-icon></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-card>
+</div>
+<template #addEditTemplate>
+  <section style="width:800px">
+    <md-toolbar color="primary">
+      <span>Thông tin loại bài viết</span>
+    </md-toolbar>
+    <md-card>
+      <md-card-content>
+        <div fxLayout="column" fxLayoutAlign="stretch">
+          <md-input-container>
+            <input mdInput [(ngModel)]="item.Name" placeholder="Tên (*)" />
+          </md-input-container>
+        </div>
+      </md-card-content>
+    </md-card>
+    <md-toolbar>
+      <button md-raised-button color="accent" [disabled]="isSaveInvalid" (click)="save()"><md-icon>save</md-icon> Lưu</button>
+      <span fxFlex></span>
+      <button md-raised-button color="primary" (click)="close()"><md-icon>close</md-icon> Đóng</button>
+    </md-toolbar>
+  </section>
+</template>
+<template #confirmTemplate>
+  <div style="text-align:center">
+    <h4>{{confirmMessage}}</h4>
+    <div>
+      <button *ngIf="confirmType==1" md-raised-button color="warn" (click)="remove()">Xác nhận</button>
+      <button md-button (click)="close()">Đóng</button>
+    </div>
+  </div>
+</template>
+<template #loaderTemplate>
+  <div style="text-align:center;width:300px">
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <md-progress-circle color="primary" mode="indeterminate">
+      </md-progress-circle>
+    </div>
+    <h4>{{loaderMessage}}</h4>
+  </div>
+</template>

@@ -1,0 +1,38 @@
+<div style="min-width: 900px; height: calc(100vh - 100px)">
+  <md-toolbar color="primary">
+    <span>Chọn bài viết</span>
+    <span fxFlex></span>
+    <button md-raised-button color="accent" (click)="selectArticle()"><md-icon>done</md-icon> Chọn</button>
+    <button md-icon-button color="warn" (click)="closeDialog()"><md-icon>clear</md-icon></button>
+  </md-toolbar>
+  <md-card>
+    <md-card-content>
+      <section>
+        <div fxLayout="column">
+          <md-select [(ngModel)]="loai" (change)="getDanhSach()">
+            <md-option [value]="0">Chọn loại</md-option>
+            <md-option *ngFor="let item of dsLoai" [value]="item.Id">{{item.Name}}</md-option>
+          </md-select>
+        </div>
+      </section>
+      <section>
+        <table class="table table-hover table-bordered">
+          <thead>
+            <tr class="header">
+              <th>Tên</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of dsItem | paginate: { totalItems: totalItems, itemsPerPage: pageSize, currentPage: page }" [class.selected]="selectedItem == item" (click)="selectedItem = item">
+              <td>{{item.Name}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="loadPage($event)"
+                autoHide="true"
+                previousLabel="Trước"
+                nextLabel="Sau"></pagination-controls>
+      </section>
+    </md-card-content>
+  </md-card>
+</div>
