@@ -16,6 +16,15 @@ export class FlighBookingService {
         return this.http.post(Config.apiUrl + '/api/flightapi/bookflight', JSON.stringify(data), options).map(resp => resp.json());
     }
 
+    findFlights(data) {
+        let token = localStorage.getItem("evtoken");
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(Config.apiUrl + '/api/flightapi/FindFlights', JSON.stringify(data), options).map(resp => resp.json());
+    }
+
     findflightVJ(data) {
         let token = localStorage.getItem("evtoken");
         let headers = new Headers();

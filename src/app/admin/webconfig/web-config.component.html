@@ -1,4 +1,4 @@
-<div class="section">
+﻿<div class="section">
   <md-toolbar color="primary">
     <span class="admin_header">Quản lý thông tin website</span>
     <span fxFlex></span>
@@ -38,8 +38,7 @@
 <template #loaderTemplate>
   <div style="text-align:center; width:300px">
     <div *ngIf="loaderType == 0">
-      <md-progress-circle color="primary" mode="indeterminate">
-      </md-progress-circle>
+      <md-spinner mode="indeterminate"></md-spinner>
     </div>
     <h4>{{loaderMessage}}</h4>
   </div>

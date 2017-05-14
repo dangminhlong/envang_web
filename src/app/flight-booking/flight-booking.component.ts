@@ -71,18 +71,18 @@ export class FlightBookingComponent implements OnInit {
 
     step = 1;
     searching = false;
-    searchResultAll: any[] = [];
+
     searchResult: any[] = [];
     searchResultReturn: any[] = [];
-    searchVJResult: boolean;
-    searchVNResult: boolean;
-    searchJSResult: boolean;
 
     searchResultFilter: any[] = [];
     searchResultReturnFilter: any[] = [];
 
     orderType: any = 1;
     orderTypeReturn: any = 1;
+
+    priceType: any = 1;
+    priceTypeReturn: any = 1;
 
     chieuDi: any = {};
     chieuVe: any = {};
@@ -92,11 +92,11 @@ export class FlightBookingComponent implements OnInit {
 
     contact: any = {};
 
-    payment:any = 0;
+    payment: any = 0;
 
     genderList: any[] = [{ Value: "1", Text: "Nam" }, { Value: "2", Text: "Nữ" }];
 
-    AirlineList: any[] = [{ Airline: "VietnamAirlines", selected: true }, { Airline: "VietJetAir", selected: true }, { Airline: "JetStar", selected: true }];
+    AirlineList: any[] = [{ Airline: "VietnamAirlines", Code: "VNA", selected: true }, { Airline: "VietJetAir", Code: "VIETJET", selected: true }, { Airline: "JetStar", Code:"JETSTAR", selected: true }];
 
     constructor(private service: FlighBookingService,
         private flightRouteService: FlightRouteService,
@@ -129,14 +129,14 @@ export class FlightBookingComponent implements OnInit {
         if (this.diemDi.Name)
             return this.diemDi.Name + ' (' + this.diemDi.Code + ')';
         else
-            return '';
+            return 'Chọn nơi đi';
     }
 
     get tenDiemDen() {
         if (this.diemDen.Name)
             return this.diemDen.Name + ' (' + this.diemDen.Code + ')';
         else
-            return '';
+            return 'Chọn nơi đến';
     }
 
     showTakeOffPlace() {
@@ -269,191 +269,27 @@ export class FlightBookingComponent implements OnInit {
         this.searchData.idDiemDen = idDiemDen;
         this.searchData.departDate = this.normalizeDate(this.ngayDi);
         this.searchData.returnDate = this.normalizeDate(this.ngayVe);
+
         this.flightDataChoosen = {
             RoundTrip: this.searchData.roundTrip,
             FromPlaceCode: this.searchData.fromPlace,
             ToPlaceCode: this.searchData.toPlace,
-            FromPlaceId: idDiemDi,
-            ToPlaceId: idDiemDen,
             DepartDate: this.searchData.departDate,
             ReturnDate: this.searchData.returnDate,
             Adult: [],
             Child: [],
             Infant: []
         };
+
         this.searching = true;
-        this.searchResultAll = [];
-        this.searchResult = [];
-        this.searchResultReturn = [];
-        this.searchResultFilter = [];
-
-        this.searchResult2 = [];
-
-        Promise.all([
-            this.searchFlightVJ(this.searchData),
-            this.searchFlightJS(this.searchData),
-            this.searchFlightVN(this.searchData)])
-            .then(resp => {
-                this.orderSearchResult();
-                this.orderSearchResultReturn();
-                setTimeout(_ => {
-                    this.searching = false;
-                }, 1000);
-
-            });
-    }
-
-    searchResult2: any[] = [];
-    searchFlightVJ(searchData) {
-        let promise = new Promise((resolve, reject) => {
-            this.service.findflightVJ(this.searchData).subscribe(resp => {
-                if (resp.success == true) {
-                    let data = resp.data.value;
-                    for (let i = 0; i < data.length; i++) {
-                        let flight = data[i];
-                        let item = {
-                            Airline: flight.Airline,
-                            Brand: flight.AirlineCode,
-                            FlightNumber: flight.FlightNumber,
-                            FromPlace: flight.FromPlace,
-                            ToPlace: flight.ToPlace,
-                            DepartTime: flight.DepartTime,
-                            LandingTime: flight.LandingTime,
-                            FlightDuration: flight.FlightDuration,
-                            Stops: flight.Stops,
-                            TicketPrice: flight.Price,
-                            TotalPrice: flight.TotalPrice,
-                            FromPlaceId: flight.FromPlaceId,
-                            ToPlaceId: flight.ToPlaceId,
-                            TicketType: flight.TicketType,
-                            FareBasis: flight.FareBasis,
-                            TicketPriceDetails: flight.TicketPriceDetails
-                        };
-                        this.searchResultAll.push(item);
-                        if (flight.FromPlaceId == this.searchData.idDiemDi) {
-                            this.searchResult.push(item);
-                            this.searchResultFilter.push(item);
-                        }
-                        else {
-                            this.searchResultReturn.push(item);
-                            this.searchResultReturnFilter.push(item);
-                        }
-                    }
-                    this.orderSearchResult();
-                    this.orderSearchResultReturn();
-                    this.searchResult2 = [this.searchResult2, ...data];
-                }
-                resolve();
-                console.log('search VJ completed');
-            },
-                err => {
-                    this.searchVJResult = false;
-                    reject();
-                    console.log('search VJ error');
-                });
-        });
-        return promise;
-    }
-
-    searchFlightJS(searchData) {
-        let promise = new Promise((resolve, reject) => {
-            this.service.findflightJS(this.searchData).subscribe(resp => {
-                if (resp.success == true) {
-                    let data = resp.data.value;
-                    for (let i = 0; i < data.length; i++) {
-                        let flight = data[i];
-                        let item = {
-                            Airline: flight.Airline,
-                            Brand: flight.AirlineCode,
-                            FlightNumber: flight.FlightNumber,
-                            FromPlace: flight.FromPlace,
-                            ToPlace: flight.ToPlace,
-                            DepartTime: flight.DepartTime,
-                            LandingTime: flight.LandingTime,
-                            FlightDuration: flight.FlightDuration,
-                            Stops: flight.Stops,
-                            TicketPrice: flight.Price,
-                            TotalPrice: flight.TotalPrice,
-                            FromPlaceId: flight.FromPlaceId,
-                            ToPlaceId: flight.ToPlaceId,
-                            TicketType: flight.TicketType,
-                            FareBasis: flight.FareBasis,
-                            TicketPriceDetails: flight.TicketPriceDetails
-                        };
-                        this.searchResultAll.push(item);
-                        if (flight.FromPlaceId == this.searchData.idDiemDi) {
-                            this.searchResult.push(item);
-                            this.searchResultFilter.push(item);
-                        }
-                        else {
-                            this.searchResultReturn.push(item);
-                            this.searchResultReturnFilter.push(item);
-                        }
-                    }
-                    this.orderSearchResult();
-                    this.orderSearchResultReturn();
-                    this.searchResult2 = [this.searchResult2, ...data];
-                }
-                resolve();
-                console.log('search JS completed');
-            },
-                err => {
-                    this.searchVJResult = false;
-                    reject();
-                    console.log('search JS error');
-                });
-        });
-        return promise;
-    }
-
-    searchFlightVN(searchData) {
-        let promise = new Promise((resolve, reject) => {
-            this.service.findflightVN(this.searchData).subscribe(resp => {
-                if (resp.success == true) {
-                    let data = resp.data.value;
-                    for (let i = 0; i < data.length; i++) {
-                        let flight = data[i];
-                        let item = {
-                            Airline: flight.Airline,
-                            Brand: flight.AirlineCode,
-                            FlightNumber: flight.FlightNumber,
-                            FromPlace: flight.FromPlace,
-                            ToPlace: flight.ToPlace,
-                            DepartTime: flight.DepartTime,
-                            LandingTime: flight.LandingTime,
-                            FlightDuration: flight.FlightDuration,
-                            Stops: flight.Stops,
-                            TicketPrice: flight.Price,
-                            TotalPrice: flight.TotalPrice,
-                            FromPlaceId: flight.FromPlaceId,
-                            ToPlaceId: flight.ToPlaceId,
-                            TicketType: flight.TicketType,
-                            FareBasis: flight.FareBasis,
-                            TicketPriceDetails: flight.TicketPriceDetails
-                        };
-                        this.searchResultAll.push(item);
-                        if (flight.FromPlaceId == this.searchData.idDiemDi) {
-                            this.searchResult.push(item);
-                            this.searchResultFilter.push(item);
-                        }
-                        else {
-                            this.searchResultReturn.push(item);
-                            this.searchResultReturnFilter.push(item);
-                        }
-                    }
-                    this.orderSearchResult();
-                    this.orderSearchResultReturn();
-
-                    this.searchResult2 = [this.searchResult2, ...data];
-                }
-                resolve();
-                console.log('search VN completed');
-            },
-                err => {
-                    this.searchVJResult = false;
-                    reject();
-                    console.log('search VN error');
-                });
+        this.service.findFlights(this.searchData).subscribe(resp => {
+            this.searchResult = resp.DepartureList;
+            this.searchResultReturn = resp.ReturnList;
+            this.searchResultFilter = resp.DepartureList;
+            this.searchResultReturnFilter = resp.ReturnList;
+            this.searching = false;
+            this.orderSearchResult();
+            this.orderSearchResultReturn();
         });
     }
 
@@ -462,10 +298,10 @@ export class FlightBookingComponent implements OnInit {
             if (this.orderType == 1)
                 return parseInt(v1.TicketPrice) - parseInt(v2.TicketPrice);
             else if (this.orderType == 2) {
-                return new Date(v1.DepartTime).getTime() - new Date(v2.DepartTime).getTime();
+                return Number(v1.DepartureTime) - Number(v2.DepartureTime);
             }
             else {
-                return new Date(v1.LandingTime).getTime() - new Date(v2.LandingTime).getTime();
+                return Number(v1.ArrivalTime) - Number(v2.ArrivalTime);
             }
         });
     }
@@ -475,10 +311,10 @@ export class FlightBookingComponent implements OnInit {
             if (this.orderTypeReturn == 1)
                 return parseInt(v1.TicketPrice) - parseInt(v2.TicketPrice);
             else if (this.orderTypeReturn == 2) {
-                return new Date(v1.DepartTime).getTime() - new Date(v2.DepartTime).getTime();
+                return Number(v1.DepartureTime) - Number(v2.DepartureTime);
             }
             else {
-                return new Date(v1.LandingTime).getTime() - new Date(v2.LandingTime).getTime();
+                return Number(v1.ArrivalTime) - Number(v2.ArrivalTime);
             }
         });
     }
@@ -531,16 +367,21 @@ export class FlightBookingComponent implements OnInit {
 
     tiepTucKhuHoi() {
         this.getLuggagePrice(this.chieuDi.Brand).then(_ => {
-            if (this.chieuDi.Brand != this.chieuVe.Brand) {
-                this.getReturnLuggagePrice(this.chieuVe.Brand);
-            }
-            else {
-                this.returnLuggagePriceList = this.luggagePriceList;
+            if (this.searchData.roundTrip){
+                if (this.chieuDi.Brand != this.chieuVe.Brand) {
+                    this.getReturnLuggagePrice(this.chieuVe.Brand);
+                }
+                else {
+                    this.returnLuggagePriceList = this.luggagePriceList;
+                }
             }
         });
 
         this.flightDataChoosen.ChieuDi = this.chieuDi;
-        this.flightDataChoosen.ChieuVe = this.chieuVe;
+        if (this.searchData.roundTrip)
+            this.flightDataChoosen.ChieuVe = this.chieuVe;
+        else 
+            this.flightDataChoosen.ChieuVe = null;
         if (this.flightDataChoosen.Adult && !this.flightDataChoosen.Adult.length) {
             for (let i = 0; i < this.searchData.adult; i++) {
                 this.flightDataChoosen.Adult.push({ PassengerType: 0, Title: "", Gender: "0", Baggage: 0, ReturnBaggage: 0 });
@@ -568,7 +409,7 @@ export class FlightBookingComponent implements OnInit {
     }
 
     filterAirline() {
-        let selectedAirlines = this.AirlineList.filter(v => v.selected).map(v => v.Airline);
+        let selectedAirlines = this.AirlineList.filter(v => v.selected).map(v => v.Code);
         this.searchResultFilter = this.searchResult.filter(function (v) {
             return selectedAirlines.indexOf(v.Airline) >= 0;
         });
@@ -577,7 +418,7 @@ export class FlightBookingComponent implements OnInit {
         });
         this.orderSearchResult();
     }
-    choosePaymentMethod(){
+    choosePaymentMethod() {
         if (this.flightDataChoosen.Adult.length == 0 && this.flightDataChoosen.Child.length == 0) {
             this.snackBar.open("Xin vui lòng chọn khách hàng", "", { duration: 1000 });
             return;
@@ -623,7 +464,7 @@ export class FlightBookingComponent implements OnInit {
             let firstName = arNames[arNames.length - 1];
             let lastName = arNames[0];
             let middleName = "";
-            for (let i=1; i < arNames.length - 1; i++)
+            for (let i = 1; i < arNames.length - 1; i++)
                 middleName = middleName + " " + arNames[i];
             v.FirstName = firstName.trim();
             v.LastName = lastName.trim();
@@ -634,7 +475,7 @@ export class FlightBookingComponent implements OnInit {
             let firstName = arNames[arNames.length - 1];
             let lastName = arNames[0];
             let middleName = "";
-            for (let i=1; i < arNames.length - 1; i++)
+            for (let i = 1; i < arNames.length - 1; i++)
                 middleName = middleName + " " + arNames[i];
             v.FirstName = firstName.trim();
             v.LastName = lastName.trim();
@@ -645,7 +486,7 @@ export class FlightBookingComponent implements OnInit {
             let firstName = arNames[arNames.length - 1];
             let lastName = arNames[0];
             let middleName = "";
-            for (let i=1; i < arNames.length - 1; i++)
+            for (let i = 1; i < arNames.length - 1; i++)
                 middleName = middleName + " " + arNames[i];
             v.FirstName = firstName.trim();
             v.LastName = lastName.trim();
@@ -709,12 +550,12 @@ export class FlightBookingComponent implements OnInit {
 
     get TongKhuHoi() {
 
-        if (this.chieuDi.TotalPrice && this.chieuVe.TotalPrice)
-            return parseInt(this.chieuDi.TotalPrice) + parseInt(this.chieuVe.TotalPrice);
-        else if (this.chieuDi.TotalPrice)
-            return parseInt(this.chieuDi.TotalPrice);
-        else if (this.chieuVe.TotalPrice)
-            return parseInt(this.chieuVe.TotalPrice);
+        if (this.chieuDi.TicketPrice && this.chieuVe.TicketPrice)
+            return parseInt(this.chieuDi.TicketPrice) + parseInt(this.chieuVe.TicketPrice);
+        else if (this.chieuDi.TicketPrice)
+            return parseInt(this.chieuDi.TicketPrice);
+        else if (this.chieuVe.TicketPrice)
+            return parseInt(this.chieuVe.TicketPrice);
         else return 0;
     }
 

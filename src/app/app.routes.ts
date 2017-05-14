@@ -26,8 +26,8 @@ export const routes: Routes = [
         component: HomeComponent,
         data: {
             metadata: {
-                title: 'Home Page',
-                description: 'Cool home page'
+                title: 'Én vàng - Đại lý vé máy bay giá rẻ - Rẻ hơn giá hệ thống',
+                description: 'Én vàng - Đại lý vé máy bay giá rẻ - Rẻ hơn giá hệ thống'
             }
         }
     },

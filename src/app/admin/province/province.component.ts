@@ -16,7 +16,7 @@ export class ProvinceComponent implements OnInit {
   loaderMessage: any = "";
   loaderType: any = 0;
 
-  province: any = { Id: 0, Name: "", VietJetAirCode: null, JetStarCode: null };
+  province: any = { Id: 0, Name: "" };
 
   dsProvince: any[] = [];
 
@@ -55,7 +55,7 @@ export class ProvinceComponent implements OnInit {
   }
 
   get isSaveInvalid() {
-    return !this.province.Name.length || !this.province.Code.length;
+    return !this.province.Name.length;
   }
 
   showDeleteForm(content, item) {

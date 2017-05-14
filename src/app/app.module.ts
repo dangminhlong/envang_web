@@ -40,8 +40,8 @@ import 'hammerjs';
         DatepickerModule,
         RouterModule.forRoot(routes, { useHash: true }),
         MetadataModule.forRoot(),
-        MaterialModule.forRoot(),
-        FlexLayoutModule.forRoot()
+        MaterialModule,
+        FlexLayoutModule
     ],
     providers: [AuthService, 
         ViewArticleService, 

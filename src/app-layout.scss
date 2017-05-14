@@ -1,5 +1,5 @@
 ﻿// Import theming functions
-@import '~@angular/material/core/theming/theming';
+@import '~@angular/material/theming';
 // Import your custom theme
 @import 'src/app-theme.scss';
 
@@ -317,3 +317,13 @@ body{
   border-bottom: 1px solid $divider-color;
   padding: 5px 0;
 }
+
+.mat-select-trigger{
+  margin-top:6px;
+}
+
+.searchresults table.searchresults-tbl { width:100%; border: none; border-spacing: 0;border-collapse: collapse }
+.searchresults table.searchresults-tbl td { border-bottom: 1px dashed #ccc; }
+.searchresults-tbl th { background:#333; font-weight:bold; color: #fff; font-size: 14px; padding: 10px 15px 10px 5px; text-align:center !important; }
+.searchresults-tbl td { vertical-align:middle; padding-top:10px; padding-bottom: 10px; }
+.searchresults-tbl tbody tr td:nth-child(2) {text-align: center !important}

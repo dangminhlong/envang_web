@@ -75,14 +75,14 @@ export class HomeComponent implements OnInit {
     if (this.diemDi.Name)
       return this.diemDi.Name + ' (' + this.diemDi.Code + ')';
     else
-      return '';
+      return 'Chọn nơi đi';
   }
 
   get tenDiemDen() {
     if (this.diemDen.Name)
       return this.diemDen.Name + ' (' + this.diemDen.Code + ')';
     else
-      return '';
+      return 'Chọn nơi đến';
   }
 
   showTakeOffPlace() {

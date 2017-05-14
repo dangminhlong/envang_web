@@ -175,58 +175,48 @@
               <md-radio-button class="round-trip-radio" [value]="2">Cất cánh sớm nhất</md-radio-button>
               <md-radio-button class="round-trip-radio" [value]="3">Hạ cánh sớm nhất</md-radio-button>
             </md-radio-group>
+            <span class="label-inline">Xem theo giá</span>
+            <md-radio-group class="round-trip-group" [(ngModel)]="priceType">
+              <md-radio-button class="round-trip-radio" [value]="1">Chưa thuế phí</md-radio-button>
+              <md-radio-button class="round-trip-radio" [value]="2">Có thuế phí</md-radio-button>
+            </md-radio-group>
           </div>
-          <div>
-            <div class="flight-item" *ngFor="let item of searchResultFilter">
-              <div fxFlex fxLayout>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <img class="airline" src="/assets/images/{{item.Airline}}.png">
-                  <span>{{item.FlightNumber}}</span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <span>{{item.FromPlace}}</span>
-                  <span>{{item.DepartTime | evtimeonly }}</span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <span>{{item.ToPlace}}</span>
-                  <span>{{item.LandingTime | evtimeonly}}</span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <span>Số chặng dừng:</span>
-                  <span>{{item.Stops}}</span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <span>Giá NET: <span class="price">{{item.TicketPrice | number}}</span></span>
-                  <span>Tổng giá: <span class="price">{{item.TotalPrice | number}}</span></span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <div *ngIf="!searchData.roundTrip">
-                    <button color="accent" md-raised-button (click)="selectDepartFlight(item)"><md-icon>book</md-icon> Đặt vé</button>
-                  </div>
-                  <div fxLayout fxLayoutAlign="start center" (click)="item.isOpen = (item.isOpen ? false: true)">
-                    <span class="cp">Xem chi tiết</span>
-                    <i class="material-icons cp">keyboard_arrow_down</i>
-                  </div>
-                </div>
-                <div *ngIf="searchData.roundTrip">
-                  <md-radio-button name="chieuDi" (change)="chonChieuDi(item)"></md-radio-button> Chọn
-                </div>
-              </div>
-              <div fxFlex *ngIf="item.isOpen" class="flight-item-details">
-                <div class="detail-header" fxLayout>
-                  <div fxFlex>Loại phí</div>
-                  <div fxFlex>Số lượng</div>
-                  <div fxFlex>Chi phí</div>
-                  <div fxFlex>Tổng</div>
-                </div>
-                <div class="detail-item" fxLayout *ngFor="let detail of item.TicketPriceDetails">
-                  <div fxFlex>{{detail.Description}}</div>
-                  <div fxFlex>{{detail.Quantity | number}}</div>
-                  <div fxFlex>{{detail.Price | number}}</div>
-                  <div fxFlex>{{detail.Total | number}}</div>
-                </div>
-              </div>
-            </div>
+          <div class="searchresults">
+            <table class="searchresults-tbl">
+              <thead>
+                <tr>
+                  <th>Hãng</th>
+                  <th>Chuyến bay</th>
+                  <th>Số chặng dừng</th>
+                  <th>Khởi hành</th>
+                  <th>Đến</th>
+                  <th>Giá vé</th>
+                  <th>Chi tiết</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of searchResultFilter">
+                  <td><img class="airline" src="/assets/images/{{item.Airline}}.jpg"></td>
+                  <td>
+                    <strong>{{item.FlightNo}}</strong>
+                  </td>
+                  <td>{{item.StopNo}}</td>
+                  <td>
+                    <strong>{{item.DepartureTime | evtimeonly }}</strong>
+                    <span>({{diemDi.Code}})</span>
+                  </td>
+                  <td>
+                    <strong>{{item.ArrivalTime | evtimeonly }}</strong>
+                    <span>({{diemDen.Code}})</span>
+                  </td>
+                  <td>
+                    <md-radio-button name="chieuDi" (change)="chonChieuDi(item)"></md-radio-button>
+                    <strong class="price" *ngIf="priceType==1">{{item.TicketFare | number}}</strong>
+                    <strong class="price" *ngIf="priceType==2">{{item.TicketPrice | number}}</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </md-card-content>
       </md-card>
@@ -242,61 +232,51 @@
               <md-radio-button class="round-trip-radio" [value]="2">Cất cánh sớm nhất</md-radio-button>
               <md-radio-button class="round-trip-radio" [value]="3">Hạ cánh sớm nhất</md-radio-button>
             </md-radio-group>
+            <span class="label-inline">Xem theo giá</span>
+            <md-radio-group class="round-trip-group" [(ngModel)]="priceTypeReturn">
+              <md-radio-button class="round-trip-radio" [value]="1">Chưa thuế phí</md-radio-button>
+              <md-radio-button class="round-trip-radio" [value]="2">Có thuế phí</md-radio-button>
+            </md-radio-group>
           </div>
           <div fxLayout fxLayoutAlign="center" *ngIf="searchingReturn">
             <md-spinner></md-spinner>
           </div>
-          <div>
-            <div class="flight-item" *ngFor="let item of searchResultReturnFilter">
-              <div fxFlex fxLayout>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <img class="airline" src="/assets/images/{{item.Airline}}.png">
-                  <span>{{item.FlightNumber}}</span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <span>{{item.FromPlace}}</span>
-                  <span>{{item.DepartTime | evtimeonly }}</span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <span>{{item.ToPlace}}</span>
-                  <span>{{item.LandingTime | evtimeonly }}</span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <span>Số chặng dừng:</span>
-                  <span>{{item.Stops}}</span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <span>Giá NET: <span class="price">{{item.TicketPrice | number}}</span></span>
-                  <span>Tổng giá: <span class="price">{{item.TotalPrice | number}}</span></span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-                  <div *ngIf="!searchData.roundTrip">
-                    <button color="accent" md-raised-button (click)="selectDepartFlight(item)"><md-icon>book</md-icon> Đặt vé</button>
-                  </div>
-                  <div fxLayout fxLayoutAlign="start center" class="cp" (click)="item.isOpen = (item.isOpen ? false: true)">
-                    <span class="cp">Xem chi tiết</span>
-                    <i class="material-icons cp">keyboard_arrow_down</i>
-                  </div>
-                </div>
-                <div *ngIf="searchData.roundTrip">
-                  <md-radio-button name="chieuVe" (change)="chonChieuVe(item)"></md-radio-button> Chọn
-                </div>
-              </div>
-              <div fxFlex *ngIf="item.isOpen" class="flight-item-details">
-                <div class="detail-header" fxLayout>
-                  <div fxFlex>Loại phí</div>
-                  <div fxFlex>Số lượng</div>
-                  <div fxFlex>Chi phí</div>
-                  <div fxFlex>Tổng</div>
-                </div>
-                <div class="detail-item" fxLayout *ngFor="let detail of item.TicketPriceDetails">
-                  <div fxFlex>{{detail.Description}}</div>
-                  <div fxFlex>{{detail.Quantity | number}}</div>
-                  <div fxFlex>{{detail.Price | number}}</div>
-                  <div fxFlex>{{detail.Total | number}}</div>
-                </div>
-              </div>
-            </div>
+          <div class="searchresults">
+            <table class="searchresults-tbl">
+              <thead>
+                <tr>
+                  <th>Hãng</th>
+                  <th>Chuyến bay</th>
+                  <th>Số chặng dừng</th>
+                  <th>Khởi hành</th>
+                  <th>Đến</th>
+                  <th>Giá vé</th>
+                  <th>Chi tiết</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of searchResultReturnFilter">
+                  <td><img class="airline" src="/assets/images/{{item.Airline}}.jpg"></td>
+                  <td>
+                    <strong>{{item.FlightNo}}</strong>
+                  </td>
+                  <td>{{item.StopNo}}</td>
+                  <td>
+                    <strong>{{item.DepartureTime | evtimeonly }}</strong>
+                    <span>({{diemDen.Code}})</span>
+                  </td>
+                  <td>
+                    <strong>{{item.ArrivalTime | evtimeonly }}</strong>
+                    <span>({{diemDi.Code}})</span>
+                  </td>
+                  <td>
+                    <md-radio-button name="chieuVe" (change)="chonChieuVe(item)"></md-radio-button>
+                    <strong class="price" *ngIf="priceTypeReturn==1">{{item.TicketFare | number}}</strong>
+                    <strong class="price" *ngIf="priceTypeReturn==2">{{item.TicketPrice | number}}</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </md-card-content>
       </md-card>
@@ -312,24 +292,24 @@
           </div>
         </md-card-content>
       </md-card>
-      <md-card *ngIf="searchData.roundTrip" style="margin-top:10px">
+      <md-card style="margin-top:10px">
         <md-card-subtitle>Chuyến bay được chọn</md-card-subtitle>
         <md-card-content>
           <div fxLayout="column" fxLayoutGap="20px">
             <div fxFlex>
               <div>Chiều đi</div>
               <div fxLayout fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="chieuDi.Airline">
-                <div fxFlex><img class="airline" src="assets/images/{{chieuDi.Airline}}.png"></div>
-                <div fxFlex>{{chieuDi.DepartTime | evtimeonly}} - {{chieuDi.LandingTime | evtimeonly}}</div>
-                <div fxFlex>{{chieuDi.TotalPrice | number}}</div>
+                <div fxFlex><img class="airline" src="assets/images/{{chieuDi.Airline}}.jpg"></div>
+                <div fxFlex>{{chieuDi.DepartureTime | evtimeonly}} - {{chieuDi.ArrivalTime | evtimeonly}}</div>
+                <div fxFlex>{{chieuDi.TicketPrice | number}}</div>
               </div>
             </div>
-            <div fxFlex>
+            <div fxFlex *ngIf="searchData.roundTrip">
               <div>Chiều về</div>
               <div fxLayout fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="chieuVe.Airline">
-                <div fxFlex><img class="airline" src="assets/images/{{chieuVe.Airline}}.png"></div>
-                <div fxFlex>{{chieuVe.DepartTime | evtimeonly}} - {{chieuVe.LandingTime | evtimeonly}}</div>
-                <div fxFlex>{{chieuVe.TotalPrice | number}}</div>
+                <div fxFlex><img class="airline" src="assets/images/{{chieuVe.Airline}}.jpg"></div>
+                <div fxFlex>{{chieuVe.DepartureTime | evtimeonly}} - {{chieuVe.ArrivalTime | evtimeonly}}</div>
+                <div fxFlex>{{chieuVe.TicketPrice | number}}</div>
               </div>
             </div>
             <div fxFlex fxLayout class="tong_khu_hoi">
@@ -491,79 +471,79 @@
             <div fxFlex>
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Từ</div>
-                <div fxFlex>{{chieuDi.FromPlace}}</div>
+                <div fxFlex>{{diemDi.Name}}</div>
               </div>
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Thời gian</div>
-                <div fxFlex>{{chieuDi.DepartTime | evtime}}</div>
+                <div fxFlex>{{chieuDi.DepartureDate}} {{chieuDi.DepartureTime | evtimeonly}}</div>
               </div>
             </div>
             <div fxFlex>
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Đến</div>
-                <div fxFlex>{{chieuDi.ToPlace}}</div>
+                <div fxFlex>{{diemDen.Name}}</div>
               </div>
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Thời gian</div>
-                <div fxFlex>{{chieuDi.LandingTime | evtime}}</div>
+                <div fxFlex>{{chieuDi.ArrivalDate}} {{chieuDi.ArrivalTime | evtimeonly}}</div>
               </div>
             </div>
             <div fxFlex>
               <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Hãng</div>
-                  <div fxFlex><img class="airline" src="assets/images/{{chieuDi.Airline}}.png"></div>
+                  <div fxFlex><img class="airline" src="assets/images/{{chieuDi.Airline}}.jpg"></div>
                 </div>
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Chuyến bay</div>
-                <div fxFlex>{{chieuDi.FlightNumber}}</div>
+                <div fxFlex>{{chieuDi.FlightNo}}</div>
               </div>
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Loại vé</div>
-                <div fxFlex>{{chieuDi.TicketType}}</div>
+                <div fxFlex>{{chieuDi.SeatClass}}</div>
               </div>
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Giá</div>
-                <div class="price" fxFlex>{{chieuDi.TotalPrice | number}}</div>
+                <div class="price" fxFlex>{{chieuDi.TicketPrice | number}}</div>
               </div>
             </div>
-            <div *ngIf="searchData.roundTrip">
+            <div fxLayout="column" *ngIf="searchData.roundTrip">
               <div class="info-legend">Chiều về</div>
               <div fxFlex>
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Từ</div>
-                  <div fxFlex>{{chieuVe.FromPlace}}</div>
+                  <div fxFlex>{{diemDen.Name}}</div>
                 </div>
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Thời gian</div>
-                  <div fxFlex>{{chieuVe.DepartTime | evtime}}</div>
+                  <div fxFlex>{{chieuVe.DepartureDate }} {{chieuVe.DepartureTime | evtimeonly}}</div>
                 </div>
               </div>
               <div fxFlex>
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Đến</div>
-                  <div fxFlex>{{chieuVe.ToPlace}}</div>
+                  <div fxFlex>{{diemDi.Name}}</div>
                 </div>
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Thời gian</div>
-                  <div fxFlex>{{chieuVe.LandingTime | evtime}}</div>
+                  <div fxFlex>{{chieuVe.ArrivalDate}} {{chieuVe.ArrivalTime | evtimeonly}}</div>
                 </div>
               </div>
               <div fxFlex>
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Hãng</div>
-                  <div fxFlex><img class="airline" src="assets/images/{{chieuVe.Airline}}.png"></div>
+                  <div fxFlex><img class="airline" src="assets/images/{{chieuVe.Airline}}.jpg"></div>
                 </div>
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Chuyến bay</div>
-                  <div fxFlex>{{chieuVe.FlightNumber}}</div>
+                  <div fxFlex>{{chieuVe.FlightNo}}</div>
                 </div>
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Loại vé</div>
-                  <div fxFlex>{{chieuVe.TicketType}}</div>
+                  <div fxFlex>{{chieuVe.SeatClass}}</div>
                 </div>
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Giá</div>
-                  <div class="price" fxFlex>{{chieuVe.TotalPrice | number}}</div>
+                  <div class="price" fxFlex>{{chieuVe.TicketPrice | number}}</div>
                 </div>
               </div>
             </div>

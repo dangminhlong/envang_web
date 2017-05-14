@@ -74,7 +74,7 @@ export class LocationComponent implements OnInit {
   }
 
   get isSaveInvalid() {
-    return !this.item.Name.length || !this.item.RegionId || !this.item.ApiPlaceId;
+    return !this.item.Name.length || !this.item.RegionId;
   }
 
   showDeleteForm(content, item) {

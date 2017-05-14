@@ -19,9 +19,8 @@ export class EvTimePipe implements PipeTransform {
 })
 export class EvTimeOnlyPipe implements PipeTransform {
     transform(value: string): string {
-        let arPart = value.split("T");
-        let timePart = arPart[1];
-        let arTimePart = timePart.split(":");
-        return arTimePart[0] + ":" + arTimePart[1];
+        let gio = value.substr(0, 2);
+        let phut = value.substr(2);
+        return gio + ":" + phut;
     }
 }

@@ -1,4 +1,4 @@
-<div class="section">
+﻿<div class="section">
   <md-toolbar color="primary">
     <span class="admin_header">Quản lý cấu hình bài viết đặc trưng</span>
     <span fxFlex></span>
@@ -80,8 +80,7 @@
       <div *ngIf="saveStatus==1" class="alert alert-success">{{saveStatusMessage}}</div>
       <div *ngIf="saveStatus==2" class="alert alert-danger">{{saveStatusMessage}}</div>
       <div *ngIf="saveStatus==0" style="position:relative">
-        <md-progress-circle color="primary" mode="indeterminate">
-        </md-progress-circle>
+        <md-spinner mode="indeterminate"></md-spinner>
       </div>
     </md-toolbar>
   </section>
@@ -100,8 +99,7 @@
 <template #loaderTemplate>
   <div style="text-align:center">
     <div *ngIf="loaderType == 0">
-      <md-progress-circle color="primary" mode="indeterminate">
-      </md-progress-circle>
+      <md-spinner mode="indeterminate"></md-spinner>
     </div>
     <h4>{{loaderMessage}}</h4>
   </div>

@@ -1,4 +1,4 @@
-<div class="section">
+﻿<div class="section">
   <md-toolbar color="primary">
     <span class="admin_header">Quản lý địa điểm bay</span>
     <span fxFlex></span>
@@ -21,7 +21,6 @@
           <tr class="header">
             <th>Tên</th>
             <th>Mã</th>
-            <th>API Place Id</th>
             <th>Vùng</th>
             <th>Thứ tự hiển thị</th>
             <th></th>
@@ -31,7 +30,6 @@
           <tr *ngFor="let item of dsItem">
             <td>{{item.Name}}</td>
             <td>{{item.Code}}</td>
-            <td>{{item.ApiPlaceId}}</td>
             <td>{{item.RegionName}}</td>
             <td>{{item.Order}}</td>
             <td>
@@ -59,9 +57,6 @@
           <md-input-container>
             <input mdInput [(ngModel)]="item.Code" placeholder="Mã điểm bay (*)" />
           </md-input-container>
-          <md-input-container>
-            <input mdInput [(ngModel)]="item.ApiPlaceId" placeholder="API Place Id (*)" type="number" />
-          </md-input-container>
           <md-select [(ngModel)]="item.RegionId">
             <md-option [value]="0">Chọn vùng</md-option>
             <md-option *ngFor="let item of dsVung" [value]="item.Id">{{item.Name}}</md-option>
@@ -81,8 +76,7 @@
       <div *ngIf="saveStatus==1" class="alert alert-success">{{saveStatusMessage}}</div>
       <div *ngIf="saveStatus==2" class="alert alert-danger">{{saveStatusMessage}}</div>
       <div *ngIf="saveStatus==0" style="position:relative">
-        <md-progress-circle color="primary" mode="indeterminate">
-        </md-progress-circle>
+        <md-spinner mode="indeterminate"></md-spinner>
       </div>
     </md-toolbar>
   </section>
@@ -101,8 +95,7 @@
 <template #loaderTemplate>
   <div style="text-align:center">
     <div *ngIf="loaderType == 0">
-      <md-progress-circle color="primary" mode="indeterminate">
-      </md-progress-circle>
+      <md-spinner mode="indeterminate"></md-spinner>
     </div>
     <h4>{{loaderMessage}}</h4>
   </div>
