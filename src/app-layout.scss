@@ -87,8 +87,12 @@ body{
   margin-left: 10px;
 }
 .banner-bar{
-  height: 70px;
-  margin-bottom: 10px;
+  height: 80px;
+  background: #fff;
+}
+
+.logo{
+  height: 80px;
 }
 
 .nav-bar{
@@ -324,6 +328,36 @@ body{
 
 .searchresults table.searchresults-tbl { width:100%; border: none; border-spacing: 0;border-collapse: collapse }
 .searchresults table.searchresults-tbl td { border-bottom: 1px dashed #ccc; }
-.searchresults-tbl th { background:#333; font-weight:bold; color: #fff; font-size: 14px; padding: 10px 15px 10px 5px; text-align:center !important; }
+.searchresults-tbl th { background:mat-color($app-primary, A700); font-weight:bold; color: #fff; font-size: 14px; padding: 10px 15px 10px 5px; text-align:center !important; }
 .searchresults-tbl td { vertical-align:middle; padding-top:10px; padding-bottom: 10px; }
 .searchresults-tbl tbody tr td:nth-child(2) {text-align: center !important}
+.chitietve th, .chitietve td{ font-size:12px}
+.chitietve th{color: #999}
+.chitietve td{text-align: left}
+.chitietve .ra{ text-align: right}
+.chitietve .ca{ text-align: center}
+.chitietve .bold{ font-weight: bold}
+.chitietve tfoot td{border-top: 1px dashed #ddd}
+.chitietve_title{
+   border-top: 1px solid #ccc;
+    margin-top: 10px;
+    padding-top: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 5px;
+}
+
+.payment-method{
+    margin: 5px 0 5px 0;
+    padding: 5px;
+}
+.pm-header{
+    background: mat-color($app-primary, A700);
+    padding: 5px;
+    color: #fff;
+    font-weight: bold;
+}
+.pm-active{
+  background: #f44336;
+}

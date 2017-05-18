@@ -9,6 +9,7 @@ export class AuthService{
     public UserInfo: any;
     public HotlineTop: any;
     public HotlineFull: any;
+    public KetQuaDatVe: any;
     public FlightSearch: any;
     constructor(private http: Http, private wcService: WebConfigService) { 
         let evtoken = localStorage.getItem("evtoken");
@@ -30,7 +31,8 @@ export class AuthService{
         this.wcService.get().subscribe(resp=>{
             if (resp){
                 this.HotlineTop = resp.HotlineTop;
-                this.HotlineFull = resp.HotlineFull;        
+                this.HotlineFull = resp.HotlineFull; 
+                this.KetQuaDatVe = resp.KetQuaDatVe;       
             }
         });
     }

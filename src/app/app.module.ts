@@ -12,7 +12,7 @@ import { routes, components } from './app.routes';
 import { AuthService } from './shared/auth-service';
 import { ViewArticleService } from './shared/viewarticle.service';
 
-import { MaterialModule } from '@angular/material';
+import { MaterialModule, MdNativeDateModule, DateAdapter } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import {Ng2PaginationModule} from 'ng2-pagination';
@@ -23,6 +23,8 @@ import { WebConfigService } from './admin/webconfig/web-config.service';
 import { FlighBookingService } from './flight-booking/flight-booking.service';
 import { FlightRouteService } from './admin/flightroute/flightroute.service';
 import { LuggagePriceService } from './admin/luggage-price/luggage-price.service';
+
+import { MyDateAdapter } from './tien-ich/my-date-adapter';
 
 import 'hammerjs';
 
@@ -41,14 +43,18 @@ import 'hammerjs';
         RouterModule.forRoot(routes, { useHash: true }),
         MetadataModule.forRoot(),
         MaterialModule,
+        MdNativeDateModule,
         FlexLayoutModule
     ],
-    providers: [AuthService, 
+    providers: [
+        {provide: DateAdapter, useClass: MyDateAdapter},
+        AuthService, 
         ViewArticleService, 
         WebConfigService, 
         FlightRouteService, 
         FlighBookingService,
-        LuggagePriceService],
+        LuggagePriceService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,30 +1,26 @@
 ﻿<div class="ev-container">
-  <div class="top-bar" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-    <div fxFlex class="slogan"><span>Slogan của trang web</span></div>
-    <div fxFlex></div>
-    <div fxFlex fxLayout="row" fxLayoutAlign="end center" class="account">
-      <div *ngIf="!auth.IsLoggedIn">
-        <a class="login cp" (click)="showLoginForm()">Đăng nhập</a>
-        <a class="register cp" (click)="showRegisterForm()" >Đăng ký</a>
-      </div>
-      <div *ngIf="auth.IsLoggedIn">
-        <button md-button [mdMenuTriggerFor]="menuAccount">{{auth.UserInfo.FullName}} <md-icon>input</md-icon></button>
-        <md-menu #menuAccount="mdMenu" [overlapTrigger]="false" x-position="before" y-position="below">
-          <button md-menu-item (click)="logOut()">Đăng xuất</button>
-          <button md-menu-item (click)="accountInfo()">Thông tin tài khoản</button>
-        </md-menu>
-      </div>
-    </div>
-  </div>
   <div class="header-wrap">
     <div fxLayout fxLayoutAlign="start center" class="banner-bar">
-      <img src="../assets/images/eva-logo.png" />
+      <img class="logo" src="../assets/images/logo.png" />
       <span fxFlex></span>
       <div class="hotline" [innerHTML]="auth.HotlineTop"></div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="end center" class="account">
+        <div *ngIf="!auth.IsLoggedIn">
+          <a class="login cp" (click)="showLoginForm()">Đăng nhập</a>
+          <a class="register cp" (click)="showRegisterForm()" >Đăng ký</a>
+        </div>
+        <div *ngIf="auth.IsLoggedIn">
+          <button md-button [mdMenuTriggerFor]="menuAccount">{{auth.UserInfo.FullName}} <md-icon>input</md-icon></button>
+          <md-menu #menuAccount="mdMenu" [overlapTrigger]="false" x-position="before" y-position="below">
+            <button md-menu-item (click)="logOut()">Đăng xuất</button>
+            <button md-menu-item (click)="accountInfo()">Thông tin tài khoản</button>
+          </md-menu>
+        </div>
+      </div>
     </div>
     <div fxLayout class="nav-bar">
       <a routerLink="home" routerLinkActive="active">Trang chủ</a>
-      <a routerLink="tim-chuyen-bay" routerLinkActive="active">Vé rẻ</a>
+      <a routerLink="tim-chuyen-bay" routerLinkActive="active">Đặt vé</a>
       <a routerLink="tin-tuc" routerLinkActive="active">Tin khuyến mại</a>
       <a *ngFor="let item of dsFAC" [routerLink]="['fa', item.FriendlyName, item.Id]" routerLinkActive="active">{{item.Name}}</a>
       <span fxFlex></span>

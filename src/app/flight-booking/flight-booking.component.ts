@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Config } from '../shared/config'
 import { MdSnackBar } from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Observable';
@@ -9,10 +10,14 @@ import { AuthService } from '../shared/auth-service';
 import { FlighBookingService } from './flight-booking.service';
 import { FlightRouteService } from '../admin/flightroute/flightroute.service';
 import { LuggagePriceService } from '../admin/luggage-price/luggage-price.service';
+import { AirlineService } from '../admin/airline/airline.service';
+import { PaymentMethodService } from '../admin/payment-method/payment-method.service';
+import { MdDatepicker } from '@angular/material';
 
 @Component({
     selector: 'ev-flight-booking',
     templateUrl: './flight-booking.component.html',
+    providers: [AirlineService, PaymentMethodService],
     animations: [
         trigger('takeOffPlace', [
             state('inactive', style({
@@ -84,6 +89,8 @@ export class FlightBookingComponent implements OnInit {
     priceType: any = 1;
     priceTypeReturn: any = 1;
 
+    veChon: any = {};
+    airlineChon: any = {};
     chieuDi: any = {};
     chieuVe: any = {};
     flightDataChoosen: any = {};
@@ -92,16 +99,26 @@ export class FlightBookingComponent implements OnInit {
 
     contact: any = {};
 
-    payment: any = 0;
+    paymentMethodChon = {};
+    paymentMethodList: any[] = [];
 
     genderList: any[] = [{ Value: "1", Text: "Nam" }, { Value: "2", Text: "Nữ" }];
 
-    AirlineList: any[] = [{ Airline: "VietnamAirlines", Code: "VNA", selected: true }, { Airline: "VietJetAir", Code: "VIETJET", selected: true }, { Airline: "JetStar", Code:"JETSTAR", selected: true }];
+    AirlineList: any[] = [{ Name: "VietnamAirlines", Code: "VNA", selected: true }, { Name: "VietJetAir", Code: "VIETJET", selected: true }, { Name: "JetStar", Code: "JETSTAR", selected: true }];
+
+    orderResult:any = {};
+
+    @ViewChild("detailTemplate") detailTemplate;
+    @ViewChild("mdDatePickerNgayDi") mdDatePickerNgayDi: MdDatepicker<Date>;
+    @ViewChild("mdDatePickerNgayVe") mdDatePickerNgayVe: MdDatepicker<Date>;
 
     constructor(private service: FlighBookingService,
         private flightRouteService: FlightRouteService,
         private luggagePriceService: LuggagePriceService,
+        private airlineService: AirlineService,
+        private paymentMethodService: PaymentMethodService,
         private snackBar: MdSnackBar,
+        public dialog: MdDialog,
         private auth: AuthService,
         private route: ActivatedRoute) { }
 
@@ -109,9 +126,11 @@ export class FlightBookingComponent implements OnInit {
         this.currentDate = new Date();
         this.ngayDi.setDate(this.ngayDi.getDate() + 1);
         this.ngayVe.setDate(this.ngayVe.getDate() + 2);
+        this.getListAirline();
+        this.getListPaymentMethod();
         if (this.auth.FlightSearch) {
             this.searchData = this.auth.FlightSearch;
-            this.searchFlight(this.searchData.fromPlace, this.searchData.toPlace, this.searchData.departDate, this.searchData.returnDate, this.searchData.idDiemDi, this.searchData.idDiemDen);
+            this.searchFlight(this.searchData.fromPlace, this.searchData.toPlace, this.searchData.departDate, this.searchData.returnDate, this.searchData.fromPlaceId, this.searchData.toPlaceId);
             this.getDiemDi();
         }
         else {
@@ -123,6 +142,21 @@ export class FlightBookingComponent implements OnInit {
             this.contact.Email = this.auth.UserInfo.Email;
             this.contact.DiaChi = this.auth.UserInfo.Address;
         }
+    }
+
+    getListAirline() {
+        this.airlineService.getList().subscribe(resp => {
+            this.AirlineList = resp;
+            this.AirlineList.forEach(v => {
+                v.selected = true;
+            });
+        });
+    }
+
+    getListPaymentMethod() {
+        this.paymentMethodService.getList().subscribe(resp => {
+            this.paymentMethodList = resp;
+        });
     }
 
     get tenDiemDi() {
@@ -247,26 +281,24 @@ export class FlightBookingComponent implements OnInit {
     chonDiemDen(diem) {
         this.diemDen = diem;
         this.showLand = 'inactive';
-        this.showCalendar = true;
+        this.mdDatePickerNgayDi.open();
     }
 
     chonNgayDi() {
-        if (this.ngayDi > this.ngayVe)
-            this.ngayVe = this.ngayDi;
-        if (this.searchData.roundTrip)
-            this.showCalendarReturn = true;
-
+        if (this.searchData.roundTrip){
+            setTimeout(_=>{
+                this.mdDatePickerNgayVe.open();
+            });            
+        }
     }
 
     timChuyenBay() {
-        this.searchFlight(this.diemDi.Code, this.diemDen.Code, this.ngayDi, this.ngayVe, this.diemDi.ApiPlaceId, this.diemDen.ApiPlaceId);
+        this.searchFlight(this.diemDi.Code, this.diemDen.Code, this.ngayDi, this.ngayVe, this.diemDi.Id, this.diemDen.Id);
     }
 
     searchFlight(maDiemDi, maDiemDen, ngayDi, ngayVe, idDiemDi, idDiemDen) {
         this.searchData.fromPlace = maDiemDi;
         this.searchData.toPlace = maDiemDen;
-        this.searchData.idDiemDi = idDiemDi;
-        this.searchData.idDiemDen = idDiemDen;
         this.searchData.departDate = this.normalizeDate(this.ngayDi);
         this.searchData.returnDate = this.normalizeDate(this.ngayVe);
 
@@ -274,6 +306,8 @@ export class FlightBookingComponent implements OnInit {
             RoundTrip: this.searchData.roundTrip,
             FromPlaceCode: this.searchData.fromPlace,
             ToPlaceCode: this.searchData.toPlace,
+            FromPlaceId: idDiemDi,
+            ToPlaceId: idDiemDen,
             DepartDate: this.searchData.departDate,
             ReturnDate: this.searchData.returnDate,
             Adult: [],
@@ -319,68 +353,29 @@ export class FlightBookingComponent implements OnInit {
         });
     }
 
-    getLuggagePrice(brand) {
-        let promise = new Promise((resolve, reject) => {
-            let data = {
-                AirlineCode: brand
-            };
-            this.luggagePriceService.getListByAirlineCode(data).subscribe(resp => {
-                this.luggagePriceList = resp;
-                resolve();
-            });
-        });
-        return promise;
-    }
-
-    getReturnLuggagePrice(brand) {
-        let data = {
-            AirlineCode: brand
-        };
-        this.luggagePriceService.getListByAirlineCode(data).subscribe(resp => {
-            this.returnLuggagePriceList = resp;
-        });
-    }
-
-    selectDepartFlight(item) {
-        this.chieuDi = item;
-        this.getLuggagePrice(item.Brand);
-        this.flightDataChoosen.ChieuDi = item;
-        if (this.flightDataChoosen.Adult && !this.flightDataChoosen.Adult.length) {
-            for (let i = 0; i < this.searchData.adult; i++) {
-                this.flightDataChoosen.Adult.push({ PassengerType: 0, Title: "", Gender: "0", Baggage: 0, ReturnBaggage: 0 });
+    xemChiTietVe(item) {
+        this.veChon = item;
+        for (let i = 0; i < this.AirlineList.length; i++) {
+            if (this.AirlineList[i].Code == this.veChon.Airline) {
+                this.airlineChon = this.AirlineList[i];
+                break;
             }
         }
-        if (this.flightDataChoosen.Child && !this.flightDataChoosen.Child.length) {
-            for (let i = 0; i < this.searchData.child; i++) {
-                this.flightDataChoosen.Child.push({ PassengerType: 1, Title: "", Gender: "0", Baggage: 0, ReturnBaggage: 0 });
-            }
-        }
-        if (this.flightDataChoosen.Infant && !this.flightDataChoosen.Infant.length) {
-            for (let i = 0; i < this.searchData.infant; i++) {
-                this.flightDataChoosen.Infant.push({ PassengerType: 2, Title: "", Gender: "0", Baggage: 0, ReturnBaggage: 0 });
-            }
-        }
-
-        this.step = 2;
-
+        this.dialog.open(this.detailTemplate);
     }
 
-    tiepTucKhuHoi() {
-        this.getLuggagePrice(this.chieuDi.Brand).then(_ => {
-            if (this.searchData.roundTrip){
-                if (this.chieuDi.Brand != this.chieuVe.Brand) {
-                    this.getReturnLuggagePrice(this.chieuVe.Brand);
-                }
-                else {
-                    this.returnLuggagePriceList = this.luggagePriceList;
-                }
-            }
-        });
+    tieptuc() {
+        if (this.chieuDi == null){
+            this.snackBar.open("Xin vui lòng chọn chiều đi", "", {duration:1000});
+        }
+        if (this.searchData.roundTrip && this.chieuVe == null){
+            this.snackBar.open("Xin vui lòng chọn chiều về", "", {duration:1000});
+        }
 
         this.flightDataChoosen.ChieuDi = this.chieuDi;
         if (this.searchData.roundTrip)
             this.flightDataChoosen.ChieuVe = this.chieuVe;
-        else 
+        else
             this.flightDataChoosen.ChieuVe = null;
         if (this.flightDataChoosen.Adult && !this.flightDataChoosen.Adult.length) {
             for (let i = 0; i < this.searchData.adult; i++) {
@@ -402,10 +397,31 @@ export class FlightBookingComponent implements OnInit {
 
     chonChieuDi(item) {
         this.chieuDi = item;
+        var data = {
+            AirlineCode: this.chieuDi.Airline
+        };
+        this.luggagePriceService.getListByAirlineCode(data).subscribe(
+            resp => {
+                this.luggagePriceList = resp;
+            }
+        );
     }
 
     chonChieuVe(item) {
         this.chieuVe = item;
+        if (this.chieuDi.Airline != this.chieuVe.Airline) {
+            var data = {
+                AirlineCode: this.chieuVe.Airline
+            };
+            this.luggagePriceService.getListByAirlineCode(data).subscribe(
+                resp => {
+                    this.returnLuggagePriceList = resp;
+                }
+            );
+        }
+        else {
+            this.returnLuggagePriceList = this.luggagePriceList;
+        }
     }
 
     filterAirline() {
@@ -451,53 +467,32 @@ export class FlightBookingComponent implements OnInit {
             || !this.contact.DienThoai || !this.contact.DienThoai.length
             || !this.contact.Email || !this.contact.Email.length
             || !this.contact.DiaChi || !this.contact.DiaChi.length) {
-            this.snackBar.open("Xin vui lòng nhập đầy đủ thông tin liên hệ", "", { duration: 1000 });
+            this.snackBar.open("Xin vui lòng nhập đầy đủ thông tin liên hệ", "", { duration: 2000 });
             return;
         }
 
         this.step = this.step + 1;
     }
     bookTicket() {
+        if (this.paymentMethodChon == null){
+            this.snackBar.open("Xin vui lòng chọn hình thức thanh toán", "", {duration: 2000});
+            return;
+        }
         this.flightDataChoosen.Contact = this.contact;
-        this.flightDataChoosen.Adult.forEach((v) => {
-            let arNames = v.FullName.split(" ");
-            let firstName = arNames[arNames.length - 1];
-            let lastName = arNames[0];
-            let middleName = "";
-            for (let i = 1; i < arNames.length - 1; i++)
-                middleName = middleName + " " + arNames[i];
-            v.FirstName = firstName.trim();
-            v.LastName = lastName.trim();
-            v.MiddleName = middleName.trim();
-        });
-        this.flightDataChoosen.Child.forEach((v) => {
-            let arNames = v.FullName.split(" ");
-            let firstName = arNames[arNames.length - 1];
-            let lastName = arNames[0];
-            let middleName = "";
-            for (let i = 1; i < arNames.length - 1; i++)
-                middleName = middleName + " " + arNames[i];
-            v.FirstName = firstName.trim();
-            v.LastName = lastName.trim();
-            v.MiddleName = middleName.trim();
-        });
-        this.flightDataChoosen.Infant.forEach((v) => {
-            let arNames = v.FullName.split(" ");
-            let firstName = arNames[arNames.length - 1];
-            let lastName = arNames[0];
-            let middleName = "";
-            for (let i = 1; i < arNames.length - 1; i++)
-                middleName = middleName + " " + arNames[i];
-            v.FirstName = firstName.trim();
-            v.LastName = lastName.trim();
-            v.MiddleName = middleName.trim();
-        });
+        this.flightDataChoosen.PaymentMethod = this.paymentMethodChon;
+        this.flightDataChoosen.TotalPrice = this.TongKhuHoi + this.ChiPhiHanhLy;
         this.service.bookflight(this.flightDataChoosen).subscribe(
             resp => {
-                console.log(resp);
+                if (resp.success){
+                    this.step = this.step + 1;
+                    this.orderResult = resp;
+                }
+                else {
+                    this.snackBar.open("Có lỗi xảy ra. Xin vui lòng đặt lại vé", "", {duration: 2000});
+                }
             },
             err => {
-                console.log(err);
+                this.snackBar.open("Có lỗi xảy ra. Xin vui lòng đặt lại vé", "", {duration: 2000});
             }
         )
     }
@@ -568,6 +563,6 @@ export class FlightBookingComponent implements OnInit {
         let n = d.getFullYear();
         let t = d.getMonth() + 1;
         let ng = d.getDate();
-        return n + '-' + ('0' + t).slice(-2) + '-' + ('0' + ng).slice(-2) + 'T00:00:00.000';
+        return ('0' + ng).slice(-2) + '/' + ('0' + t).slice(-2) + '/' + n ;
     }
 }

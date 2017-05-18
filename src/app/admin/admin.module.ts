@@ -46,6 +46,8 @@ import { LuggagePriceService } from './luggage-price/luggage-price.service';
 import { ProvinceService } from './province/province.service';
 import { GeneralComponent } from './general/general.component';
 import { GeneralService } from './general/general.service';
+import { paymentmethodComponent } from './payment-method/payment-method.component';
+import { PaymentMethodService } from './payment-method/payment-method.service';
 
 const routes: Routes = [
     { path: 'users', component: UsersComponent},
@@ -63,7 +65,8 @@ const routes: Routes = [
     { path: 'airline', component: AirlineComponent },
     { path: 'luggage', component: LuggagePriceComponent },
     { path: 'province', component: ProvinceComponent },
-    { path: 'general', component: GeneralComponent }
+    { path: 'general', component: GeneralComponent },
+    { path: 'payment-method', component: paymentmethodComponent }
 ];
 
 @NgModule({
@@ -75,12 +78,12 @@ const routes: Routes = [
         FlightRouteComponent, CategoryComponent, ArticlesComponent, FileManagerComponent,
         FeatureArticleConfigGroupComponent, FeatureArticleConfigComponent,
         ArticlesDialog, AirlineComponent, LuggagePriceComponent, ProvinceComponent,
-        WebConfigComponent,
+        WebConfigComponent, paymentmethodComponent,
         GeneralComponent],
     providers: [RolesService, UsersService, RegionService, LocationService, FlightRouteService, CategoriesService,
         ArticlesService, FileManagerService, ProvinceService,
         FeatureArticleConfigGroupService, FeatureArticleConfigService,
-        WebConfigService, LuggagePriceService,
+        WebConfigService, LuggagePriceService, PaymentMethodService,
         AirlineService, GeneralService]
 })
 export class AdminModule { }

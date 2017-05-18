@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../shared/auth-service';
 import { AirlineService } from './airline.service';
 import { MdDialog, MdDialogRef } from '@angular/material';
@@ -15,8 +15,8 @@ export class AirlineComponent implements OnInit {
   confirmMessage: any = "";
   loaderMessage: any = "";
   loaderType: any = 0;
-
-  airline: any = { Id: 0, Name: "", Code: "" };
+  editMode: any = false;
+  airline: any = { Id: 0, Name: "", Code: "", PhiHang: 0 };
 
   dsAirline: any[] = [];
 
@@ -47,9 +47,9 @@ export class AirlineComponent implements OnInit {
     this.modalRef.close();
   }
 
-  showEditForm(content, item) {
+  showEditForm(item) {
     this.airline = item;
-    this.modalRef = this.dialog.open(content);
+    this.editMode = true;
     this.saveStatus = -1;
     this.saveType = 2;
   }
@@ -67,17 +67,19 @@ export class AirlineComponent implements OnInit {
 
   save() {
     let data = this.airline;
-    this.saveStatus = 0;
-    this.saveStatusMessage = "Đang lưu...";
+    this.loaderType = 0;
+    this.loaderMessage = "Đang xử lý...";
+    this.modalRef = this.dialog.open(this.loaderTemplate);
     this.service.save(data).subscribe(resp => {
       if (resp.success) {
-        this.saveStatus = 1;
-        this.saveStatusMessage = "Lưu thành công";
+        this.loaderType = 1;
+        this.loaderMessage = "Lưu thành công";
+        this.editMode = false;
         this.getDanhSach();
       }
       else {
-        this.saveStatus = 2;
-        this.saveStatusMessage = "Lưu thất bại";
+        this.loaderType = 2;
+        this.loaderMessage = "Lưu thất bại";
       }
     });
   }

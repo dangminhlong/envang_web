@@ -1,6 +1,15 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\admin",
+    "\\src\\app\\admin\\articles",
+    "\\src\\app\\admin\\categories",
+    "\\src\\app\\admin\\feature-article-config",
+    "\\src\\app\\admin\\feature-article-config-group",
+    "\\src\\app\\admin\\flightroute",
+    "\\src\\app\\admin\\location"
   ],
   "PreviewInSolutionExplorer": false
 }

@@ -1,3 +1,4 @@
+
 <section *ngIf="step==1" class="search-form">
   <div fxLayout class="search-booking" fxLayoutGap="50px" fxLayoutAlign="start center">
     <div fxFlex fxLayout="column" fxLayoutGap="10px">
@@ -7,11 +8,25 @@
           <md-radio-button class="round-trip-radio" [value]="false">Một chiều</md-radio-button>
         </md-radio-group>
       </div>
+      
       <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-        <div fxFlex fxFlex style="position: relative">
-          <div class="takeoff_place" fxLayout fxLayoutAlign="start center">
-            <i class="material-icons">flight_takeoff</i>
-            <input readonly fxFlex fxFlexLayoutAlign="stretch" type="text" (focus)="showTakeOffPlace()" [value]="tenDiemDi">
+        <div style="position: relative">
+          <div class="mat-input-container">
+            <div class="mat-input-wrapper">
+              <div class="mat-input-table">
+                <div class="mat-input-infix">
+                  <input class="mat-input-element" placeholder="Nơi đi" id="md-input-noi-di" (focus)="showTakeOffPlace()" [value]="tenDiemDi">
+                  <span class="mat-input-placeholder-wrapper">
+                    <label class="mat-input-placeholder mat-float" for="md-input-noi-di">Nơi đi</label>
+                  </span>
+                </div>
+                <div class="mat-input-suffix">
+                  <md-icon (click)="showTakeOffPlace()">flight_takeoff</md-icon>
+                </div>
+              </div>
+              <div class="mat-input-underline"></div>
+              <div class="mat-input-subscript-wrapper"></div>
+            </div>
           </div>
           <div [@takeOffPlace]="showTakeOff" class="takeoff">
             <md-card>
@@ -57,10 +72,24 @@
             </md-card>
           </div>
         </div>
-        <div fxFlex style="position: relative">
-          <div class="takeoff_place" fxLayout fxLayoutAlign="start center">
-            <i class="material-icons">flight_land</i>
-            <input readonly fxFlex fxFlexLayoutAlign="stretch" type="text" (focus)="showLandPlace()" (blur)="hideLandPlace()" [value]="tenDiemDen">
+        <div style="position: relative">
+          <div class="mat-input-container">
+            <div class="mat-input-wrapper">
+              <div class="mat-input-table">
+                <div class="mat-input-infix">
+                  <input class="mat-input-element" placeholder="Nơi đến" id="md-input-noi-den" 
+                    (focus)="showLandPlace()" [value]="tenDiemDen">
+                  <span class="mat-input-placeholder-wrapper">
+                    <label class="mat-input-placeholder mat-float" for="md-input-noi-den">Nơi đến</label>
+                  </span>
+                </div>
+                <div class="mat-input-suffix">
+                  <md-icon (click)="showLandPlace()">flight_land</md-icon>
+                </div>
+              </div>
+              <div class="mat-input-underline"></div>
+              <div class="mat-input-subscript-wrapper"></div>
+            </div>
           </div>
           <div [@landPlace]="showLand" class="takeoff">
             <md-card>
@@ -106,26 +135,29 @@
             </md-card>
           </div>
         </div>
-        <div style="width:108px">
-          <div class="date-picker-ctn">
-            <material-datepicker (onSelect)="chonNgayDi()" [(date)]="ngayDi" [(showCalendar)]="showCalendar" [rangeStart]="currentDate"
-              dateFormat="DD-MM-YYYY"></material-datepicker>
-          </div>
-        </div>
-        <div *ngIf="searchData.roundTrip" style="width:108px">
-          <div class="date-picker-ctn">
-            <material-datepicker [(date)]="ngayVe" [rangeStart]="ngayDi" dateFormat="DD-MM-YYYY"></material-datepicker>
-          </div>
-        </div>
-        <div fxLayout fxLayoutGap="20px" class="custtype">
+        <div style="width:115px">
           <md-input-container>
-            <input mdInput type="number" [(ngModel)]="searchData.adult" placeholder="Người lớn (>=12 tuổi)">
+            <input mdInput [mdDatepicker]="mdDatePickerNgayDi" placeholder="Ngày đi" [(ngModel)]="ngayDi" [min]="currentDate">
+            <button mdSuffix [mdDatepickerToggle]="mdDatePickerNgayDi"></button>
+          </md-input-container>
+          <md-datepicker #mdDatePickerNgayDi (selectedChanged)="chonNgayDi()"></md-datepicker>
+        </div>
+        <div *ngIf="searchData.roundTrip" style="width:115px">
+          <md-input-container>
+            <input mdInput [mdDatepicker]="mdDatePickerNgayVe" placeholder="Ngày về" [(ngModel)]="ngayVe" [min]="ngayDi">
+            <button mdSuffix [mdDatepickerToggle]="mdDatePickerNgayVe"></button>
+          </md-input-container>
+          <md-datepicker #mdDatePickerNgayVe></md-datepicker>
+        </div>
+        <div fxLayout fxLayoutGap="10px" class="custtype">
+          <md-input-container>
+            <input mdInput type="number" [(ngModel)]="searchData.adult" placeholder="Người lớn(>=12 tuổi)">
           </md-input-container>
           <md-input-container>
-            <input mdInput type="number" [(ngModel)]="searchData.child" placeholder="Trẻ em (2-11 tuổi)">
+            <input mdInput type="number" [(ngModel)]="searchData.child" placeholder="Trẻ em(2-11 tuổi)">
           </md-input-container>
           <md-input-container>
-            <input mdInput type="number" [(ngModel)]="searchData.infant" placeholder="Em bé (< 24 tháng)">
+            <input mdInput type="number" [(ngModel)]="searchData.infant" placeholder="Em bé(< 2 tuổi)">
           </md-input-container>
         </div>
       </div>
@@ -214,6 +246,9 @@
                     <strong class="price" *ngIf="priceType==1">{{item.TicketFare | number}}</strong>
                     <strong class="price" *ngIf="priceType==2">{{item.TicketPrice | number}}</strong>
                   </td>
+                  <td>
+                    <a class="cp" (click)="xemChiTietVe(item)">Xem chi tiết [+]</a>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -274,6 +309,9 @@
                     <strong class="price" *ngIf="priceTypeReturn==1">{{item.TicketFare | number}}</strong>
                     <strong class="price" *ngIf="priceTypeReturn==2">{{item.TicketPrice | number}}</strong>
                   </td>
+                  <td>
+                    <a class="cp" (click)="xemChiTietVe(item)">Xem chi tiết [+]</a>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -288,7 +326,7 @@
         <md-card-subtitle>Bộ lọc</md-card-subtitle>
         <md-card-content>
           <div *ngFor="let item of AirlineList">
-            <md-checkbox [(ngModel)]="item.selected" (change)="filterAirline()">{{item.Airline}}</md-checkbox>
+            <md-checkbox [(ngModel)]="item.selected" (change)="filterAirline()">{{item.Name}}</md-checkbox>
           </div>
         </md-card-content>
       </md-card>
@@ -318,7 +356,7 @@
             </div>
             <div fxFlex>
               <div fxLayout="column">
-                <button color="accent" md-raised-button (click)="tiepTucKhuHoi()"><md-icon>forward</md-icon> Tiếp tục</button>
+                <button color="accent" md-raised-button (click)="tieptuc()"><md-icon>forward</md-icon> Tiếp tục</button>
               </div>
             </div>
           </div>
@@ -416,14 +454,14 @@
       <md-card>
         <md-card-title>HÌNH THỨC THANH TOÁN</md-card-title>
         <md-card-content>
-          <div class="payment-method" [class.active]="payment==1">
-            <div>CHUYỂN KHOẢN NGÂN HÀNG</div>
-          </div>
-          <div class="payment-method" [class.active]="payment==2">
-            <div>THANH TOÁN TRỰC TIẾP TẠI VĂN PHÒNG CÔNG TY</div>
-          </div>
-          <div class="payment-method" [class.active]="payment==3">
-            <div>THANH TOÁN TRỰC TIẾP TẠI NHÀ RIÊNG</div>
+          <div class="payment-method" *ngFor="let pm of paymentMethodList">
+            <div class="cp pm-header" [class.pm-active]="paymentMethodChon==pm" (click)="paymentMethodChon=pm">{{pm.Name}}</div>
+            <div *ngIf="paymentMethodChon==pm">
+              <div [innerHTML]="pm.Description"></div>
+              <div *ngIf="pm.AllowResponseFromCustomer">
+                <textarea style="width:100%" [(ngModel)]="pm.CustomerResponse"></textarea>
+              </div>
+            </div>
           </div>
         </md-card-content>
       </md-card>
@@ -432,7 +470,13 @@
       <md-card>
         <md-card-title>KẾT QUẢ ĐẶT VÉ</md-card-title>
         <md-card-content>
-          Nội dung kết quả đặt vé
+              <div>Đơn hàng của bạn đã thực hiện thành công, mã số đơn hàng là: <span style="font-weight:bold;color:chocolate;font-size:15px">{{orderResult.data}}</span></div>
+              <div style="margin: 10px 0 10px 0">
+                {{auth.KetQuaDatVe}}
+              </div>
+              <div *ngIf="!orderResult.sendEmailStatus">
+                Lưu ý: Thông tin đơn hàng không thể gửi tới địa chỉ email của bạn: {{contact.Email}}.
+              </div>
         </md-card-content>
       </md-card>
     </div>
@@ -490,9 +534,9 @@
             </div>
             <div fxFlex>
               <div fxLayout fxLayoutGap="20px">
-                  <div fxFlex="100px">Hãng</div>
-                  <div fxFlex><img class="airline" src="assets/images/{{chieuDi.Airline}}.jpg"></div>
-                </div>
+                <div fxFlex="100px">Hãng</div>
+                <div fxFlex><img class="airline" src="assets/images/{{chieuDi.Airline}}.jpg"></div>
+              </div>
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Chuyến bay</div>
                 <div fxFlex>{{chieuDi.FlightNo}}</div>
@@ -570,3 +614,72 @@
   </div>
 </div>
 
+<template #detailTemplate>
+  <div style="width:500px">
+    <div class="chitietve_title">Chi tiết vé</div>
+    <table style="width:100%" class="chitietve">
+      <tr>
+        <td>
+          <div>Từ:{{veChon.FromCity}}</div>
+          <div>{{veChon.DepartureTime | evtimeonly}}, {{veChon.DepartureDate}}</div>
+        </td>
+        <td>
+          <div>đến:{{veChon.ToCity}}</div>
+          <div>{{veChon.ArrivalTime | evtimeonly}}, {{veChon.ArrivalDate}}</div>
+        </td>
+        <td>
+          <div>Hãng:{{veChon.AirlineName}}</div>
+          <div>Hạng vé: {{veChon.TicketType}}</div>
+        </td>
+      </tr>
+    </table>
+    <div class="chitietve_title"></div>
+    <table style="width:100%" class="chitietve">
+      <thead>
+        <tr>
+          <th style="text-align:left">Loại khách hàng</th>
+          <th class="ca">Số lượng</th>
+          <th class="ra">Giá vé</th>
+          <th class="ra">Thuế phí</th>
+          <th class="ra">Tổng cộng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="searchData.adult">
+          <td>Người lớn</td>
+          <td class="ca">{{searchData.adult}}</td>
+          <td class="ra bold">{{veChon.AdultFare | number}}</td>
+          <td class="ra bold">{{veChon.AdultCharge | number}}</td>
+          <td class="ra bold">{{veChon.AdultPrice | number}}</td>
+        </tr>
+        <tr *ngIf="searchData.child">
+          <td>Trẻ em</td>
+          <td class="ca">{{searchData.child}}</td>
+          <td class="ra bold">{{veChon.ChildFare | number}}</td>
+          <td class="ra bold">{{veChon.ChildCharge | number}}</td>
+          <td class="ra bold">{{veChon.ChildPrice | number}}</td>
+        </tr>
+        <tr *ngIf="searchData.infant">
+          <td>Em bé</td>
+          <td class="ca">{{searchData.infant}}</td>
+          <td class="ra bold">{{veChon.InfantFare | number}}</td>
+          <td class="ra bold">{{veChon.InfantCharge | number}}</td>
+          <td class="ra bold">{{veChon.InfantPrice | number}}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="bold">Tổng</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="ra bold">{{veChon.TicketPrice | number}}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="chitietve_title">Điều kiện hành lý</div>
+    <div class="chitietve" [innerHTML]="airlineChon.DieuKienHanhLy"></div>
+    <div class="chitietve_title">Điều kiện vé</div>
+    <div class="chitietve" [innerHTML]="airlineChon.DieuKienVe"></div>
+  </div>
+</template>

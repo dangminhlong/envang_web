@@ -14,6 +14,19 @@
         <label>Thông tin hotline hỗ trợ đầy đủ</label>
         <textarea htmlEditor [(ngModel)]="item.HotlineFull" height="100"></textarea>
       </div>
+      <div class="input-group">
+        <label>Kết quả đặt vé</label>
+        <textarea htmlEditor [(ngModel)]="item.KetQuaDatVe" height="100"></textarea>
+      </div>
+      <md-input-container>
+        <input mdInput [(ngModel)]="item.AdultFee" placeholder="Phí xuất vé người lớn">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput [(ngModel)]="item.ChildFee" placeholder="Phí xuất vé trẻ em">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput [(ngModel)]="item.InfantFee" placeholder="Phí xuất vé em bé">
+      </md-input-container>
       <md-input-container>
         <input mdInput [(ngModel)]="item.Email" placeholder="Email">
       </md-input-container>
