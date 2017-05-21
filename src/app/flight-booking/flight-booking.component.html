@@ -506,7 +506,7 @@
         <md-card-title>KẾT QUẢ ĐẶT VÉ</md-card-title>
         <md-card-content>
           <div>Đơn hàng của bạn đã thực hiện thành công, mã số đơn hàng là: <span style="font-weight:bold;color:chocolate;font-size:15px">{{orderResult.data}}</span></div>
-          <div style="margin: 10px 0 10px 0" [innerHTML]="auth.KetQuaDatVe">
+          <div style="margin: 10px 0 10px 0" [innerHTML]="auth.KetQuaDatVe | safeHtml">
           </div>
           <div *ngIf="!orderResult.sendEmailStatus">
             Lưu ý: Thông tin đơn hàng không thể gửi tới địa chỉ email của bạn: {{contact.Email}}.

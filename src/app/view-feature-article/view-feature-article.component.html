@@ -10,7 +10,7 @@
     </md-card>
     <md-card fxFlex="70">
         <md-card-content>
-            <div [innerHTML]="item.Content"></div>
+            <div [innerHTML]="item.Content | safeHtml"></div>
         </md-card-content>
     </md-card>
 </div>

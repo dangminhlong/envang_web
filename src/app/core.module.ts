@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { EvTimeOnlyPipe, EvTimePipe } from './directives/ev-time.directive';
 import { TinyMceDirective2 } from './directives/tinymce.directive';
 import { EvDatePickerComponent } from './directives/ev-date-picker';
+import { SafeHtmlPipe } from './directives/safe-html.directive';
 import { MyDateAdapter } from './tien-ich/my-date-adapter';
 import { MaterialModule, MdNativeDateModule, DateAdapter } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -14,8 +15,8 @@ import { Ng2PaginationModule } from 'ng2-pagination';
 
 @NgModule({
     imports: [CommonModule, FormsModule, HttpModule, MaterialModule, MdNativeDateModule, FlexLayoutModule, Ng2PaginationModule],
-    exports: [CommonModule, FormsModule, HttpModule, MaterialModule, MdNativeDateModule, FlexLayoutModule, Ng2PaginationModule, EvTimeOnlyPipe, EvTimePipe, EvDatePickerComponent, TinyMceDirective2],
-    declarations: [EvTimeOnlyPipe, EvTimePipe, EvDatePickerComponent, TinyMceDirective2],
+    exports: [CommonModule, FormsModule, HttpModule, MaterialModule, MdNativeDateModule, FlexLayoutModule, Ng2PaginationModule, EvTimeOnlyPipe, EvTimePipe, EvDatePickerComponent, TinyMceDirective2, SafeHtmlPipe],
+    declarations: [EvTimeOnlyPipe, EvTimePipe, EvDatePickerComponent, TinyMceDirective2, SafeHtmlPipe],
     providers: [{ provide: DateAdapter, useClass: MyDateAdapter }],
 })
 export class CoreModule {

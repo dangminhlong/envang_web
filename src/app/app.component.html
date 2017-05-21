@@ -2,8 +2,7 @@
   <div class="header-wrap">
     <div fxHide.xs fxLayout fxLayoutAlign="start center" class="banner-bar">
       <img class="logo" src="../assets/images/logo.png" />
-      <span fxFlex></span>
-      <div class="hotline" [innerHTML]="auth.HotlineTop"></div>
+      <div fxFlex class="hotline" [innerHTML]="auth.HotlineTop | safeHtml"></div>
       <div fxLayout="row" fxLayoutAlign="end center" class="account">
         <div *ngIf="!auth.IsLoggedIn">
           <a class="login cp" (click)="showLoginForm()">Đăng nhập</a>

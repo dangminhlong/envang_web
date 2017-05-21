@@ -6,10 +6,10 @@
       <div>
         <img style="width:100%;" src="{{apiUrl + '/' + item.ImageUrl }}">
       </div>
-      <div class="article-content" [innerHTML]="item.Content"></div>
+      <div class="article-content" [innerHTML]="item.Content | safeHtml"></div>
     </md-card-content>
   </md-card>
   <md-card fxFlex="30">
-    <div [innerHTML]="auth.HotlineFull"></div>
+    <div [innerHTML]="auth.HotlineFull | safeHtml"></div>
   </md-card>
 </div>

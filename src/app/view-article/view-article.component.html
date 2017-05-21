@@ -20,7 +20,7 @@
             <div fxFlex="67">
               <div class="article-title"><a [routerLink]="[item.FriendlyName, item.Id]">{{item.Name}}</a></div>
               <div class="article-date">Ngày đăng: {{item.CreatedOn | date: "dd/MM/yyyy"}}</div>
-              <div class="article-desc" [innerHTML]="item.Description"></div>
+              <div class="article-desc" [innerHTML]="item.Description | safeHtml"></div>
             </div>
           </div>
           
@@ -33,6 +33,6 @@
     </md-card>
   </div>
   <md-card fxFlex="30">
-    <div [innerHTML]="auth.HotlineFull"></div>
+    <div [innerHTML]="auth.HotlineFull | safeHtml"></div>
   </md-card>
 </div>
