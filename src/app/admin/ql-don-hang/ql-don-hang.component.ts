@@ -17,7 +17,7 @@ export class QlDonHangComponent implements OnInit {
     soDtNguoiGT:any="";
     dsDonHang: any[] = [];
 
-    constructor(private auth: AuthService,
+    constructor(public auth: AuthService,
         private service: QlDonHangService,
         public dialog: MdDialog,
         public snackBar: MdSnackBar) { }

@@ -24,7 +24,7 @@ export class AirlineComponent implements OnInit {
 
   @ViewChild("loaderTemplate") loaderTemplate;
 
-  constructor(private auth: AuthService,
+  constructor(public auth: AuthService,
     private service: AirlineService,
     public dialog: MdDialog) { }
 

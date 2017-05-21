@@ -15,7 +15,7 @@ export class ViewArticleDetailsComponent implements OnInit {
     apiUrl = Config.apiUrl;
 
     constructor(private service: ViewArticleService, 
-        private auth: AuthService,
+        public auth: AuthService,
         private route: ActivatedRoute) { }
 
     ngOnInit() { 

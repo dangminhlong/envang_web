@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { RolesService } from './role.service';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import { AuthService } from '../../shared/auth-service';
 @Component({
     selector: 'app-role',
     templateUrl: './role.component.html'
@@ -16,7 +17,8 @@ export class RoleComponent implements OnInit {
 
     @ViewChild("loaderTemplate") loaderTemplate;
     
-    constructor(private roleService: RolesService,
+    constructor(public auth: AuthService,
+        private roleService: RolesService,
         public dialog: MdDialog) { }
 
     ngOnInit() {

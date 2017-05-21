@@ -17,7 +17,7 @@ export class WebConfigComponent implements OnInit {
 
   @ViewChild("loaderTemplate") loaderTemplate;
 
-  constructor(private auth: AuthService,
+  constructor(public auth: AuthService,
     private service: WebConfigService,
     public dialog: MdDialog) { }
 

@@ -29,7 +29,7 @@ export class LuggagePriceComponent implements OnInit {
 
   @ViewChild("loaderTemplate") loaderTemplate;
 
-  constructor(private auth: AuthService,
+  constructor(public auth: AuthService,
     private service: LuggagePriceService,
     private airlineService: AirlineService,
     public dialog: MdDialog,

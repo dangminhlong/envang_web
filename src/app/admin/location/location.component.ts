@@ -29,7 +29,7 @@ export class LocationComponent implements OnInit {
 
   @ViewChild("loaderTemplate") loaderTemplate;
 
-  constructor(private auth: AuthService,
+  constructor(public auth: AuthService,
     private service: LocationService,
     private regionService: RegionService,
     public dialog: MdDialog,

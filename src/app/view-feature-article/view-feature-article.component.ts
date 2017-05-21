@@ -18,7 +18,7 @@ export class ViewFeatureArticleComponent implements OnInit {
     constructor(
         private service: ViewArticleService, 
         private faService: FeatureArticleConfigService,
-        private auth: AuthService,
+        public auth: AuthService,
         private route: ActivatedRoute,
         private router: Router) { }
 

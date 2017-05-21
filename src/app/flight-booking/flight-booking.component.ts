@@ -107,7 +107,7 @@ export class FlightBookingComponent implements OnInit {
         private paymentMethodService: PaymentMethodService,
         private snackBar: MdSnackBar,
         public dialog: MdDialog,
-        private auth: AuthService,
+        public auth: AuthService,
         private route: ActivatedRoute) { }
 
     ngOnInit() {

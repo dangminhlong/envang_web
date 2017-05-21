@@ -22,7 +22,7 @@ export class ArticlesDialog implements OnInit {
 
   constructor(
     public dialogRef: MdDialogRef<ArticlesDialog>,
-    private auth: AuthService,
+    public auth: AuthService,
     private service: ArticlesService,
     private categoryService: CategoriesService) { }
 

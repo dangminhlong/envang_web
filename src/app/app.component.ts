@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
     dsFAC:any[] = [];
     showManageMenu = false;
     constructor(private metaService: MetadataService,
-        private auth: AuthService,
+        public auth: AuthService,
         private facService: FeatureArticleConfigGroupService,
         private router: Router) { }
     ngOnInit() {

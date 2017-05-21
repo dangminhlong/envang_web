@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { RolesService } from '../roles/role.service';
 import { UsersService } from './users.service';
+import { AuthService } from '../../shared/auth-service';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
@@ -30,7 +31,9 @@ export class UsersComponent implements OnInit {
 
     @ViewChild("loaderTemplate") loaderTemplate;
     
-    constructor(private roleService: RolesService,
+    constructor(
+        public auth: AuthService,
+        private roleService: RolesService,
         private userService: UsersService,
         public dialog: MdDialog) { }
 

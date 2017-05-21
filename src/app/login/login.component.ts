@@ -16,7 +16,7 @@ export class LoginComponent {
     @HostBinding('style.position') position = 'absolute';
     
     constructor(private router: Router,
-        private auth: AuthService,
+        public auth: AuthService,
         private loginService: LoginService) { }
 
     cancel() {

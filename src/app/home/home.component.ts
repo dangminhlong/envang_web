@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild("mdDatePickerNgayVe") mdDatePickerNgayVe: MdDatepicker<Date>;
 
   constructor(private metaService: MetadataService,
-    private auth: AuthService,
+    public auth: AuthService,
     private router: Router,
     private articleService: ArticlesService,
     private flightRouteService: FlightRouteService) { }

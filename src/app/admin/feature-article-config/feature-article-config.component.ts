@@ -31,7 +31,7 @@ export class FeatureArticleConfigComponent implements OnInit {
 
   @ViewChild("loaderTemplate") loaderTemplate;
 
-  constructor(private auth: AuthService,
+  constructor(public auth: AuthService,
     private service: FeatureArticleConfigService,
     private groupService: FeatureArticleConfigGroupService,
     public dialog: MdDialog) { }

@@ -35,8 +35,6 @@ import { WebConfigService} from './webconfig/web-config.service';
 import { AirlineService } from './airline/airline.service';
 import { LuggagePriceService } from './luggage-price/luggage-price.service';
 import { ProvinceService } from './province/province.service';
-import { GeneralComponent } from './general/general.component';
-import { GeneralService } from './general/general.service';
 import { paymentmethodComponent } from './payment-method/payment-method.component';
 import { PaymentMethodService } from './payment-method/payment-method.service';
 import { QlDonHangComponent } from './ql-don-hang/ql-don-hang.component';
@@ -60,7 +58,6 @@ const routes: Routes = [
     { path: 'airline', component: AirlineComponent, canActivate:[EvGuard] },
     { path: 'luggage', component: LuggagePriceComponent, canActivate:[EvGuard] },
     { path: 'province', component: ProvinceComponent, canActivate:[EvGuard] },
-    { path: 'general', component: GeneralComponent, canActivate:[EvGuard] },
     { path: 'payment-method', component: paymentmethodComponent, canActivate:[EvGuard] },
     { path: 'ql-don-hang', component: QlDonHangComponent, canActivate:[EvGuard] },
 ];
@@ -75,11 +72,11 @@ const routes: Routes = [
         FeatureArticleConfigGroupComponent, FeatureArticleConfigComponent,
         ArticlesDialog, AirlineComponent, LuggagePriceComponent, ProvinceComponent,
         WebConfigComponent, paymentmethodComponent,
-        GeneralComponent, QlDonHangComponent],
+        QlDonHangComponent],
     providers: [EvGuard, RolesService, UsersService, RegionService, LocationService, FlightRouteService, CategoriesService,
         ArticlesService, FileManagerService, ProvinceService,
         FeatureArticleConfigGroupService, FeatureArticleConfigService,
         WebConfigService, LuggagePriceService, PaymentMethodService,
-        AirlineService, GeneralService, QlDonHangService]
+        AirlineService, QlDonHangService]
 })
 export class AdminModule { }

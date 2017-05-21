@@ -18,7 +18,7 @@ export class ViewArticleComponent implements OnInit {
     apiUrl = Config.apiUrl;
 
     constructor(private service: ViewArticleService, 
-        private auth: AuthService) { }
+        public auth: AuthService) { }
 
     ngOnInit() { 
         this.getLatest();

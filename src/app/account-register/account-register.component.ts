@@ -17,7 +17,7 @@ export class AccountRegisterComponent {
     @HostBinding('style.position') position = 'absolute';
     
     constructor(private router: Router,
-        private auth: AuthService,
+        public auth: AuthService,
         private accountRegisterService: AccountRegisterService,
         private snackbar: MdSnackBar) { }
 
