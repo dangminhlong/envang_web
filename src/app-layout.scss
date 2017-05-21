@@ -234,12 +234,9 @@ body{
   overflow: auto;
 }
 
-.home-booking{
-  width:500px;
-}
 .search-booking{
-  background-color: #fff;
-  padding: 0 20px;
+  background-color: rgba(255, 255, 255, 0.80);
+  padding: 10px;
 }
 .takeoff_place{
   border-radius: 5px;
@@ -253,9 +250,10 @@ body{
 .takeoff{
   display: none;
   position: absolute;
-  margin: 10px 0 0 -2px;
+  margin: -15px 0 0 -2px;
   z-index: 1000;
-  width:600px;
+  width:400px;
+  background-color: #fff;
 }
 .datepicker{
   padding:3px;
@@ -322,13 +320,9 @@ body{
   padding: 5px 0;
 }
 
-.mat-select-trigger{
-  margin-top:6px;
-}
-
 .searchresults table.searchresults-tbl { width:100%; border: none; border-spacing: 0;border-collapse: collapse }
 .searchresults table.searchresults-tbl td { border-bottom: 1px dashed #ccc; }
-.searchresults-tbl th { background:mat-color($app-primary, A700); font-weight:bold; color: #fff; font-size: 14px; padding: 10px 15px 10px 5px; text-align:center !important; }
+.searchresults-tbl th { background:mat-color($app-accent, A700); font-weight:bold; color: #fff; font-size: 14px; padding: 10px 15px 10px 5px; text-align:center !important; }
 .searchresults-tbl td { vertical-align:middle; padding-top:10px; padding-bottom: 10px; }
 .searchresults-tbl tbody tr td:nth-child(2) {text-align: center !important}
 .chitietve th, .chitietve td{ font-size:12px}
@@ -353,11 +347,35 @@ body{
     padding: 5px;
 }
 .pm-header{
-    background: mat-color($app-primary, A700);
+    background: mat-color($app-accent, A700);
     padding: 5px;
     color: #fff;
     font-weight: bold;
 }
 .pm-active{
   background: #f44336;
+}
+.mat-select{
+  margin-top:6px;
+}
+.search-form .mat-select{
+  margin-top: 10px;
+}
+.cdk-overlay-container{
+  position: absolute;
+}
+.ev-table {width:100%;border: none; border-spacing: 0;border-collapse: collapse}
+.ev-table th { background:mat-color($app-accent, A700); font-weight:bold; color: #fff; font-size: 14px; padding: 10px 15px 10px 5px; text-align:center !important; }
+.ev-table td { vertical-align:middle; padding-top:10px; padding-bottom: 10px;}
+.ev-table td.detail-airline-code{color:#fff;background-color:mat-color($app-primary, A700)}
+.ev-table .detail-pm .title{color:#fff;background-color:mat-color($app-primary, A700);padding:5px 10px;}
+
+.mat-input-placeholder{
+  color:mat-color($app-accent, A700);
+}
+.mat-card{
+  background-color:rgba(255, 255, 255, 0.80);
+}
+.tinhtrangve .mat-select-trigger{
+  margin-top:-36px;
 }

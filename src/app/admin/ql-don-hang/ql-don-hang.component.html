@@ -1,0 +1,206 @@
+<md-card>
+    <md-card-content>
+        <div fxLayout fxLayoutAlign="baseline baseline" fxLayoutAlign.xs="baseline stretch" fxLayoutGap="10px" fxLayout.xs="column"
+            fxLayoutGap.xs="5px" class="search-form">
+            <md-select placeholder="Tình trạng" [(ngModel)]="tinhtrang">
+                <md-option [value]="-1">Tất cả</md-option>
+                <md-option [value]="0">Chưa xử lý</md-option>
+                <md-option [value]="1">Đã xử lý</md-option>
+                <md-option [value]="2">Đã thanh toán</md-option>
+                <md-option [value]="3">Đã hủy</md-option>
+            </md-select>
+            <div>
+                <md-input-container>
+                    <input mdInput [mdDatepicker]="mdDPTuNgay" [(ngModel)]="tungay" placeholder="Từ">
+                    <button mdSuffix [mdDatepickerToggle]="mdDPTuNgay"></button>
+                </md-input-container>
+                <md-datepicker #mdDPTuNgay></md-datepicker>
+            </div>
+            <div>
+                <md-input-container>
+                    <input mdInput [mdDatepicker]="mdDPDenNgay" [(ngModel)]="denngay" placeholder="Đến">
+                    <button mdSuffix [mdDatepickerToggle]="mdDPDenNgay"></button>
+                </md-input-container>
+                <md-datepicker #mdDPDenNgay></md-datepicker>
+            </div>
+            <md-input-container>
+                <input mdInput [(ngModel)]="nguoiDat" placeholder="Người đặt">
+            </md-input-container>
+            <md-input-container>
+                <input mdInput [(ngModel)]="soDtNguoiGT" placeholder="Số ĐT người giới thiệu">
+            </md-input-container>
+            <button md-raised-button color="accent" (click)="getDsDonHang()"><md-icon>search</md-icon> Tìm</button>
+        </div>
+    </md-card-content>
+</md-card>
+<md-card>
+    <md-card-title>Danh sách đơn hàng</md-card-title>
+    <md-card-content>
+        <table class="ev-table">
+            <thead>
+                <tr>
+                    <th>Mã</th>
+                    <th>Ngày</th>
+                    <th>Họ tên</th>
+                    <th>Điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Từ</th>
+                    <th>Đến</th>
+                    <th>Ngày đi</th>
+                    <th>Ngày về</th>
+                    <th>Giá tiền</th>
+                    <th>ĐT GT</th>
+                    <th>Tình trạng</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-template ngFor let-item [ngForOf]="dsDonHang">
+                    <tr>
+                        <td>{{item.Id}}</td>
+                        <td>{{item.NgayDat | date:"d/m/yy"}}</td>
+                        <td>{{item.NguoiDat}}</td>
+                        <td>{{item.DienThoai}}</td>
+                        <td>{{item.DiaChi}}</td>
+                        <td>{{item.FromPlaceCode}}</td>
+                        <td>{{item.ToPlaceCode}}</td>
+                        <td>{{item.DepartureDate}}</td>
+                        <td>{{item.RoundTrip ? item.ReturnDate:""}}</td>
+                        <td>{{item.TotalPrice | number}}</td>
+                        <td>{{item.SoDienThoaiNguoiGioiThieu}}</td>
+                        <td>{{item.TinhTrang == 0 ? "Mới":(item.TinhTrang==1?"Đã xử lý":(item.TinhTrang==2?"Đã thanh toán":"Đã
+                            hủy"))}}</td>
+                        <td>
+                            <a (click)="showDetail(item)" class="cp">Chi tiết [+]</a>
+                        </td>
+                        <td>
+                            <button *ngIf="item.TinhTrang==0" md-raised-button color="accent" (click)="nhanXuLy(item)">Nhận xử lý</button>
+                        </td>
+                        <td>
+                            <button md-raised-button color="warn" (click)="huyDonHang(item)">Hủy</button>
+                        </td>
+                    </tr>
+                    <tr class="detail" *ngIf="item.showDetail">
+                        <td colspan="15">
+                            <div class="detail-pm">
+                                <div class="title">{{item.HinhThucThanhToan}}</div>
+                                <div class="message">{{item.ThongTinThanhToan}}</div>
+                            </div>
+                            <div *ngIf="item.XuatHoaDon" class="detail-pm">
+                                <div class="title">Thông tin xuất hóa đơn</div>
+                                <div class="message">{{item.ThongTinXuatHoaDon}}</div>
+                            </div>
+                            <div *ngIf="item.dsVe">
+                                <table style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2">Hãng</th>
+                                            <th colspan="3">Chiều đi</th>
+                                            <th colspan="3">Chiều về</th>
+                                            <th rowspan="2">Code vé</th>
+                                            <th rowspan="2">Tình trạng</th>
+                                            <th rowspan="2">Ngày đặt</th>
+                                            <th rowspan="2">Ngày xuất</th>
+                                            <th rowspan="2">Ngày thanh toán</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Từ</th>
+                                            <th>Đến</th>
+                                            <th>Giá</th>
+                                            <th>Từ</th>
+                                            <th>Đến</th>
+                                            <th>Giá</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-template ngFor let-ve [ngForOf]="item.dsVe">
+                                            <tr>
+                                                <td rowspan="3" class="detail-airline-code">{{ve.Ticket.Airline}}</td>
+                                                <td>
+                                                    {{ve.Ticket.FromCityCode}} {{ve.Ticket.DepartureDate}} {{ve.Ticket.DepartureTime | evtimeonly}}
+                                                </td>
+                                                <td>
+                                                    {{ve.Ticket.ToCityCode}} {{ve.Ticket.ArrivalDate}} {{ve.Ticket.ArrivalTime | evtimeonly}}
+                                                </td>
+                                                <td>
+                                                    {{ve.Ticket.TicketFare|number}} / {{ve.Ticket.TicketPrice|number}}
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="ve.Ticket.IsRoundTrip">{{ve.Ticket.ToCityCode}} {{ve.Ticket.ReturnDepartureDate}} {{ve.Ticket.ReturnDepartureTime | evtimeonly}}</span>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="ve.Ticket.IsRoundTrip">{{ve.Ticket.FromCityCode}} {{ve.Ticket.ReturnArrivalDate}} {{ve.Ticket.ReturnArrivalTime | evtimeonly}}</span>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="ve.Ticket.IsRoundTrip">{{ve.Ticket.ReturnTicketFare|number}} / {{ve.Ticket.ReturnTicketPrice|number}}</span>
+                                                </td>
+                                                <td>
+                                                    <md-input-container>
+                                                        <input mdInput [(ngModel)]="ve.Ticket.PNRCode">
+                                                    </md-input-container>
+                                                </td>
+                                                <td class="tinhtrangve">
+                                                    <md-select [(ngModel)]="ve.Ticket.TinhTrang">
+                                                        <md-option [value]="0">Chưa đặt</md-option>
+                                                        <md-option [value]="1">Đã đặt</md-option>
+                                                        <md-option [value]="2">Đã xuất</md-option>
+                                                        <md-option [value]="3">Đã hoàn</md-option>
+                                                        <md-option [value]="4">Đã hủy</md-option>
+                                                    </md-select>
+                                                </td>
+                                                <td>
+                                                    <div fxLayout fxLayoutAlign="start center" fxLayoutGap="5px">
+                                                        <ev-date-picker [(date)]="ve.Ticket.NgayDat"></ev-date-picker>
+                                                        <md-input-container style="width:70px">
+                                                            <input mdInput placeholder="Giờ đặt" [(ngModel)]="ve.Ticket.GioDat">
+                                                        </md-input-container>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ev-date-picker [(date)]="ve.Ticket.NgayXuat"></ev-date-picker>
+                                                </td>
+                                                <td>
+                                                    <ev-date-picker [(date)]="ve.Ticket.NgayThanhToan"></ev-date-picker>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="11">
+                                                    <button (click)="capNhatVe(ve)" color="accent" md-raised-button>Cập nhật</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="11" style="border-bottom:1px solid #ccc">
+                                                    <table style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Loại khách</th>
+                                                                <th>Tên khách</th>
+                                                                <th>Hành lý chiều đi (kg)</th>
+                                                                <th>Hành lý chiều về (kg)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let p of ve.Passengers">
+                                                                <td>{{p.Type==0?"Người lớn":(p.Type==1?"Trẻ em":"Em bé")}}</td>
+                                                                <td>{{p.FullName}}</td>
+                                                                <td>{{p.Baggage}}</td>
+                                                                <td>{{p.ReturnBaggage}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+            </tbody>
+        </table>
+    </md-card-content>
+</md-card>

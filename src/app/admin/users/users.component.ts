@@ -22,6 +22,10 @@ export class UsersComponent implements OnInit {
     loaderMessage: any = "";
     loaderType: any = 0;
 
+    page = 1;
+    pageSize = 10;
+    totalItems = 10;
+
     modalRef: MdDialogRef<any>;
 
     @ViewChild("loaderTemplate") loaderTemplate;
@@ -39,6 +43,11 @@ export class UsersComponent implements OnInit {
         this.getDsUser();
     }
 
+    loadPage($event){
+        this.page = $event;
+        this.getDsUser();
+    }
+
     getDsRoles() {
         this.roleService.getList().subscribe(resp => {
             this.dsRole = resp;
@@ -47,10 +56,13 @@ export class UsersComponent implements OnInit {
     getDsUser() {
         let data = {
             RoleId: this.searchRoleId,
-            UserName: this.usernameSearch
+            UserName: this.usernameSearch,
+            Page: this.page,
+            pageSize: this.pageSize
         };
         this.userService.getList(data).subscribe(resp => {
-            this.dsUser = resp;
+            this.dsUser = resp.Data;
+            this.totalItems = resp.Tong;
         });
     }
     showAddUserForm(event, content) {

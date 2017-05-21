@@ -19,6 +19,7 @@ export class EvTimePipe implements PipeTransform {
 })
 export class EvTimeOnlyPipe implements PipeTransform {
     transform(value: string): string {
+        if (!value) return "";
         let gio = value.substr(0, 2);
         let phut = value.substr(2);
         return gio + ":" + phut;

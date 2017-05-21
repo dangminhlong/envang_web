@@ -1,17 +1,8 @@
 ﻿import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+
 import { Routes, RouterModule } from '@angular/router';
 
-import {Ng2PaginationModule} from 'ng2-pagination';
-
-import { MaterialModule } from '@angular/material';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { TinyMceDirective2 } from '../directives/tinymce.directive';
-
-import { DatepickerModule } from '../angular2-material-datepicker/datepicker.module';
-
+import { CoreModule } from '../core.module';
 //components
 import { UsersComponent } from './users/users.component';
 import { RoleComponent } from './roles/role.component';
@@ -48,42 +39,47 @@ import { GeneralComponent } from './general/general.component';
 import { GeneralService } from './general/general.service';
 import { paymentmethodComponent } from './payment-method/payment-method.component';
 import { PaymentMethodService } from './payment-method/payment-method.service';
+import { QlDonHangComponent } from './ql-don-hang/ql-don-hang.component';
+import { QlDonHangService } from './ql-don-hang/ql-don-hang.service';
+
+import { EvGuard } from '../shared/ev.guard';
 
 const routes: Routes = [
-    { path: 'users', component: UsersComponent},
-    { path: 'role', component: RoleComponent },
-    { path: 'region', component: RegionComponent },
-    { path: 'location', component: LocationComponent },
-    { path: 'flightroute', component: FlightRouteComponent },
-    { path: 'articletype', component: CategoryComponent },
-    { path: 'article', component: ArticlesComponent },
-    { path: 'filemanager', component: FileManagerComponent },
-    { path: 'feature-article-config-group', component: FeatureArticleConfigGroupComponent },
-    { path: 'feature-article-config', component: FeatureArticleConfigComponent },
-    { path: 'article-dialog', component: ArticlesDialog },
-    { path: 'web-config', component: WebConfigComponent },
-    { path: 'airline', component: AirlineComponent },
-    { path: 'luggage', component: LuggagePriceComponent },
-    { path: 'province', component: ProvinceComponent },
-    { path: 'general', component: GeneralComponent },
-    { path: 'payment-method', component: paymentmethodComponent }
+    { path: 'users', component: UsersComponent, canActivate:[EvGuard]},
+    { path: 'role', component: RoleComponent, canActivate:[EvGuard] },
+    { path: 'region', component: RegionComponent, canActivate:[EvGuard] },
+    { path: 'location', component: LocationComponent, canActivate:[EvGuard] },
+    { path: 'flightroute', component: FlightRouteComponent, canActivate:[EvGuard] },
+    { path: 'articletype', component: CategoryComponent, canActivate:[EvGuard] },
+    { path: 'article', component: ArticlesComponent, canActivate:[EvGuard] },
+    { path: 'filemanager', component: FileManagerComponent, canActivate:[EvGuard] },
+    { path: 'feature-article-config-group', component: FeatureArticleConfigGroupComponent, canActivate:[EvGuard] },
+    { path: 'feature-article-config', component: FeatureArticleConfigComponent, canActivate:[EvGuard] },
+    { path: 'article-dialog', component: ArticlesDialog, canActivate:[EvGuard] },
+    { path: 'web-config', component: WebConfigComponent, canActivate:[EvGuard] },
+    { path: 'airline', component: AirlineComponent, canActivate:[EvGuard] },
+    { path: 'luggage', component: LuggagePriceComponent, canActivate:[EvGuard] },
+    { path: 'province', component: ProvinceComponent, canActivate:[EvGuard] },
+    { path: 'general', component: GeneralComponent, canActivate:[EvGuard] },
+    { path: 'payment-method', component: paymentmethodComponent, canActivate:[EvGuard] },
+    { path: 'ql-don-hang', component: QlDonHangComponent, canActivate:[EvGuard] },
 ];
 
 @NgModule({
     imports: [
-        CommonModule, FormsModule, HttpModule, MaterialModule, FlexLayoutModule, Ng2PaginationModule, DatepickerModule,
+        CoreModule, 
         RouterModule.forChild(routes)
     ],
-    declarations: [TinyMceDirective2, UsersComponent, RoleComponent, RegionComponent, LocationComponent, 
+    declarations: [UsersComponent, RoleComponent, RegionComponent, LocationComponent, 
         FlightRouteComponent, CategoryComponent, ArticlesComponent, FileManagerComponent,
         FeatureArticleConfigGroupComponent, FeatureArticleConfigComponent,
         ArticlesDialog, AirlineComponent, LuggagePriceComponent, ProvinceComponent,
         WebConfigComponent, paymentmethodComponent,
-        GeneralComponent],
-    providers: [RolesService, UsersService, RegionService, LocationService, FlightRouteService, CategoriesService,
+        GeneralComponent, QlDonHangComponent],
+    providers: [EvGuard, RolesService, UsersService, RegionService, LocationService, FlightRouteService, CategoriesService,
         ArticlesService, FileManagerService, ProvinceService,
         FeatureArticleConfigGroupService, FeatureArticleConfigService,
         WebConfigService, LuggagePriceService, PaymentMethodService,
-        AirlineService, GeneralService]
+        AirlineService, GeneralService, QlDonHangService]
 })
 export class AdminModule { }

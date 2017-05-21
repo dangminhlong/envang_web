@@ -64,11 +64,11 @@
     </div>
   </div>
 </div>
-<template #loaderTemplate>
+<ng-template #loaderTemplate>
   <div style="text-align:center; width: 300px">
     <div *ngIf="loaderType == 0">
       <md-spinner mode="indeterminate"></md-spinner>
     </div>
     <h4 [class.error]="loaderType==2" [class.success]="loaderType==1">{{loaderMessage}}</h4>
   </div>
-</template>
+</ng-template>

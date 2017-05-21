@@ -19,14 +19,13 @@
   </md-card>
 
   <md-card>
-    <table class="table table-hover table-bordered">
+    <table class="ev-table">
       <thead>
-        <tr class="header">
-          <th>Id</th>
-          <td>Tên đăng nhập</td>
-          <td>Họ tên</td>
+        <tr>
+          <th>Tên đăng nhập</th>
+          <th>Họ tên</th>
           <th>Điện thoại</th>
-          <td>Địa chỉ</td>
+          <th>Địa chỉ</th>
           <th>Email</th>
           <th>Loại người dùng</th>
           <th></th>
@@ -34,7 +33,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of dsUser">
-          <td>{{item.Id}}</td>
           <td>{{item.UserName}}</td>
           <td>{{item.FullName}}</td>
           <td>{{item.PhoneNumber}}</td>
@@ -53,7 +51,7 @@
 </div>
 
 
-<template #addUserTemplate>
+<ng-template #addUserTemplate>
   <div style="min-width:800px">
     <md-toolbar color="primary">
       <span>Thông tin người dùng</span>
@@ -101,9 +99,9 @@
       </div>
     </md-toolbar>
   </div>
-</template>
+</ng-template>
 
-<template #resetPasswordTemplate>
+<ng-template #resetPasswordTemplate>
   <md-toolbar>
     Đặt lại mật khẩu
   </md-toolbar>
@@ -122,9 +120,9 @@
   <md-toolbar *ngIf="saveStatus==0">
     <md-spinner></md-spinner>
   </md-toolbar>
-</template>
+</ng-template>
 
-<template #confirmTemplate>
+<ng-template #confirmTemplate>
   <div style="text-align:center">
     <h4>{{confirmMessage}}</h4>
     <div>
@@ -132,13 +130,13 @@
       <button md-button (click)="close()">Đóng</button>
     </div>
   </div>
-</template>
+</ng-template>
 
-<template #loaderTemplate>
+<ng-template #loaderTemplate>
   <div style="text-align:center">
     <div *ngIf="loaderType == 0">
       <md-spinner></md-spinner>
     </div>
     <h4>{{loaderMessage}}</h4>
   </div>
-</template>
+</ng-template>

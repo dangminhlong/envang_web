@@ -5,9 +5,9 @@
     <button md-raised-button color="accent" (click)="showAddNewForm(addEditTemplate)"><md-icon>create</md-icon> Thêm mới</button>
   </md-toolbar>
   <md-card>
-    <table class="table table-hover table-bordered">
+    <table class="ev-table">
       <thead>
-        <tr class="header">
+        <tr>
           <th style="width:40px">Id</th>
           <th>Tên</th>
           <th style="width:150px"></th>
@@ -26,7 +26,7 @@
     </table>
   </md-card>
 </div>
-<template #addEditTemplate>
+<ng-template #addEditTemplate>
   <section style="width:800px">
     <md-toolbar color="primary">
       <span>Thông tin loại bài viết</span>
@@ -46,8 +46,8 @@
       <button md-raised-button color="primary" (click)="close()"><md-icon>close</md-icon> Đóng</button>
     </md-toolbar>
   </section>
-</template>
-<template #confirmTemplate>
+</ng-template>
+<ng-template #confirmTemplate>
   <div style="text-align:center">
     <h4>{{confirmMessage}}</h4>
     <div>
@@ -55,12 +55,12 @@
       <button md-button (click)="close()">Đóng</button>
     </div>
   </div>
-</template>
-<template #loaderTemplate>
+</ng-template>
+<ng-template #loaderTemplate>
   <div style="text-align:center;width:300px">
     <div fxLayout="column" fxLayoutAlign="center center">
       <md-spinner mode="indeterminate"></md-spinner>
     </div>
     <h4>{{loaderMessage}}</h4>
   </div>
-</template>
+</ng-template>

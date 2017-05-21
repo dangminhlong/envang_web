@@ -32,5 +32,5 @@ export class AirlineService {
         headers.append('Authorization', 'Bearer ' + token);
         let options = new RequestOptions({ headers: headers });
         return this.http.post(Config.apiUrl + '/api/airline/remove', JSON.stringify(data), options).map(resp => resp.json());
-    }
+    }   
 }

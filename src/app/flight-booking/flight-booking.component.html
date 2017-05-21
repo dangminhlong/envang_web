@@ -1,17 +1,17 @@
-
 <section *ngIf="step==1" class="search-form">
-  <div fxLayout class="search-booking" fxLayoutGap="50px" fxLayoutAlign="start center">
-    <div fxFlex fxLayout="column" fxLayoutGap="10px">
-      <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutGap="25px">
+  <div fxLayout fxLayout.xs="column" fxLayoutGap="50px" fxLayoutGap.xs="5px" fxLayoutAlign="start center" fxLayoutAlign.xs="stretch stretch"
+    class="search-booking">
+    <div fxLayout="column" fxLayoutGap="10px" fxLayout.xs="column" fxLayoutAlign.xs="stretch stretch">
+      <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutGap="25px" fxLayoutGap.xs="5px">
         <md-radio-group class="round-trip-group" [(ngModel)]="searchData.roundTrip">
           <md-radio-button class="round-trip-radio" [value]="true">Khứ hồi</md-radio-button>
           <md-radio-button class="round-trip-radio" [value]="false">Một chiều</md-radio-button>
         </md-radio-group>
       </div>
-      
-      <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
+
+      <div fxLayout fxLayout.xs="column" fxLayoutGap="20px" fxLayoutGap.xs="5px" fxLayoutAlign.xs="start stretch">
         <div style="position: relative">
-          <div class="mat-input-container">
+          <div fxLayout="column" class="mat-input-container">
             <div class="mat-input-wrapper">
               <div class="mat-input-table">
                 <div class="mat-input-infix">
@@ -28,11 +28,11 @@
               <div class="mat-input-subscript-wrapper"></div>
             </div>
           </div>
-          <div [@takeOffPlace]="showTakeOff" class="takeoff">
+          <div [style.display]="showTakeOff=='active'?'block':'none'" class="takeoff">
             <md-card>
               <md-card-content>
                 <span style="float:right; cursor: pointer" (click)="showTakeOff='inactive'"><i class="material-icons md-18">close</i></span>
-                <div fxLayout="row" fxLayoutGap="50px">
+                <div fxLayout="row" fxLayoutGap="50px" fxLayout.xs="column" fxLayoutGap.xs="5px">
                   <div *ngIf="dsVung1.length">
                     <div class="vung-ctn" *ngFor="let vung of dsVung1">
                       <div class="vung-header">{{vung.RegionName}}</div>
@@ -66,19 +66,17 @@
                 </div>
               </md-card-content>
               <md-card-actions>
-                <span fxFlex></span>
                 <button md-icon-button (click)="showTakeOff='inactive'"><md-icon>close</md-icon></button>
               </md-card-actions>
             </md-card>
           </div>
         </div>
         <div style="position: relative">
-          <div class="mat-input-container">
+          <div fxLayout="column" class="mat-input-container">
             <div class="mat-input-wrapper">
               <div class="mat-input-table">
                 <div class="mat-input-infix">
-                  <input class="mat-input-element" placeholder="Nơi đến" id="md-input-noi-den" 
-                    (focus)="showLandPlace()" [value]="tenDiemDen">
+                  <input class="mat-input-element" placeholder="Nơi đến" id="md-input-noi-den" (focus)="showLandPlace()" [value]="tenDiemDen">
                   <span class="mat-input-placeholder-wrapper">
                     <label class="mat-input-placeholder mat-float" for="md-input-noi-den">Nơi đến</label>
                   </span>
@@ -91,11 +89,11 @@
               <div class="mat-input-subscript-wrapper"></div>
             </div>
           </div>
-          <div [@landPlace]="showLand" class="takeoff">
+          <div [style.display]="showLand=='active'?'block':'none'" class="takeoff">
             <md-card>
               <md-card-content>
                 <span style="float:right; cursor: pointer" (click)="showLand='inactive'"><i class="material-icons md-18">close</i></span>
-                <div fxLayout="row" fxLayoutGap="50px">
+                <div fxLayout="row" fxLayoutGap="50px" fxLayout.xs="column" fxLayoutGap.xs="5px">
                   <div *ngIf="dsVungDest1.length">
                     <div class="vung-ctn" *ngFor="let vung of dsVungDest1">
                       <div class="vung-header">{{vung.RegionName}}</div>
@@ -129,26 +127,29 @@
                 </div>
               </md-card-content>
               <md-card-actions>
-                <span fxFlex></span>
                 <button md-icon-button (click)="showLand='inactive'"><md-icon>close</md-icon></button>
               </md-card-actions>
             </md-card>
           </div>
         </div>
-        <div style="width:115px">
-          <md-input-container>
-            <input mdInput [mdDatepicker]="mdDatePickerNgayDi" placeholder="Ngày đi" [(ngModel)]="ngayDi" [min]="currentDate">
-            <button mdSuffix [mdDatepickerToggle]="mdDatePickerNgayDi"></button>
-          </md-input-container>
-          <md-datepicker #mdDatePickerNgayDi (selectedChanged)="chonNgayDi()"></md-datepicker>
+        <div fxLayout fxLayoutGap="20px">
+          <div style="width:115px">
+            <md-input-container>
+              <input mdInput [mdDatepicker]="mdDatePickerNgayDi" placeholder="Ngày đi" [(ngModel)]="ngayDi" [min]="currentDate">
+              <button mdSuffix [mdDatepickerToggle]="mdDatePickerNgayDi"></button>
+            </md-input-container>
+            <md-datepicker #mdDatePickerNgayDi (selectedChanged)="chonNgayDi()"></md-datepicker>
+          </div>
+          <div fxFlex></div>
+          <div *ngIf="searchData.roundTrip" style="width:115px">
+            <md-input-container>
+              <input mdInput [mdDatepicker]="mdDatePickerNgayVe" placeholder="Ngày về" [(ngModel)]="ngayVe" [min]="ngayDi">
+              <button mdSuffix [mdDatepickerToggle]="mdDatePickerNgayVe"></button>
+            </md-input-container>
+            <md-datepicker #mdDatePickerNgayVe></md-datepicker>
+          </div>
         </div>
-        <div *ngIf="searchData.roundTrip" style="width:115px">
-          <md-input-container>
-            <input mdInput [mdDatepicker]="mdDatePickerNgayVe" placeholder="Ngày về" [(ngModel)]="ngayVe" [min]="ngayDi">
-            <button mdSuffix [mdDatepickerToggle]="mdDatePickerNgayVe"></button>
-          </md-input-container>
-          <md-datepicker #mdDatePickerNgayVe></md-datepicker>
-        </div>
+
         <div fxLayout fxLayoutGap="10px" class="custtype">
           <md-input-container>
             <input mdInput type="number" [(ngModel)]="searchData.adult" placeholder="Người lớn(>=12 tuổi)">
@@ -160,30 +161,32 @@
             <input mdInput type="number" [(ngModel)]="searchData.infant" placeholder="Em bé(< 2 tuổi)">
           </md-input-container>
         </div>
+
+        <div fxLayout="column">
+          <button md-raised-button color="accent" (click)="timChuyenBay()"><md-icon>search</md-icon> <span>Tìm kiếm</span></button>
+        </div>
       </div>
     </div>
-    <div fxFlexLayoutAlign="stretch">
-      <button fxFlexLayoutAlign="stretch" md-raised-button color="accent" (click)="timChuyenBay()"><md-icon>search</md-icon> <span>Tìm kiếm</span></button>
-    </div>
+    
   </div>
 </section>
 <section class="booking-step">
   <md-card>
     <md-card-content>
       <div fxLayout fxLayoutAlign="space-between center">
-        <div [class.active]="step==1" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px">
+        <div [class.active]="step==1" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="5px">
           <i class="material-icons md-36">search</i>
           <span>1. Tìm chuyến bay</span>
         </div>
-        <div [class.active]="step==2" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px">
+        <div [class.active]="step==2" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="5px">
           <i class="material-icons md-36">people</i>
           <span>2. Thông tin khách hàng</span>
         </div>
-        <div [class.active]="step==3" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px">
+        <div [class.active]="step==3" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="5px">
           <i class="material-icons md-36">payment</i>
           <span>3. Thanh toán</span>
         </div>
-        <div [class.active]="step==4" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px">
+        <div [class.active]="step==4" fxLayout fxLayoutAlign="start center" fxLayoutGap="30px" fxLayoutGap.xs="5px">
           <i class="material-icons md-36">check</i>
           <span>4. Đặt vé thành công</span>
         </div>
@@ -191,8 +194,8 @@
     </md-card-content>
   </md-card>
 </section>
-<div *ngIf="step==1" fxLayout fxLayoutGap="20px">
-  <div fxFlex>
+<div *ngIf="step==1" fxLayout fxLayout.xs="column" fxLayoutGap="20px" fxLayoutGap.xs="5px">
+  <div fxFlex="70">
     <section class="booking-result">
       <div style="position: absolute; z-index: 1200; left: 50%" fxLayout fxLayoutAlign="center" *ngIf="searching">
         <md-spinner></md-spinner>
@@ -213,13 +216,13 @@
               <md-radio-button class="round-trip-radio" [value]="2">Có thuế phí</md-radio-button>
             </md-radio-group>
           </div>
-          <div class="searchresults">
+          <div class="searchresults" #searchResultContainer>
             <table class="searchresults-tbl">
               <thead>
                 <tr>
                   <th>Hãng</th>
                   <th>Chuyến bay</th>
-                  <th>Số chặng dừng</th>
+                  <th fxHide.xs>Số chặng dừng</th>
                   <th>Khởi hành</th>
                   <th>Đến</th>
                   <th>Giá vé</th>
@@ -232,7 +235,7 @@
                   <td>
                     <strong>{{item.FlightNo}}</strong>
                   </td>
-                  <td>{{item.StopNo}}</td>
+                  <td fxHide.xs>{{item.StopNo}}</td>
                   <td>
                     <strong>{{item.DepartureTime | evtimeonly }}</strong>
                     <span>({{diemDi.Code}})</span>
@@ -282,7 +285,7 @@
                 <tr>
                   <th>Hãng</th>
                   <th>Chuyến bay</th>
-                  <th>Số chặng dừng</th>
+                  <th fxHide.xs>Số chặng dừng</th>
                   <th>Khởi hành</th>
                   <th>Đến</th>
                   <th>Giá vé</th>
@@ -295,7 +298,7 @@
                   <td>
                     <strong>{{item.FlightNo}}</strong>
                   </td>
-                  <td>{{item.StopNo}}</td>
+                  <td fxHide.xs>{{item.StopNo}}</td>
                   <td>
                     <strong>{{item.DepartureTime | evtimeonly }}</strong>
                     <span>({{diemDen.Code}})</span>
@@ -366,21 +369,22 @@
   </div>
 </div>
 <div *ngIf="step >= 2" style="margin-top:10px">
-  <div fxLayout fxLayoutGap="20px">
+  <div fxLayout fxLayout.xs="column" fxLayoutGap="20px" fxLayoutGap.xs="5px">
     <div *ngIf="step==2" fxFlex>
+      <div #passengerMarker></div>
       <md-card>
         <md-card-title>1. THÔNG TIN HÀNH KHÁCH</md-card-title>
         <md-card-content>
           <div class="customer-item" *ngFor="let item of flightDataChoosen.Adult; let i=index">
             <div class="customer-type">Hành khách {{i + 1}} (Người lớn)</div>
-            <div fxLayout fxLayoutGap="20px" fxLayoutAlign="baseline">
-              <md-input-container fxFlex>
-                <input mdInput placeholder="Họ và tên" [(ngModel)]="item.FullName">
-              </md-input-container>
-              <md-select fxFlex="100px" [(ngModel)]="item.Title" placeholder="Bí danh">
+            <div fxLayout fxLayout.xs="column" fxLayoutGap="20px" fxLayoutGap.xs="5px" fxLayoutAlign="baseline">
+              <md-select style="max-width:100px" [(ngModel)]="item.Title" placeholder="Bí danh">
                 <md-option value="Ông">Ông</md-option>
                 <md-option value="Bà">Bà</md-option>
               </md-select>
+              <md-input-container fxFlex>
+                <input mdInput placeholder="Họ và tên" [(ngModel)]="item.FullName">
+              </md-input-container>
               <md-select fxFlex [(ngModel)]="item.Baggage" placeholder="Hành lý">
                 <md-option [value]="0">Không thêm hành lý</md-option>
                 <md-option *ngFor="let l of luggagePriceList" [value]="l.Weight">{{l.Name}}</md-option>
@@ -394,14 +398,14 @@
           <div class="customer-item" *ngIf="flightDataChoosen.Child.length">
             <div *ngFor="let item of flightDataChoosen.Child; let i=index">
               <div>Hành khách {{flightDataChoosen.Adult.length + i + 1}} (Trẻ em)</div>
-              <div fxLayout fxLayoutGap="20px" fxLayoutAlign="baseline">
-                <md-input-container fxFlex>
-                  <input mdInput placeholder="Họ và tên" [(ngModel)]="item.FullName">
-                </md-input-container>
-                <md-select fxFlex="100px" [(ngModel)]="item.Title" placeholder="Bí danh">
+              <div fxLayout fxLayout.xs="column" fxLayoutGap="20px" fxLayoutGap.xs="5px" fxLayoutAlign="baseline">
+                <md-select style="max-width:100px" [(ngModel)]="item.Title" placeholder="Bí danh">
                   <md-option value="Em trai">Em trai</md-option>
                   <md-option value="Em gái">Em gái</md-option>
                 </md-select>
+                <md-input-container fxFlex>
+                  <input mdInput placeholder="Họ và tên" [(ngModel)]="item.FullName">
+                </md-input-container>
                 <md-select fxFlex [(ngModel)]="item.Baggage" placeholder="Hành lý">
                   <md-option [value]="0">Không thêm hành lý</md-option>
                   <md-option *ngFor="let l of luggagePriceList" [value]="l.Weight">{{l.Name}}</md-option>
@@ -416,14 +420,14 @@
           <div class="customer-item" *ngIf="flightDataChoosen.Infant.length">
             <div *ngFor="let item of flightDataChoosen.Infant; let i=index">
               <div>Hành khách {{flightDataChoosen.Adult.length + flightDataChoosen.Child.length + i + 1}} (Em bé)</div>
-              <div fxLayout fxLayoutGap="20px" fxLayoutAlign="baseline">
-                <md-input-container fxFlex>
-                  <input mdInput placeholder="Họ và tên" [(ngModel)]="item.FullName">
-                </md-input-container>
-                <md-select fxFlex="100px" [(ngModel)]="item.Title" placeholder="Bí danh">
+              <div fxLayout fxLayout.xs="column" fxLayoutGap="20px" fxLayoutGap.xs="5px" fxLayoutAlign="baseline">
+                <md-select style="max-width:100px" [(ngModel)]="item.Title" placeholder="Bí danh">
                   <md-option value="Bé trai">Bé trai</md-option>
                   <md-option value="Bé gái">Bé gái</md-option>
                 </md-select>
+                <md-input-container fxFlex>
+                  <input mdInput placeholder="Họ và tên" [(ngModel)]="item.FullName">
+                </md-input-container>
               </div>
             </div>
           </div>
@@ -449,11 +453,18 @@
           </div>
         </md-card-content>
       </md-card>
+      <md-card>
+        <button md-raised-button (click)="step = step - 1"><md-icon>redo</md-icon> Quay lại</button>
+        <button color="accent" md-raised-button (click)="choosePaymentMethod()"><md-icon>forward</md-icon> Tiếp tục</button>
+      </md-card>
     </div>
-    <div fxFlex *ngIf="step==3">
+    <div fxFlex *ngIf="step==3" fxLayout="column">
       <md-card>
         <md-card-title>HÌNH THỨC THANH TOÁN</md-card-title>
         <md-card-content>
+          <div style="position: absolute; z-index: 1200; left: 50%" fxLayout fxLayoutAlign="center" *ngIf="booking">
+            <md-spinner></md-spinner>
+          </div>
           <div class="payment-method" *ngFor="let pm of paymentMethodList">
             <div class="cp pm-header" [class.pm-active]="paymentMethodChon==pm" (click)="paymentMethodChon=pm">{{pm.Name}}</div>
             <div *ngIf="paymentMethodChon==pm">
@@ -465,19 +476,46 @@
           </div>
         </md-card-content>
       </md-card>
+      <md-card>
+        <md-card-title>CÁC THÔNG TIN KHÁC</md-card-title>
+        <md-card-content>
+          <div fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="column">
+              <md-checkbox [(ngModel)]="xuatHoaDon">Xuất hóa đơn GTGT</md-checkbox>
+              <div *ngIf="xuatHoaDon">
+                <h3>Thông tin xuất hóa đơn</h3>
+                <div>
+                  <textarea style="width:100%" [(ngModel)]="thongTinXuatHoaDon" placeholder="Nhập thông tin xuất hóa đơn"></textarea>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="column">
+              <h3>Số điện thoại người giới thiệu</h3>
+              <input fxFlex [(ngModel)]="soDienThoaiNguoiGioiThieu" placeholder="Nhập số điện thoại">
+            </div>
+          </div>
+        </md-card-content>
+      </md-card>
+      <md-card>
+        <button md-raised-button (click)="step = step - 1"><md-icon>redo</md-icon> Quay lại</button>
+        <button md-raised-button color="accent" (click)="bookTicket()"><md-icon>checked</md-icon> Đặt vé</button>
+      </md-card>
     </div>
     <div fxFlex *ngIf="step==4">
       <md-card>
         <md-card-title>KẾT QUẢ ĐẶT VÉ</md-card-title>
         <md-card-content>
-              <div>Đơn hàng của bạn đã thực hiện thành công, mã số đơn hàng là: <span style="font-weight:bold;color:chocolate;font-size:15px">{{orderResult.data}}</span></div>
-              <div style="margin: 10px 0 10px 0">
-                {{auth.KetQuaDatVe}}
-              </div>
-              <div *ngIf="!orderResult.sendEmailStatus">
-                Lưu ý: Thông tin đơn hàng không thể gửi tới địa chỉ email của bạn: {{contact.Email}}.
-              </div>
+          <div>Đơn hàng của bạn đã thực hiện thành công, mã số đơn hàng là: <span style="font-weight:bold;color:chocolate;font-size:15px">{{orderResult.data}}</span></div>
+          <div style="margin: 10px 0 10px 0" [innerHTML]="auth.KetQuaDatVe">
+          </div>
+          <div *ngIf="!orderResult.sendEmailStatus">
+            Lưu ý: Thông tin đơn hàng không thể gửi tới địa chỉ email của bạn: {{contact.Email}}.
+          </div>
         </md-card-content>
+        <md-card-actions>
+          <button md-raised-button (click)="step = step - 1"><md-icon>redo</md-icon> Quay lại</button>
+          <button md-raised-button color="accent" (click)="resetBook()"><md-icon>checked</md-icon> Đặt vé khác</button>
+        </md-card-actions>
       </md-card>
     </div>
     <div fxFlex="30">
@@ -496,7 +534,7 @@
               </div>
               <div *ngIf="searchData.child" fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Trẻ em</div>
-                <div fxFlex>{{searchData.child}}
+                <div fxFlex>
                   <div *ngFor="let item of flightDataChoosen.Child">
                     {{item.FullName}}
                   </div>
@@ -511,8 +549,17 @@
                 </div>
               </div>
             </div>
-            <div class="info-legend">Chiều đi</div>
-            <div fxFlex>
+            <div class="info-legend">
+              <div fxLayout fxLayoutAlign="start center" class="cp" (click)="showChieuDi=!showChieuDi">
+                <span>Chiều đi</span>
+                <span fxFlex></span>
+                <span class="cp">
+                      <i *ngIf="showChieuDi" class="material-icons">chevron_right</i>
+                      <i *ngIf="!showChieuDi" class="material-icons">expand_more</i>
+                  </span>
+              </div>
+            </div>
+            <div fxFlex *ngIf="showChieuDi">
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Từ</div>
                 <div fxFlex>{{diemDi.Name}}</div>
@@ -522,7 +569,7 @@
                 <div fxFlex>{{chieuDi.DepartureDate}} {{chieuDi.DepartureTime | evtimeonly}}</div>
               </div>
             </div>
-            <div fxFlex>
+            <div fxFlex *ngIf="showChieuDi">
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Đến</div>
                 <div fxFlex>{{diemDen.Name}}</div>
@@ -532,7 +579,7 @@
                 <div fxFlex>{{chieuDi.ArrivalDate}} {{chieuDi.ArrivalTime | evtimeonly}}</div>
               </div>
             </div>
-            <div fxFlex>
+            <div fxFlex *ngIf="showChieuDi">
               <div fxLayout fxLayoutGap="20px">
                 <div fxFlex="100px">Hãng</div>
                 <div fxFlex><img class="airline" src="assets/images/{{chieuDi.Airline}}.jpg"></div>
@@ -551,8 +598,17 @@
               </div>
             </div>
             <div fxLayout="column" *ngIf="searchData.roundTrip">
-              <div class="info-legend">Chiều về</div>
-              <div fxFlex>
+              <div class="info-legend">
+                <div fxLayout fxLayoutAlign="start center" class="cp" (click)="showChieuVe=!showChieuVe">
+                  <span>Chiều về</span>
+                  <span fxFlex></span>
+                  <span class="cp">
+                      <i *ngIf="showChieuVe" class="material-icons">chevron_right</i>
+                      <i *ngIf="!showChieuVe" class="material-icons">expand_more</i>
+                  </span>
+                </div>
+              </div>
+              <div fxFlex *ngIf="showChieuVe">
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Từ</div>
                   <div fxFlex>{{diemDen.Name}}</div>
@@ -562,7 +618,7 @@
                   <div fxFlex>{{chieuVe.DepartureDate }} {{chieuVe.DepartureTime | evtimeonly}}</div>
                 </div>
               </div>
-              <div fxFlex>
+              <div fxFlex *ngIf="showChieuVe">
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Đến</div>
                   <div fxFlex>{{diemDi.Name}}</div>
@@ -572,7 +628,7 @@
                   <div fxFlex>{{chieuVe.ArrivalDate}} {{chieuVe.ArrivalTime | evtimeonly}}</div>
                 </div>
               </div>
-              <div fxFlex>
+              <div fxFlex *ngIf="showChieuVe">
                 <div fxLayout fxLayoutGap="20px">
                   <div fxFlex="100px">Hãng</div>
                   <div fxFlex><img class="airline" src="assets/images/{{chieuVe.Airline}}.jpg"></div>
@@ -604,17 +660,12 @@
             </div>
           </div>
         </md-card-content>
-        <md-card-actions>
-          <button md-raised-button (click)="step = step - 1"><md-icon>redo</md-icon> Quay lại</button>
-          <button *ngIf="step==2" fxFlex md-raised-button color="accent" (click)="choosePaymentMethod()"><md-icon>payment</md-icon> Chọn hình thức thanh toán</button>
-          <button *ngIf="step==3" fxFlex md-raised-button color="accent" (click)="bookTicket()"><md-icon>checked</md-icon> Đặt vé</button>
-        </md-card-actions>
       </md-card>
     </div>
   </div>
 </div>
 
-<template #detailTemplate>
+<ng-template #detailTemplate>
   <div style="width:500px">
     <div class="chitietve_title">Chi tiết vé</div>
     <table style="width:100%" class="chitietve">
@@ -682,4 +733,4 @@
     <div class="chitietve_title">Điều kiện vé</div>
     <div class="chitietve" [innerHTML]="airlineChon.DieuKienVe"></div>
   </div>
-</template>
+</ng-template>

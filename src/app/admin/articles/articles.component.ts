@@ -18,7 +18,7 @@ export class ArticlesComponent implements OnInit {
   loaderType: any = 0;
   apiUrl = Config.apiUrl;
 
-  item: any = { Id: 0, Name: "", ImageUrl: "", ArticleTypeId: 0, Description: "", Content: "" };
+  item: any = { Id: 0, Name: "", FriendlyName:"", ImageUrl: "", ArticleTypeId: 0, Description: "", Content: "" };
   dsItem: any[] = [];
 
   loai: any = 0;

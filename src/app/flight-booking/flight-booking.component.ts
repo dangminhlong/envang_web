@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Config } from '../shared/config'
 import { MdSnackBar } from '@angular/material';
@@ -17,29 +17,7 @@ import { MdDatepicker } from '@angular/material';
 @Component({
     selector: 'ev-flight-booking',
     templateUrl: './flight-booking.component.html',
-    providers: [AirlineService, PaymentMethodService],
-    animations: [
-        trigger('takeOffPlace', [
-            state('inactive', style({
-                display: 'none'
-            })),
-            state('active', style({
-                display: 'block'
-            })),
-            transition('inactive => active', animate('100ms ease-in')),
-            transition('active => inactive', animate('100ms ease-out'))
-        ]),
-        trigger('landPlace', [
-            state('inactive', style({
-                display: 'none'
-            })),
-            state('active', style({
-                display: 'block'
-            })),
-            transition('inactive => active', animate('100ms ease-in')),
-            transition('active => inactive', animate('100ms ease-out'))
-        ])
-    ]
+    providers: [AirlineService, PaymentMethodService]
 })
 export class FlightBookingComponent implements OnInit {
     item: any = {};
@@ -76,6 +54,7 @@ export class FlightBookingComponent implements OnInit {
 
     step = 1;
     searching = false;
+    booking = false;
 
     searchResult: any[] = [];
     searchResultReturn: any[] = [];
@@ -99,18 +78,27 @@ export class FlightBookingComponent implements OnInit {
 
     contact: any = {};
 
-    paymentMethodChon = {};
+    paymentMethodChon = { Id: 0 };
     paymentMethodList: any[] = [];
+
+    showChieuDi = true;
+    showChieuVe = true;
 
     genderList: any[] = [{ Value: "1", Text: "Nam" }, { Value: "2", Text: "Nữ" }];
 
     AirlineList: any[] = [{ Name: "VietnamAirlines", Code: "VNA", selected: true }, { Name: "VietJetAir", Code: "VIETJET", selected: true }, { Name: "JetStar", Code: "JETSTAR", selected: true }];
 
-    orderResult:any = {};
+    orderResult: any = {};
+
+    xuatHoaDon = false;
+    thongTinXuatHoaDon = "";
+    soDienThoaiNguoiGioiThieu = "";
 
     @ViewChild("detailTemplate") detailTemplate;
     @ViewChild("mdDatePickerNgayDi") mdDatePickerNgayDi: MdDatepicker<Date>;
     @ViewChild("mdDatePickerNgayVe") mdDatePickerNgayVe: MdDatepicker<Date>;
+    @ViewChild("searchResultContainer") searchResultContainer: ElementRef;
+    @ViewChild("passengerMarker") passengerMarker: ElementRef;
 
     constructor(private service: FlighBookingService,
         private flightRouteService: FlightRouteService,
@@ -142,6 +130,16 @@ export class FlightBookingComponent implements OnInit {
             this.contact.Email = this.auth.UserInfo.Email;
             this.contact.DiaChi = this.auth.UserInfo.Address;
         }
+    }
+
+    scrollToSearchResult() {
+        if (this.searchResultContainer)
+            this.searchResultContainer.nativeElement.scrollIntoView();
+    }
+
+    scrollToPassengerFill() {
+        if (this.passengerMarker)
+            this.passengerMarker.nativeElement.scrollIntoView();
     }
 
     getListAirline() {
@@ -285,10 +283,10 @@ export class FlightBookingComponent implements OnInit {
     }
 
     chonNgayDi() {
-        if (this.searchData.roundTrip){
-            setTimeout(_=>{
+        if (this.searchData.roundTrip) {
+            setTimeout(_ => {
                 this.mdDatePickerNgayVe.open();
-            });            
+            });
         }
     }
 
@@ -316,6 +314,7 @@ export class FlightBookingComponent implements OnInit {
         };
 
         this.searching = true;
+        this.scrollToSearchResult();
         this.service.findFlights(this.searchData).subscribe(resp => {
             this.searchResult = resp.DepartureList;
             this.searchResultReturn = resp.ReturnList;
@@ -365,11 +364,13 @@ export class FlightBookingComponent implements OnInit {
     }
 
     tieptuc() {
-        if (this.chieuDi == null){
-            this.snackBar.open("Xin vui lòng chọn chiều đi", "", {duration:1000});
+        if (!this.chieuDi.Airline) {
+            this.snackBar.open("Xin vui lòng chọn chiều đi", "", { duration: 1000 });
+            return;
         }
-        if (this.searchData.roundTrip && this.chieuVe == null){
-            this.snackBar.open("Xin vui lòng chọn chiều về", "", {duration:1000});
+        if (this.searchData.roundTrip && !this.chieuVe.Airline) {
+            this.snackBar.open("Xin vui lòng chọn chiều về", "", { duration: 1000 });
+            return;
         }
 
         this.flightDataChoosen.ChieuDi = this.chieuDi;
@@ -393,6 +394,10 @@ export class FlightBookingComponent implements OnInit {
             }
         }
         this.step = 2;
+
+        setTimeout(_ => {
+            this.scrollToPassengerFill();
+        }, 1000);
     }
 
     chonChieuDi(item) {
@@ -474,27 +479,51 @@ export class FlightBookingComponent implements OnInit {
         this.step = this.step + 1;
     }
     bookTicket() {
-        if (this.paymentMethodChon == null){
-            this.snackBar.open("Xin vui lòng chọn hình thức thanh toán", "", {duration: 2000});
+        if (!this.paymentMethodChon.Id) {
+            this.snackBar.open("Xin vui lòng chọn hình thức thanh toán", "", { duration: 2000 });
             return;
         }
+        this.booking = true;
         this.flightDataChoosen.Contact = this.contact;
         this.flightDataChoosen.PaymentMethod = this.paymentMethodChon;
         this.flightDataChoosen.TotalPrice = this.TongKhuHoi + this.ChiPhiHanhLy;
+        this.flightDataChoosen.XuatHoaDon = this.xuatHoaDon;
+        this.flightDataChoosen.ThongTinXuatHoaDon = this.thongTinXuatHoaDon;
+        this.flightDataChoosen.SoDienThoaiNguoiGioiThieu = this.soDienThoaiNguoiGioiThieu;
         this.service.bookflight(this.flightDataChoosen).subscribe(
             resp => {
-                if (resp.success){
+                if (resp.success) {
                     this.step = this.step + 1;
                     this.orderResult = resp;
                 }
                 else {
-                    this.snackBar.open("Có lỗi xảy ra. Xin vui lòng đặt lại vé", "", {duration: 2000});
+                    this.snackBar.open("Có lỗi xảy ra. Xin vui lòng đặt lại vé", "", { duration: 2000 });
                 }
+                this.booking = false;
             },
             err => {
-                this.snackBar.open("Có lỗi xảy ra. Xin vui lòng đặt lại vé", "", {duration: 2000});
+                this.booking = false;
+                this.snackBar.open("Có lỗi xảy ra. Xin vui lòng đặt lại vé", "", { duration: 2000 });
             }
         )
+    }
+
+    resetBook() {
+        this.paymentMethodChon = { Id: 0 };
+        this.step = 1;
+        this.searchData.roundTrip = false;
+        this.searchData.adult = 1;
+        this.searchData.child = 0;
+        this.searchData.infant = 0;
+        this.searchResultFilter = [];
+        this.searchResultReturnFilter = [];
+        this.searchResult = [];
+        this.searchResultReturn = [];
+        this.chieuDi = {};
+        this.chieuVe = {};
+        this.xuatHoaDon = false;
+        this.thongTinXuatHoaDon = "";
+        this.soDienThoaiNguoiGioiThieu = "";
     }
 
     get ChiPhiHanhLy() {
@@ -563,6 +592,6 @@ export class FlightBookingComponent implements OnInit {
         let n = d.getFullYear();
         let t = d.getMonth() + 1;
         let ng = d.getDate();
-        return ('0' + ng).slice(-2) + '/' + ('0' + t).slice(-2) + '/' + n ;
+        return ('0' + ng).slice(-2) + '/' + ('0' + t).slice(-2) + '/' + n;
     }
 }

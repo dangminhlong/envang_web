@@ -16,9 +16,9 @@
   </md-card>
   <md-card>
     <md-card-content>
-      <table class="table table-hover table-bordered">
+      <table class="ev-table">
         <thead>
-          <tr class="header">
+          <tr>
             <th style="width:40px">Id</th>
             <th>Tên</th>
             <th style="width:150px"></th>
@@ -56,6 +56,9 @@
         <md-input-container>
           <input mdInput [(ngModel)]="item.Name" placeholder="Tên" />
         </md-input-container>
+        <md-input-container>
+          <input mdInput [(ngModel)]="item.FriendlyName" placeholder="Tên liên kết thân thiện (Tên không dấu, cách nhau bởi dấu -)" />
+        </md-input-container>
         <div class="input-group">
           <div fxLayout fxLayoutGap="20px" fxLayoutAlign="start start">
             <label>Ảnh</label>
@@ -85,7 +88,7 @@
     </div>
   </md-toolbar>
 </div>
-<template #confirmTemplate>
+<ng-template #confirmTemplate>
   <div style="text-align:center">
     <h4>{{confirmMessage}}</h4>
     <div>
@@ -93,12 +96,12 @@
       <button md-button (click)="close()">Đóng</button>
     </div>
   </div>
-</template>
-<template #loaderTemplate>
+</ng-template>
+<ng-template #loaderTemplate>
   <div style="text-align:center">
     <div fxLayout="column" fxLayoutAlign="center center">
       <md-spinner mode="indeterminate"></md-spinner>
     </div>
     <h4>{{loaderMessage}}</h4>
   </div>
-</template>
+</ng-template>

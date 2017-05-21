@@ -6,9 +6,9 @@
   </md-toolbar>
 
   <md-card>
-    <table class="table table-hover table-bordered">
+    <table class="ev-table">
       <thead>
-        <tr class="header">
+        <tr>
           <th>Tên</th>
           <th>Quốc nội</th>
           <th>Cột hiển thị</th>
@@ -32,7 +32,7 @@
   </md-card>
 </div>
 
-<template #addEditTemplate>
+<ng-template #addEditTemplate>
   <section style="width:800px">
   <md-toolbar color="primary">
     <span>Thông tin vùng</span>
@@ -68,9 +68,9 @@
     </div>
   </md-toolbar>
   </section>
-</template>
+</ng-template>
 
-<template #confirmTemplate>
+<ng-template #confirmTemplate>
   <div style="text-align:center">
     <h4>{{confirmMessage}}</h4>
     <div>
@@ -78,13 +78,13 @@
       <button md-button (click)="close()">Đóng</button>
     </div>
   </div>
-</template>
+</ng-template>
 
-<template #loaderTemplate>
+<ng-template #loaderTemplate>
   <div style="text-align:center; width:300px">
     <div *ngIf="loaderType == 0">
       <md-spinner mode="indeterminate"></md-spinner>
     </div>
     <h4>{{loaderMessage}}</h4>
   </div>
-</template>
+</ng-template>

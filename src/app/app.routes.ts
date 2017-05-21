@@ -34,7 +34,7 @@ export const routes: Routes = [
     { path: 'fa/:friendlyName/:id', component: ViewFeatureArticleComponent},
     { path: 'tin-tuc', component: ViewArticleComponent},
     { path: 'tin-tuc/:friendlyName/:id', component: ViewArticleDetailsComponent},
-    { path: 'tim-chuyen-bay', component: FlightBookingComponent},
+    { path: 'dat-ve', component: FlightBookingComponent},
     {
         path: 'admin',
         loadChildren: "app/admin/admin.module#AdminModule"

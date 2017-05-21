@@ -1,10 +1,10 @@
 ﻿<div class="ev-container">
   <div class="header-wrap">
-    <div fxLayout fxLayoutAlign="start center" class="banner-bar">
+    <div fxHide.xs fxLayout fxLayoutAlign="start center" class="banner-bar">
       <img class="logo" src="../assets/images/logo.png" />
       <span fxFlex></span>
       <div class="hotline" [innerHTML]="auth.HotlineTop"></div>
-      <div fxFlex fxLayout="row" fxLayoutAlign="end center" class="account">
+      <div fxLayout="row" fxLayoutAlign="end center" class="account">
         <div *ngIf="!auth.IsLoggedIn">
           <a class="login cp" (click)="showLoginForm()">Đăng nhập</a>
           <a class="register cp" (click)="showRegisterForm()" >Đăng ký</a>
@@ -19,14 +19,27 @@
       </div>
     </div>
     <div fxLayout class="nav-bar">
-      <a routerLink="home" routerLinkActive="active">Trang chủ</a>
-      <a routerLink="tim-chuyen-bay" routerLinkActive="active">Đặt vé</a>
-      <a routerLink="tin-tuc" routerLinkActive="active">Tin khuyến mại</a>
-      <a *ngFor="let item of dsFAC" [routerLink]="['fa', item.FriendlyName, item.Id]" routerLinkActive="active">{{item.Name}}</a>
+      <div fxHide fxShow.xs>
+        <button md-button [mdMenuTriggerFor]="mdMenuDanhMuc"><i style="color:#fff" class="material-icons">menu</i> <span style="color:#fff">Xem danh mục</span></button>
+        <md-menu #mdMenuDanhMuc="mdMenu" [overlapTrigger]="false" x-position="before" y-position="below">
+          <a md-menu-item routerLink="home" routerLinkActive="active">Trang chủ</a>
+          <a md-menu-item routerLink="dat-ve" routerLinkActive="active">Đặt vé</a>
+          <a md-menu-item routerLink="tin-tuc" routerLinkActive="active">Tin khuyến mại</a>
+          <a md-menu-item *ngFor="let item of dsFAC" [routerLink]="['fa', item.FriendlyName, item.Id]" routerLinkActive="active">{{item.Name}}</a>
+          <a *ngIf="!auth.IsLoggedIn" md-menu-item (click)="showLoginForm()">Đăng nhập</a>
+          <a *ngIf="!auth.IsLoggedIn" md-menu-item (click)="showRegisterForm()">Đăng ký</a>
+          <button *ngIf="auth.IsLoggedIn" md-menu-item (click)="logOut()">Đăng xuất</button>
+          <button *ngIf="auth.IsLoggedIn" md-menu-item (click)="accountInfo()">Thông tin tài khoản</button>            
+        </md-menu>  
+      </div>    
+      <a fxHide.xs routerLink="home" routerLinkActive="active">Trang chủ</a>
+      <a fxHide.xs routerLink="dat-ve" routerLinkActive="active">Đặt vé</a>
+      <a fxHide.xs routerLink="tin-tuc" routerLinkActive="active">Tin khuyến mại</a>
+      <a fxHide.xs *ngFor="let item of dsFAC" [routerLink]="['fa', item.FriendlyName, item.Id]" routerLinkActive="active">{{item.Name}}</a>
       <span fxFlex></span>
       <div style="position: relative">
         <span *ngIf="auth.IsLoggedIn && auth.UserInfo && auth.UserInfo.Pages.length"><a fxLayout="row" (click)="showManageMenu=!showManageMenu"><span fxLayout><i fxFlexAlign="center" class="material-icons" >list</i> Quản lý</span></a></span>
-        <div *ngIf="showManageMenu" style="width:100vw; position: absolute; right: 0; z-index: 2001;" fxLayout fxLayoutGap="20px">
+        <div *ngIf="showManageMenu" style="width:100vw; position: absolute; right: 0; z-index: 2001;" fxLayout fxLayoutGap="20px" fxLayout.xs="column" fxLayoutGap.xs="5px">
           <div fxFlex *ngFor="let page of auth.UserInfo.Pages">
             <md-card>
               <md-card-title>

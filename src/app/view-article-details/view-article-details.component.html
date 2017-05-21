@@ -1,8 +1,11 @@
-<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start">
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start" fxLayout.xs="column" fxLayoutGap.xs="5px" fxLayoutAlign.xs="stretch stretch">
   <md-card fxFlex="70">
     <md-card-content>
       <div class="article-title">{{item.Name}}</div>
       <div class="article-date">Ngày đăng: {{item.CreatedOn | date: "dd/MM/yyyy"}}</div>
+      <div>
+        <img style="width:100%;" src="{{apiUrl + '/' + item.ImageUrl }}">
+      </div>
       <div class="article-content" [innerHTML]="item.Content"></div>
     </md-card-content>
   </md-card>

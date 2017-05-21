@@ -1,23 +1,35 @@
-<div fxLayout="row" fxLayoutGap="30px">
-  <md-card fxLayout="column" fxLayoutGap="10px" class="home-booking">
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="30px">
+  <md-card fxLayout="column" fxLayoutGap="10px" fxFlex="30" fxFlex.sm="50">
     <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutGap="25px">
-      <span class="label-inline">Loại vé:</span>
       <md-radio-group class="round-trip-group" [(ngModel)]="isRoundTrip">
         <md-radio-button class="round-trip-radio" [value]="true">Khứ hồi</md-radio-button>
         <md-radio-button class="round-trip-radio" [value]="false">Một chiều</md-radio-button>
       </md-radio-group>
     </div>
-    <div fxLayout="row" fxLayoutGap="20px">
-      <div fxFlex style="position: relative">
-        <span class="label-inline-2">Nơi đi:</span>
-        <div class="takeoff_place" fxLayout fxLayoutAlign="start center">
-          <i class="material-icons">flight_takeoff</i> 
-          <input readonly fxFlex fxFlexLayoutAlign="stretch" type="text" (focus)="showTakeOffPlace()" (blur)="hideTakeOffPlace()" [value]="tenDiemDi">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" fxLayoutGap.xs="5px">
+      <div fxLayout="column" style="position: relative">
+        <div class="mat-input-container">
+          <div class="mat-input-wrapper">
+            <div class="mat-input-table">
+              <div class="mat-input-infix">
+                <input class="mat-input-element" placeholder="Nơi đi" id="md-input-noi-di" (focus)="showTakeOffPlace()" [value]="tenDiemDi">
+                <span class="mat-input-placeholder-wrapper">
+                    <label class="mat-input-placeholder mat-float" for="md-input-noi-di">Nơi đi</label>
+                  </span>
+              </div>
+              <div class="mat-input-suffix">
+                <md-icon (click)="showTakeOffPlace()">flight_takeoff</md-icon>
+              </div>
+            </div>
+            <div class="mat-input-underline"></div>
+            <div class="mat-input-subscript-wrapper"></div>
+          </div>
         </div>
-        <div [@takeOffPlace]="showTakeOff" class="takeoff">
+        <div [style.display]="showTakeOff=='active'?'block':'none'" class="takeoff">
           <md-card>
             <md-card-content>
-              <div fxLayout="row" fxLayoutGap="50px">
+              <span style="float:right; cursor: pointer" (click)="showTakeOff='inactive'"><i class="material-icons md-18">close</i></span>
+              <div fxLayout="row" fxLayoutGap="50px" fxLayout.xs="column" fxLayoutGap.xs="5px">
                 <div *ngIf="dsVung1.length">
                   <div class="vung-ctn" *ngFor="let vung of dsVung1">
                     <div class="vung-header">{{vung.RegionName}}</div>
@@ -51,30 +63,34 @@
               </div>
             </md-card-content>
             <md-card-actions>
-              <span fxFlex></span>
               <button md-icon-button (click)="showTakeOff='inactive'"><md-icon>close</md-icon></button>
             </md-card-actions>
           </md-card>
         </div>
       </div>
-      <div style="width:108px">
-        <span class="label-inline-2">Ngày đi:</span>
-        <div class="date-picker-ctn">
-          <material-datepicker [rangeStart]="currentDate" (onSelect)="chonNgayDi()" [(date)]="ngayDi" dateFormat="DD-MM-YYYY"></material-datepicker>
+      <div style="position: relative">
+        <div fxLayout="column" class="mat-input-container">
+          <div class="mat-input-wrapper">
+            <div class="mat-input-table">
+              <div class="mat-input-infix">
+                <input class="mat-input-element" placeholder="Nơi đến" id="md-input-noi-den" (focus)="showLandPlace()" [value]="tenDiemDen">
+                <span class="mat-input-placeholder-wrapper">
+                    <label class="mat-input-placeholder mat-float" for="md-input-noi-den">Nơi đến</label>
+                  </span>
+              </div>
+              <div class="mat-input-suffix">
+                <md-icon (click)="showLandPlace()">flight_land</md-icon>
+              </div>
+            </div>
+            <div class="mat-input-underline"></div>
+            <div class="mat-input-subscript-wrapper"></div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div fxLayout="row" fxLayoutGap="20px">
-      <div fxFlex style="position: relative">
-        <span class="label-inline-2">Nơi đến:</span>
-        <div class="takeoff_place" fxLayout fxLayoutAlign="start center">
-          <i class="material-icons">flight_land</i> 
-          <input readonly fxFlex fxFlexLayoutAlign="stretch" type="text" (focus)="showLandPlace()" (blur)="hideLandPlace()" [value]="tenDiemDen">
-        </div>
-        <div [@landPlace]="showLand" class="takeoff">
+        <div [style.display]="showLand=='active'?'block':'none'" class="takeoff">
           <md-card>
             <md-card-content>
-              <div fxLayout="row" fxLayoutGap="50px">
+              <span style="float:right; cursor: pointer" (click)="showLand='inactive'"><i class="material-icons md-18">close</i></span>
+              <div fxLayout="row" fxLayoutGap="50px" fxLayout.xs="column" fxLayoutGap.xs="5px">
                 <div *ngIf="dsVungDest1.length">
                   <div class="vung-ctn" *ngFor="let vung of dsVungDest1">
                     <div class="vung-header">{{vung.RegionName}}</div>
@@ -108,20 +124,30 @@
               </div>
             </md-card-content>
             <md-card-actions>
-              <span fxFlex></span>
               <button md-icon-button (click)="showLand='inactive'"><md-icon>close</md-icon></button>
             </md-card-actions>
           </md-card>
         </div>
       </div>
-      <div style="width:108px">
-        <span class="label-inline-2">Ngày về:</span>
-        <div class="date-picker-ctn">
-          <material-datepicker [(date)]="ngayVe" [rangeStart]="ngayDi" dateFormat="DD-MM-YYYY"></material-datepicker>
-        </div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div style="width:115px">
+        <md-input-container>
+          <input mdInput [mdDatepicker]="mdDatePickerNgayDi" placeholder="Ngày đi" [(ngModel)]="ngayDi" [min]="currentDate">
+          <button mdSuffix [mdDatepickerToggle]="mdDatePickerNgayDi"></button>
+        </md-input-container>
+        <md-datepicker #mdDatePickerNgayDi (selectedChanged)="chonNgayDi()"></md-datepicker>
+      </div>
+      <div fxFlex></div>
+      <div *ngIf="isRoundTrip" style="width:115px">
+        <md-input-container>
+          <input mdInput [mdDatepicker]="mdDatePickerNgayVe" placeholder="Ngày về" [(ngModel)]="ngayVe" [min]="ngayDi">
+          <button mdSuffix [mdDatepickerToggle]="mdDatePickerNgayVe"></button>
+        </md-input-container>
+        <md-datepicker #mdDatePickerNgayVe></md-datepicker>
       </div>
     </div>
-    <div fxLayout fxLayoutGap="20px" class="custtype">
+    <div fxLayout fxLayoutGap="20px" fxLayoutGap.xs="5px">
       <md-input-container>
         <input mdInput type="number" [(ngModel)]="adult" placeholder="Người lớn (>=12 tuổi)">
       </md-input-container>
@@ -129,13 +155,20 @@
         <input mdInput type="number" [(ngModel)]="child" placeholder="Trẻ em (2-11 tuổi)">
       </md-input-container>
       <md-input-container>
-        <input mdInput type="number" [(ngModel)]="infant" placeholder="Em bé (< 24 tháng)">
+        <input mdInput type="number" [(ngModel)]="infant" placeholder="Em bé (< 2 tuổi)">
       </md-input-container>
     </div>
     <div fxLayout="column">
       <button md-raised-button color="accent" (click)="timChuyenBay()"><md-icon>search</md-icon> <span>Tìm chuyến bay</span></button>
     </div>
   </md-card>
-  <md-card fxFlex>
-  </md-card>
+  <div fxFlex>
+    <div id="article_slider" style="overflow:hidden;position:relative;height:calc(100vh - 150px)">
+      <div style="position:absolute;height:100%;width:100%" [@state]="a.state" *ngFor="let a of dsBaiViet">
+        <a [routerLink]="['/tin-tuc', a.FriendlyName, a.Id]">
+          <img style="width:100%;height:100%" src="{{apiUrl+ '/' + a.ImageUrl}}">
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
